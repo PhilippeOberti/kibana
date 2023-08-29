@@ -22,7 +22,8 @@ describe('<IndicatorsFlyout />', () => {
       </TestProvidersComponent>
     );
 
-    expect(getByTestId(BUTTON_TEST_ID).innerHTML).toContain('expand');
+    const button = getByTestId(`${BUTTON_TEST_ID}-${mockIndicator._id}`);
+    expect(button.innerHTML).toContain('expand');
   });
 
   it(`should render minimize button if flyout is open`, () => {
@@ -32,7 +33,7 @@ describe('<IndicatorsFlyout />', () => {
       </TestProvidersComponent>
     );
 
-    const button = getByTestId(BUTTON_TEST_ID);
+    const button = getByTestId(`${BUTTON_TEST_ID}-${mockIndicator._id}`);
     button.click();
     expect(button.innerHTML).toContain('minimize');
   });

@@ -37,7 +37,7 @@ export const OpenIndicatorFlyoutButton: VFC<OpenIndicatorFlyoutButtonProps> = ({
   return (
     <EuiToolTip content={VIEW_DETAILS_BUTTON_LABEL}>
       <EuiButtonIcon
-        data-test-subj={BUTTON_TEST_ID}
+        data-test-subj={`${BUTTON_TEST_ID}-${indicator._id}`}
         color={isOpen ? 'text' : 'primary'}
         iconType={isOpen ? 'minimize' : 'expand'}
         isSelected={isOpen}

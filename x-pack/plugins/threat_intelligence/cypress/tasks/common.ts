@@ -14,6 +14,7 @@ import {
 
 import {
   BARCHART_POPOVER_BUTTON,
+  BARCHART_WRAPPER,
   FLYOUT_CLOSE_BUTTON,
   FLYOUT_TABS,
   FLYOUT_TAKE_ACTION_BUTTON,
@@ -47,15 +48,15 @@ export const closeFlyout = () => {
 /**
  * Open the indicators table more actions menu
  */
-export const openIndicatorsTableMoreActions = (index: number) => {
-  cy.get(INDICATORS_TABLE_MORE_ACTION_BUTTON_ICON).eq(index).click();
+export const openIndicatorsTableMoreActions = (id: string) => {
+  cy.get(INDICATORS_TABLE_MORE_ACTION_BUTTON_ICON(id)).click();
 };
 
 /**
  * Open the indicator flyout from indicators table
  */
-export const openFlyout = (index: number) => {
-  cy.get(TOGGLE_FLYOUT_BUTTON).eq(index).click({ force: true });
+export const openFlyout = (id: string) => {
+  cy.get(TOGGLE_FLYOUT_BUTTON(id)).click();
 };
 
 /**
@@ -88,6 +89,7 @@ export const waitForViewToBeUpdated = () => {
  * Open barchart 3-dot popover menu
  */
 export const openBarchartPopoverMenu = () => {
+  cy.get(BARCHART_WRAPPER).scrollIntoView();
   cy.get(BARCHART_POPOVER_BUTTON).first().scrollIntoView();
   cy.get(BARCHART_POPOVER_BUTTON).should('exist').first().click();
 };

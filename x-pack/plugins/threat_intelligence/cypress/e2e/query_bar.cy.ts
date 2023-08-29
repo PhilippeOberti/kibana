@@ -102,7 +102,9 @@ describe('Indicators query bar interaction', () => {
 
     cy.get(INDICATOR_TYPE_CELL).its('length').should('be.gte', 0);
 
-    openFlyout(0);
+    const firstIndicatorId = 'RP0HlUQkToBRTlZeGAItbyWMx1E=';
+
+    openFlyout(firstIndicatorId);
     filterInFromFlyoutBlockItem();
     closeFlyout();
     waitForViewToBeUpdated();
@@ -117,7 +119,7 @@ describe('Indicators query bar interaction', () => {
 
     cy.get(INDICATOR_TYPE_CELL).its('length').should('be.gte', 0);
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     filterOutFromFlyoutBlockItem();
     closeFlyout();
     waitForViewToBeUpdated();
@@ -132,7 +134,7 @@ describe('Indicators query bar interaction', () => {
 
     cy.get(INDICATOR_TYPE_CELL).its('length').should('be.gte', 0);
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     filterInFromFlyoutOverviewTable();
     closeFlyout();
     waitForViewToBeUpdated();
@@ -147,7 +149,7 @@ describe('Indicators query bar interaction', () => {
 
     cy.get(INDICATOR_TYPE_CELL).its('length').should('be.gte', 0);
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     filterOutFromFlyoutOverviewTable();
     closeFlyout();
     waitForViewToBeUpdated();
@@ -162,7 +164,7 @@ describe('Indicators query bar interaction', () => {
 
     cy.get(INDICATOR_TYPE_CELL).its('length').should('be.gte', 0);
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     navigateToFlyoutTableTab();
     filterInFromFlyoutTableTab();
     closeFlyout();
@@ -178,7 +180,7 @@ describe('Indicators query bar interaction', () => {
 
     cy.get(INDICATOR_TYPE_CELL).its('length').should('be.gte', 0);
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     navigateToFlyoutTableTab();
     filterOutFromFlyoutTableTab();
     closeFlyout();

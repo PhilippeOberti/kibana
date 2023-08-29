@@ -10,9 +10,10 @@ import React from 'react';
 import { IndicatorsTable, IndicatorsTableProps } from './table';
 import { TestProvidersComponent } from '../../../../mocks/test_providers';
 import { generateMockIndicator, Indicator } from '../../../../../common/types/indicator';
-import { BUTTON_TEST_ID, TABLE_UPDATE_PROGRESS_TEST_ID } from './test_ids';
+import { TABLE_UPDATE_PROGRESS_TEST_ID } from './test_ids';
 import { SecuritySolutionDataViewBase } from '../../../../types';
 import { INDICATORS_FLYOUT_TITLE_TEST_ID } from '../flyout/test_ids';
+import { VIEW_DETAILS_BUTTON_LABEL } from './translations';
 
 const stub = () => {};
 
@@ -82,8 +83,6 @@ describe('<IndicatorsTable />', () => {
       );
     });
 
-    screen.debug();
-
     expect(screen.queryByTestId(TABLE_UPDATE_PROGRESS_TEST_ID)).toBeInTheDocument();
   });
 
@@ -105,10 +104,10 @@ describe('<IndicatorsTable />', () => {
     expect(screen.queryByRole('grid')).toBeInTheDocument();
 
     // Two rows should be rendered
-    expect(screen.queryAllByTestId(BUTTON_TEST_ID).length).toEqual(2);
+    expect(screen.queryAllByLabelText(VIEW_DETAILS_BUTTON_LABEL).length).toEqual(2);
 
     await act(async () => {
-      screen.getAllByTestId(BUTTON_TEST_ID)[0].click();
+      screen.queryAllByLabelText(VIEW_DETAILS_BUTTON_LABEL)[0].click();
     });
 
     expect(screen.queryByTestId(INDICATORS_FLYOUT_TITLE_TEST_ID)).toBeInTheDocument();

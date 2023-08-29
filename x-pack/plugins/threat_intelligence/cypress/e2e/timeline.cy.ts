@@ -53,7 +53,8 @@ describe('Timeline', () => {
 
     cy.log('add to timeline when clicking in an indicator flyout overview tab table row');
 
-    openFlyout(0);
+    const firstIndicatorId = 'RP0HlUQkToBRTlZeGAItbyWMx1E=';
+    openFlyout(firstIndicatorId);
     addToTimelineFromFlyoutOverviewTabTable();
     closeFlyout();
     openTimeline();
@@ -67,7 +68,7 @@ describe('Timeline', () => {
 
     cy.log('add to timeline when clicking in an indicator flyout overview block');
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     addToTimelineFromFlyoutOverviewTabBlock();
     closeFlyout();
     openTimeline();
@@ -104,7 +105,7 @@ describe('Timeline', () => {
 
     cy.log('investigate in timeline when clicking in an indicator flyout');
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     openFlyoutTakeAction();
     investigateInTimelineFromFlyout();
 

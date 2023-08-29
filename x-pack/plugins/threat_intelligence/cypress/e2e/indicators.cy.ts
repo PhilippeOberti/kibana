@@ -186,7 +186,8 @@ describe('Indicators', () => {
 
       cy.log('should show the indicator flyout on ioc click');
 
-      openFlyout(1);
+      const secondIndicatorId = 'C4ObxkoTZzcjmk1jFwGlRadzMnA=';
+      openFlyout(secondIndicatorId);
 
       cy.get(FLYOUT_TITLE).should('contain', 'Indicator details');
 

@@ -10,6 +10,7 @@
 import { PANEL_TEST_ID, TITLE_TEST_ID } from '../../public/components/test_ids';
 import { INSPECT_BUTTON_TEST_ID } from '../../public/modules/indicators/hooks/test_ids';
 import {
+  BARCHART_WRAPPER_TEST_ID,
   DROPDOWN_TEST_ID,
   FILTER_IN_BUTTON_TEST_ID as LEGEND_FILTER_IN_BUTTON_TEST_ID,
   FILTER_OUT_BUTTON_TEST_ID as LEGEND_FILTER_OUT_BUTTON_TEST_ID,
@@ -51,11 +52,12 @@ export const TABLE_CONTROLS = `[data-test-subj="dataGridControls"]`;
 export const INDICATOR_TYPE_CELL = `[role="gridcell"][data-gridcell-column-id="threat.indicator.type"]`;
 export const INDICATORS_TABLE_CELL_FILTER_IN_BUTTON = `[data-test-subj="${CELL_FILTER_IN_BUTTON_TEST_ID}"] button`;
 export const INDICATORS_TABLE_CELL_FILTER_OUT_BUTTON = `[data-test-subj="${CELL_FILTER_OUT_BUTTON_TEST_ID}"] button`;
-export const INDICATORS_TABLE_MORE_ACTION_BUTTON_ICON = `[data-test-subj="${INDICATORS_TABLE_MORE_ACTIONS_TEST_ID}"]`;
+export const INDICATORS_TABLE_MORE_ACTION_BUTTON_ICON = (id: string) =>
+  `[data-test-subj="${INDICATORS_TABLE_MORE_ACTIONS_TEST_ID}-${id}"]`;
 
 /* Flyout */
 
-export const TOGGLE_FLYOUT_BUTTON = `[data-test-subj="${BUTTON_TEST_ID}"]`;
+export const TOGGLE_FLYOUT_BUTTON = (id: string) => `[data-test-subj="${BUTTON_TEST_ID}-${id}"]`;
 export const FLYOUT_CLOSE_BUTTON = `[data-test-subj="euiFlyoutCloseButton"]`;
 export const FLYOUT_TITLE = `[data-test-subj="${INDICATORS_FLYOUT_TITLE_TEST_ID}"]`;
 export const FLYOUT_TABS = `[data-test-subj="${INDICATORS_FLYOUT_TABS_TEST_ID}"]`;
@@ -86,6 +88,7 @@ export const FIELD_BROWSER_MODAL = `[data-test-subj="fields-browser-container"]`
 
 /* Barchart */
 
+export const BARCHART_WRAPPER = `[data-test-subj="${BARCHART_WRAPPER_TEST_ID}"]`;
 export const BARCHART_POPOVER_BUTTON = `[data-test-subj="${LEGEND_POPOVER_BUTTON_TEST_ID}"]`;
 export const BARCHART_TIMELINE_BUTTON = `[data-test-subj="${LEGEND_TIMELINE_BUTTON_TEST_ID}"]`;
 export const BARCHART_FILTER_IN_BUTTON = `[data-test-subj="${LEGEND_FILTER_IN_BUTTON_TEST_ID}"]`;

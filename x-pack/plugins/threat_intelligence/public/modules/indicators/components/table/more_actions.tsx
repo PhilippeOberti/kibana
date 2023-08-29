@@ -74,7 +74,7 @@ export const MoreActions: VFC<TakeActionProps> = ({ indicator }) => {
         size="xs"
         onClick={() => setPopover((prevIsPopoverOpen) => !prevIsPopoverOpen)}
         style={{ height: '100%' }}
-        data-test-subj={MORE_ACTIONS_TEST_ID}
+        data-test-subj={`${MORE_ACTIONS_TEST_ID}-${indicator._id}`}
       />
     </EuiToolTip>
   );

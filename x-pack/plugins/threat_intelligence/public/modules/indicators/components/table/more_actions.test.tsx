@@ -20,6 +20,7 @@ describe('MoreActions', () => {
         <MoreActions indicator={indicator} />
       </TestProvidersComponent>
     );
-    expect(getByTestId(MORE_ACTIONS_TEST_ID)).toBeInTheDocument();
+    const moreActionsButton = getByTestId(`${MORE_ACTIONS_TEST_ID}-${indicator._id}`);
+    expect(moreActionsButton).toBeInTheDocument();
   });
 });

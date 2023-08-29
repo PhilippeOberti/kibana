@@ -44,13 +44,13 @@ describe('Cases with invalid indicators', () => {
   });
 
   it.skip('should disable the indicators table context menu items and flyout context menu items', () => {
-    const documentsNumber = 22;
-    openIndicatorsTableMoreActions(documentsNumber - 1);
+    const lastIndicatorId = '0j+BQ8HFrDQYe5kbXMc9ANSCjBY=';
+    openIndicatorsTableMoreActions(lastIndicatorId);
 
     cy.get(INDICATORS_TABLE_ADD_TO_EXISTING_CASE_BUTTON_ICON).should('be.disabled');
     cy.get(INDICATORS_TABLE_ADD_TO_NEW_CASE_BUTTON_ICON).should('be.disabled');
 
-    openFlyout(documentsNumber - 1);
+    openFlyout(lastIndicatorId);
     openFlyoutTakeAction();
 
     cy.get(FLYOUT_ADD_TO_EXISTING_CASE_ITEM).should('be.disabled');
@@ -72,7 +72,8 @@ describe('Cases interactions', () => {
   it.skip('should add to new case and to existing case from the indicators table and the flyout', () => {
     cy.log('should add to new case when clicking on the button in the indicators table');
 
-    openIndicatorsTableMoreActions(0);
+    const firstIndicatorId = 'RP0HlUQkToBRTlZeGAItbyWMx1E=';
+    openIndicatorsTableMoreActions(firstIndicatorId);
     openAddToNewCaseFlyoutFromTable();
     createNewCaseFromTI();
     navigateToCaseViaToaster();
@@ -88,7 +89,7 @@ describe('Cases interactions', () => {
 
     cy.log('should add to existing case when clicking on the button in the indicators table');
 
-    openIndicatorsTableMoreActions(0);
+    openIndicatorsTableMoreActions(firstIndicatorId);
     openAddToExistingCaseFlyoutFromTable();
     selectExistingCase();
     navigateToCaseViaToaster();
@@ -104,7 +105,7 @@ describe('Cases interactions', () => {
 
     cy.log('should add to new case when clicking on the button in the indicators flyout');
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     openFlyoutTakeAction();
     openAddToNewCaseFromFlyout();
     createNewCaseFromTI();
@@ -121,7 +122,7 @@ describe('Cases interactions', () => {
 
     cy.log('should add to existing case when clicking on the button in the indicators flyout');
 
-    openFlyout(0);
+    openFlyout(firstIndicatorId);
     openFlyoutTakeAction();
     openAddToExistingCaseFromFlyout();
     selectExistingCase();
