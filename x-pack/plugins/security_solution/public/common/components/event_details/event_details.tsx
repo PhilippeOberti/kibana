@@ -57,7 +57,6 @@ import { Overview } from './overview';
 import { Insights } from './insights/insights';
 import { useRiskScoreData } from './use_risk_score_data';
 import { getRowRenderer } from '../../../timelines/components/timeline/body/renderers/get_row_renderer';
-import { DETAILS_CLASS_NAME } from '../../../timelines/components/timeline/body/renderers/helpers';
 import { defaultRowRenderers } from '../../../timelines/components/timeline/body/renderers';
 import { useOsqueryTab } from './osquery_tab';
 
@@ -131,10 +130,6 @@ const TabContentWrapper = styled.div`
 const RendererContainer = styled.div`
   overflow-x: auto;
   padding-right: ${(props) => props.theme.eui.euiSizeXS};
-
-  & .${DETAILS_CLASS_NAME} .euiFlexGroup {
-    justify-content: flex-start;
-  }
 `;
 
 const ThreatTacticContainer = styled(EuiFlexGroup)`

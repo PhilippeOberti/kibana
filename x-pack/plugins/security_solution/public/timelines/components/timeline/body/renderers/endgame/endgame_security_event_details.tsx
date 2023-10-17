@@ -13,7 +13,6 @@ import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
 import { NetflowRenderer } from '../netflow';
 
 import { EndgameSecurityEventDetailsLine } from './endgame_security_event_details_line';
-import { Details } from '../helpers';
 
 interface Props {
   contextId: string;
@@ -59,7 +58,7 @@ export const EndgameSecurityEventDetails = React.memo<Props>(
     const winlogEventId: string | null | undefined = get('winlog.event_id[0]', data);
 
     return (
-      <Details>
+      <>
         <EndgameSecurityEventDetailsLine
           contextId={contextId}
           endgameLogonType={endgameLogonType}
@@ -84,7 +83,7 @@ export const EndgameSecurityEventDetails = React.memo<Props>(
         />
         <EuiSpacer size="s" />
         <NetflowRenderer data={data} timelineId={timelineId} />
-      </Details>
+      </>
     );
   }
 );

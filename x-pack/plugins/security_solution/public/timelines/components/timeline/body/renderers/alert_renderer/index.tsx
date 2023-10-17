@@ -31,7 +31,6 @@ import {
   eventKindMatches,
   showWith,
 } from './helpers';
-import { Details } from '../helpers';
 import { RowRendererContainer } from '../row_renderer';
 import * as i18n from './translations';
 
@@ -76,164 +75,163 @@ export const alertRenderer: RowRenderer = {
 
     return (
       <RowRendererContainer>
-        <Details data-test-subj="alertRenderer">
-          <AlertRendererFlexGroup
-            alignItems="center"
-            gutterSize="none"
-            justifyContent="center"
-            wrap={true}
-          >
-            <AlertField
-              contextId={contextId}
-              data-test-subj={EVENT_CATEGORY}
-              eventId={eventId}
-              field={EVENT_CATEGORY}
-              isDraggable={isDraggable}
-              scopeId={scopeId}
-              values={eventCategory}
-            />
+        <AlertRendererFlexGroup
+          data-test-subj="alertRenderer"
+          alignItems="center"
+          gutterSize="none"
+          justifyContent="flexStart"
+          wrap={true}
+        >
+          <AlertField
+            contextId={contextId}
+            data-test-subj={EVENT_CATEGORY}
+            eventId={eventId}
+            field={EVENT_CATEGORY}
+            isDraggable={isDraggable}
+            scopeId={scopeId}
+            values={eventCategory}
+          />
 
+          <EuiFlexItem grow={false}>
+            <span data-test-subj="event">{` ${i18n.EVENT} `}</span>
+          </EuiFlexItem>
+
+          {showWith({
+            data,
+            fieldNames: WITH_FIELD_NAMES,
+          }) && (
             <EuiFlexItem grow={false}>
-              <span data-test-subj="event">{` ${i18n.EVENT} `}</span>
+              <span data-test-subj="with">{` ${i18n.WITH} `}</span>
             </EuiFlexItem>
+          )}
 
-            {showWith({
-              data,
-              fieldNames: WITH_FIELD_NAMES,
-            }) && (
-              <EuiFlexItem grow={false}>
-                <span data-test-subj="with">{` ${i18n.WITH} `}</span>
-              </EuiFlexItem>
-            )}
+          <AlertField
+            contextId={contextId}
+            data-test-subj={PROCESS_NAME}
+            eventId={eventId}
+            field={PROCESS_NAME}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.PROCESS} `}
+            suffix=", "
+            scopeId={scopeId}
+            values={processName}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={PROCESS_NAME}
-              eventId={eventId}
-              field={PROCESS_NAME}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.PROCESS} `}
-              suffix=", "
-              scopeId={scopeId}
-              values={processName}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={PROCESS_PARENT_NAME}
+            eventId={eventId}
+            field={PROCESS_PARENT_NAME}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.PARENT_PROCESS} `}
+            suffix=", "
+            scopeId={scopeId}
+            values={processParentName}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={PROCESS_PARENT_NAME}
-              eventId={eventId}
-              field={PROCESS_PARENT_NAME}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.PARENT_PROCESS} `}
-              suffix=", "
-              scopeId={scopeId}
-              values={processParentName}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={FILE_NAME}
+            eventId={eventId}
+            field={FILE_NAME}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.FILE} `}
+            suffix=", "
+            scopeId={scopeId}
+            values={fileName}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={FILE_NAME}
-              eventId={eventId}
-              field={FILE_NAME}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.FILE} `}
-              suffix=", "
-              scopeId={scopeId}
-              values={fileName}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={SOURCE_IP}
+            eventId={eventId}
+            field={SOURCE_IP}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.SOURCE} `}
+            scopeId={scopeId}
+            values={sourceIp}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={SOURCE_IP}
-              eventId={eventId}
-              field={SOURCE_IP}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.SOURCE} `}
-              scopeId={scopeId}
-              values={sourceIp}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={SOURCE_PORT}
+            eventId={eventId}
+            field={SOURCE_PORT}
+            isDraggable={isDraggable}
+            prefix=":"
+            suffix=", "
+            scopeId={scopeId}
+            values={sourcePort}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={SOURCE_PORT}
-              eventId={eventId}
-              field={SOURCE_PORT}
-              isDraggable={isDraggable}
-              prefix=":"
-              suffix=", "
-              scopeId={scopeId}
-              values={sourcePort}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={DESTINATION_IP}
+            eventId={eventId}
+            field={DESTINATION_IP}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.DESTINATION} `}
+            scopeId={scopeId}
+            values={destinationIp}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={DESTINATION_IP}
-              eventId={eventId}
-              field={DESTINATION_IP}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.DESTINATION} `}
-              scopeId={scopeId}
-              values={destinationIp}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={DESTINATION_PORT}
+            eventId={eventId}
+            field={DESTINATION_PORT}
+            isDraggable={isDraggable}
+            prefix=":"
+            suffix=", "
+            scopeId={scopeId}
+            values={destinationPort}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={DESTINATION_PORT}
-              eventId={eventId}
-              field={DESTINATION_PORT}
-              isDraggable={isDraggable}
-              prefix=":"
-              suffix=", "
-              scopeId={scopeId}
-              values={destinationPort}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={USER_NAME}
+            eventId={eventId}
+            field={USER_NAME}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.BY} `}
+            scopeId={scopeId}
+            values={userName}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={USER_NAME}
-              eventId={eventId}
-              field={USER_NAME}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.BY} `}
-              scopeId={scopeId}
-              values={userName}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={HOST_NAME}
+            eventId={eventId}
+            field={HOST_NAME}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.ON} `}
+            scopeId={scopeId}
+            values={hostName}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={HOST_NAME}
-              eventId={eventId}
-              field={HOST_NAME}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.ON} `}
-              scopeId={scopeId}
-              values={hostName}
-            />
+          <AlertField
+            contextId={contextId}
+            data-test-subj={KIBANA_ALERT_SEVERITY}
+            eventId={eventId}
+            field={KIBANA_ALERT_SEVERITY}
+            isDraggable={isDraggable}
+            prefix={` ${i18n.CREATED} `}
+            suffix={` ${i18n.ALERT} `}
+            scopeId={scopeId}
+            values={kibanaAlertSeverity}
+          />
 
-            <AlertField
-              contextId={contextId}
-              data-test-subj={KIBANA_ALERT_SEVERITY}
-              eventId={eventId}
-              field={KIBANA_ALERT_SEVERITY}
-              isDraggable={isDraggable}
-              prefix={` ${i18n.CREATED} `}
-              suffix={` ${i18n.ALERT} `}
-              scopeId={scopeId}
-              values={kibanaAlertSeverity}
-            />
-
-            <AlertField
-              contextId={contextId}
-              data-test-subj={KIBANA_ALERT_RULE_NAME}
-              eventId={eventId}
-              field={KIBANA_ALERT_RULE_NAME}
-              isDraggable={isDraggable}
-              suffix="."
-              scopeId={scopeId}
-              values={kibanaAlertRuleName}
-            />
-          </AlertRendererFlexGroup>
-        </Details>
+          <AlertField
+            contextId={contextId}
+            data-test-subj={KIBANA_ALERT_RULE_NAME}
+            eventId={eventId}
+            field={KIBANA_ALERT_RULE_NAME}
+            isDraggable={isDraggable}
+            suffix="."
+            scopeId={scopeId}
+            values={kibanaAlertRuleName}
+          />
+        </AlertRendererFlexGroup>
       </RowRendererContainer>
     );
   },

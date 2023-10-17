@@ -6,8 +6,9 @@
  */
 
 import type { FC } from 'react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiTitle } from '@elastic/eui';
+import { css } from '@emotion/react';
 import { useExpandableFlyoutContext } from '@kbn/expandable-flyout';
 import { ALERT_REASON } from '@kbn/rule-data-utils';
 import { FormattedMessage } from '@kbn/i18n-react';
@@ -21,13 +22,33 @@ import {
 } from './test_ids';
 import { useBasicDataFromDetailsData } from '../../../../timelines/components/side_panel/event_details/helpers';
 import { useRightPanelContext } from '../context';
+import { defaultRowRenderers } from '../../../../timelines/components/timeline/body/renderers';
+import { getRowRenderer } from '../../../../timelines/components/timeline/body/renderers/get_row_renderer';
 
 /**
  * Displays the information provided by the rowRenderer. Supports multiple types of documents.
  */
 export const Reason: FC = () => {
-  const { eventId, indexName, scopeId, dataFormattedForFieldBrowser, getFieldsData } =
-    useRightPanelContext();
+  const [showEllipsis, setShowEllipsis] = useState(false);
+  const rowRendererElement = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!rowRendererElement) return;
+
+    const { clientHeight, scrollHeight } = rowRendererElement.current!;
+    if (scrollHeight > clientHeight) {
+      setShowEllipsis(true);
+    }
+  }, [rowRendererElement]);
+
+  const {
+    eventId,
+    indexName,
+    scopeId,
+    dataAsNestedObject,
+    dataFormattedForFieldBrowser,
+    getFieldsData,
+  } = useRightPanelContext();
   const { isAlert } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
   const alertReason = getField(getFieldsData(ALERT_REASON));
 
@@ -81,17 +102,37 @@ export const Reason: FC = () => {
     [alertReason, openRulePreview]
   );
 
-  const alertReasonText = alertReason ? (
-    alertReason
-  ) : (
-    <FormattedMessage
-      id="xpack.securitySolution.flyout.right.about.reason.noReasonDescription"
-      defaultMessage="There's no source event information for this alert."
-    />
+  const renderer = useMemo(
+    () =>
+      dataAsNestedObject != null
+        ? getRowRenderer({ data: dataAsNestedObject, rowRenderers: defaultRowRenderers })
+        : null,
+    [dataAsNestedObject]
   );
 
+  const alertReasonText =
+    alertReason && renderer ? (
+      renderer.renderRow({
+        contextId: 'event-details',
+        data: dataAsNestedObject,
+        isDraggable: false,
+        scopeId: 'global',
+      })
+    ) : (
+      <FormattedMessage
+        id="xpack.securitySolution.flyout.right.about.reason.noReasonDescription"
+        defaultMessage="There's no source event information for this alert."
+      />
+    );
+
   return (
-    <EuiFlexGroup direction="column" gutterSize="s">
+    <EuiFlexGroup
+      direction="column"
+      gutterSize="s"
+      css={css`
+        position: relative;
+      `}
+    >
       <EuiFlexItem data-test-subj={REASON_TITLE_TEST_ID}>
         <EuiTitle size="xxs">
           <h5>
@@ -119,8 +160,25 @@ export const Reason: FC = () => {
         </EuiTitle>
       </EuiFlexItem>
       <EuiFlexItem data-test-subj={REASON_DETAILS_TEST_ID}>
-        {isAlert ? alertReasonText : '-'}
+        <div
+          ref={rowRendererElement}
+          css={css`
+            max-height: 48px; // this correspond to the height of the rule description section showing 3 lines of text
+            overflow: hidden;
+          `}
+        >
+          {isAlert ? alertReasonText : '-'}
+        </div>
       </EuiFlexItem>
+      <p
+        css={css`
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        `}
+      >
+        {showEllipsis && '...'}
+      </p>
     </EuiFlexGroup>
   );
 };

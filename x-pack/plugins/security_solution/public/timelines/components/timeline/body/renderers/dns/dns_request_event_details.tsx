@@ -10,7 +10,6 @@ import { get } from 'lodash/fp';
 import React from 'react';
 
 import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
-import { Details } from '../helpers';
 import { NetflowRenderer } from '../netflow';
 
 import { DnsRequestEventDetailsLine } from './dns_request_event_details_line';
@@ -39,7 +38,7 @@ export const DnsRequestEventDetails = React.memo<Props>(
     const winlogEventId: string | null | undefined = get('winlog.event_id[0]', data);
 
     return (
-      <Details>
+      <>
         <DnsRequestEventDetailsLine
           contextId={contextId}
           dnsQuestionName={dnsQuestionName}
@@ -59,7 +58,7 @@ export const DnsRequestEventDetails = React.memo<Props>(
         />
         <EuiSpacer size="s" />
         <NetflowRenderer data={data} isDraggable={isDraggable} timelineId={timelineId} />
-      </Details>
+      </>
     );
   }
 );

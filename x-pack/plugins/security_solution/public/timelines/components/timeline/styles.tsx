@@ -286,7 +286,7 @@ export const EventsTrSupplement = styled.div.attrs(({ className = '' }) => ({
   display: ${({ $display }) => $display ?? 'inline-block'};
   font-size: ${({ theme }) => theme.eui.euiFontSizeXS};
   line-height: ${({ theme }) => theme.eui.euiLineHeight};
-  padding-left: ${({ theme }) => theme.eui.euiSizeM};
+  // padding-left: ${({ theme }) => theme.eui.euiSizeM};
   .euiAccordion + div {
     background-color: ${({ theme }) => theme.eui.euiColorEmptyShade};
     padding: 0 ${({ theme }) => theme.eui.euiSizeS};

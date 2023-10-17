@@ -6,7 +6,7 @@
  */
 
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
 import { defaultRowRenderers } from '../../../../../../timelines/components/timeline/body/renderers';
 import { getRowRenderer } from '../../../../../../timelines/components/timeline/body/renderers/get_row_renderer';
@@ -17,15 +17,6 @@ import { ALERT_REASON_PANEL_TITLE } from '../translation';
 export interface AlertRendererPanelProps {
   dataAsNestedObject: Ecs | null;
 }
-
-const RendererContainer = styled.div`
-  overflow-x: auto;
-  margin-left: -24px;
-
-  & .euiFlexGroup {
-    justify-content: flex-start;
-  }
-`;
 
 export const AlertRendererPanel = React.memo(({ dataAsNestedObject }: AlertRendererPanelProps) => {
   const renderer = useMemo(
@@ -38,15 +29,20 @@ export const AlertRendererPanel = React.memo(({ dataAsNestedObject }: AlertRende
 
   return (
     <SummaryPanel title={ALERT_REASON_PANEL_TITLE}>
+      {'hello'}
       {renderer != null && dataAsNestedObject != null && (
-        <div>
-          <RendererContainer data-test-subj="alert-renderer-panel">
-            {renderer.renderRow({
-              data: dataAsNestedObject,
-              isDraggable: false,
-              scopeId: TimelineId.detectionsAlertDetailsPage,
-            })}
-          </RendererContainer>
+        <div
+          css={css`
+            overflow-x: auto;
+            margin-left: -24px;
+          `}
+          data-test-subj="alert-renderer-panel"
+        >
+          {renderer.renderRow({
+            data: dataAsNestedObject,
+            isDraggable: false,
+            scopeId: TimelineId.detectionsAlertDetailsPage,
+          })}
         </div>
       )}
     </SummaryPanel>
