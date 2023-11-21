@@ -5,6 +5,7 @@
  * 2.0.
  */
 
+import { login } from '../../../security_solution_cypress/cypress/tasks/login';
 import { clearQuery, enterQuery, navigateToIndicatorsTablePage } from '../tasks/indicators';
 import {
   ADD_INTEGRATIONS_BUTTON,
@@ -41,8 +42,7 @@ import {
   TIME_RANGE_PICKER,
   REFRESH_BUTTON,
 } from '../screens/indicators';
-import { login, visit, waitForPageToBeLoaded } from '../tasks/login';
-import { esArchiverLoad, esArchiverUnload } from '../tasks/es_archiver';
+import { visit, waitForPageToBeLoaded } from '../tasks/visit';
 import {
   closeFlyout,
   navigateToFlyoutJsonTab,
@@ -63,13 +63,13 @@ const URL_WITH_CONTRADICTORY_FILTERS =
 describe.skip('Invalid Indicators', { tags: '@ess' }, () => {
   describe('verify the grid loads even with missing fields', () => {
     beforeEach(() => {
-      esArchiverLoad('threat_intelligence/invalid_indicators_data');
+      cy.task('esArchiverLoad', 'threat_intelligence/invalid_indicators_data');
       login();
       visit(THREAT_INTELLIGENCE);
     });
 
     after(() => {
-      esArchiverUnload('threat_intelligence/invalid_indicators_data');
+      cy.task('esArchiverUnLoad', 'threat_intelligence/invalid_indicators_data');
     });
 
     it('should display data grid despite the missing fields', () => {
@@ -114,13 +114,13 @@ describe.skip('Invalid Indicators', { tags: '@ess' }, () => {
 
   describe('verify the grid loads even with missing mappings and missing fields', () => {
     beforeEach(() => {
-      esArchiverLoad('threat_intelligence/missing_mappings_indicators_data');
+      cy.task('esArchiverLoad', 'threat_intelligence/missing_mappings_indicators_data');
       login();
       visit(THREAT_INTELLIGENCE);
     });
 
     after(() => {
-      esArchiverUnload('threat_intelligence/missing_mappings_indicators_data');
+      cy.task('esArchiverUnLoad', 'threat_intelligence/missing_mappings_indicators_data');
     });
 
     it('should display data grid despite the missing mappings and missing fields', () => {
@@ -140,11 +140,11 @@ describe.skip('Invalid Indicators', { tags: '@ess' }, () => {
 // FLAKY: https://github.com/elastic/kibana/issues/171780
 describe.skip('Indicators', () => {
   before(() => {
-    esArchiverLoad('threat_intelligence/indicators_data');
+    cy.task('esArchiverLoad', 'threat_intelligence/indicators_data');
   });
 
   after(() => {
-    esArchiverUnload('threat_intelligence/indicators_data');
+    cy.task('esArchiverUnLoad', 'threat_intelligence/indicators_data');
   });
 
   describe('Indicators page loading', () => {

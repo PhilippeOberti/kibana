@@ -5,6 +5,7 @@
  * 2.0.
  */
 
+import { login } from '../../../security_solution_cypress/cypress/tasks/login';
 import {
   navigateToThreatIntelligence,
   openFlyout,
@@ -27,20 +28,19 @@ import {
   INDICATORS_TABLE_ADD_TO_EXISTING_CASE_BUTTON_ICON,
   INDICATORS_TABLE_ADD_TO_NEW_CASE_BUTTON_ICON,
 } from '../screens/cases';
-import { login, visit } from '../tasks/login';
-import { esArchiverLoad, esArchiverUnload } from '../tasks/es_archiver';
+import { visit } from '../tasks/visit';
 
 const THREAT_INTELLIGENCE = '/app/security/threat_intelligence/indicators';
 
 describe('Cases with invalid indicators', { tags: '@ess' }, () => {
   beforeEach(() => {
-    esArchiverLoad('threat_intelligence/invalid_indicators_data');
+    cy.task('esArchiverLoad', 'threat_intelligence/invalid_indicators_data');
     login();
     visit(THREAT_INTELLIGENCE);
   });
 
   afterEach(() => {
-    esArchiverUnload('threat_intelligence/invalid_indicators_data');
+    cy.task('esArchiverUnLoad', 'threat_intelligence/invalid_indicators_data');
   });
 
   it.skip('should disable the indicators table context menu items and flyout context menu items', () => {
@@ -60,13 +60,13 @@ describe('Cases with invalid indicators', { tags: '@ess' }, () => {
 
 describe('Cases interactions', { tags: '@ess' }, () => {
   beforeEach(() => {
-    esArchiverLoad('threat_intelligence/indicators_data');
+    cy.task('esArchiverLoad', 'threat_intelligence/indicators_data');
     login();
     visit(THREAT_INTELLIGENCE);
   });
 
   afterEach(() => {
-    esArchiverUnload('threat_intelligence/indicators_data');
+    cy.task('esArchiverUnLoad', 'threat_intelligence/indicators_data');
   });
 
   it.skip('should add to new case and to existing case from the indicators table and the flyout', () => {

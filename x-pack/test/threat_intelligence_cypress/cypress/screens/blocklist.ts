@@ -5,8 +5,8 @@
  * 2.0.
  */
 
-import { ADD_TO_BLOCK_LIST_TEST_ID as INDICATOR_FLYOUT_TAKE_ACTION_ADD_TO_BLOCK_LIST_TEST_ID } from '../../public/modules/indicators/components/flyout/test_ids';
-import { ADD_TO_BLOCK_LIST_TEST_ID as INDICATORS_TABLE_ADD_TO_BLOCK_LIST_TEST_ID } from '../../public/modules/indicators/components/table/test_ids';
+import { ADD_TO_BLOCK_LIST_TEST_ID as INDICATOR_FLYOUT_TAKE_ACTION_ADD_TO_BLOCK_LIST_TEST_ID } from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/flyout/test_ids';
+import { ADD_TO_BLOCK_LIST_TEST_ID as INDICATORS_TABLE_ADD_TO_BLOCK_LIST_TEST_ID } from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/table/test_ids';
 
 export const INDICATORS_TABLE_ADD_TO_BLOCK_LIST_BUTTON_ICON = `[data-test-subj="${INDICATORS_TABLE_ADD_TO_BLOCK_LIST_TEST_ID}"]`;
 export const FLYOUT_ADD_TO_BLOCK_LIST_ITEM = `[data-test-subj="${INDICATOR_FLYOUT_TAKE_ACTION_ADD_TO_BLOCK_LIST_TEST_ID}"]`;

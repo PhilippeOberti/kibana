@@ -10,11 +10,11 @@ import {
   INDICATORS_FLYOUT_OVERVIEW_TABLE,
   INVESTIGATE_IN_TIMELINE_TEST_ID as INDICATOR_FLYOUT_TAKE_ACTION_INVESTIGATE_IN_TIMELINE_TEST_ID,
   TIMELINE_BUTTON_TEST_ID as VALUE_ACTION_TIMELINE_BUTTON_TEST_ID,
-} from '../../public/modules/indicators/components/flyout/test_ids';
+} from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/flyout/test_ids';
 import {
   INVESTIGATE_IN_TIMELINE_TEST_ID as CELL_INVESTIGATE_IN_TIMELINE_TEST_ID,
   TIMELINE_BUTTON_TEST_ID as CELL_TIMELINE_BUTTON_TEST_ID,
-} from '../../public/modules/indicators/components/table/test_ids';
+} from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/table/test_ids';
 
 export const INDICATORS_TABLE_INVESTIGATE_IN_TIMELINE_BUTTON_ICON = `[data-test-subj="${CELL_INVESTIGATE_IN_TIMELINE_TEST_ID}"]`;
 export const UNTITLED_TIMELINE_BUTTON = `[data-test-subj="flyoutOverlay"]`;

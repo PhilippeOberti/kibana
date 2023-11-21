@@ -5,4 +5,8 @@
  * 2.0.
  */
 
-export * from '../../../test/common/services';
+declare module '@cypress/grep' {
+  function registerCypressGrep(): void;
+
+  export = registerCypressGrep;
+}

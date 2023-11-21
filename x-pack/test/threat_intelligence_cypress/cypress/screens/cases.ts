@@ -8,11 +8,11 @@
 import {
   ADD_TO_EXISTING_CASE_TEST_ID as INDICATOR_FLYOUT_TAKE_ACTION_ADD_TO_EXISTING_CASE_TEST_ID,
   ADD_TO_NEW_CASE_TEST_ID as INDICATOR_FLYOUT_TAKE_ACTION_ADD_TO_NEW_CASE_TEST_ID,
-} from '../../public/modules/indicators/components/flyout/test_ids';
+} from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/flyout/test_ids';
 import {
   ADD_TO_EXISTING_TEST_ID as INDICATORS_TABLE_ADD_TO_EXISTING_TEST_ID,
   ADD_TO_NEW_CASE_TEST_ID as INDICATORS_TABLE_ADD_TO_NEW_CASE_TEST_ID,
-} from '../../public/modules/indicators/components/table/test_ids';
+} from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/table/test_ids';
 
 export const INDICATORS_TABLE_ADD_TO_NEW_CASE_BUTTON_ICON = `[data-test-subj="${INDICATORS_TABLE_ADD_TO_NEW_CASE_TEST_ID}"]`;
 export const INDICATORS_TABLE_ADD_TO_EXISTING_CASE_BUTTON_ICON = `[data-test-subj="${INDICATORS_TABLE_ADD_TO_EXISTING_TEST_ID}"]`;

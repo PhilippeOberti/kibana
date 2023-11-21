@@ -6,17 +6,14 @@
  */
 
 import { FtrConfigProviderContext } from '@kbn/test';
-import { FtrProviderContext } from './ftr_provider_context';
-
 import { ThreatIntelligenceConfigurableCypressTestRunner } from './runner';
 
-// eslint-disable-next-line import/no-default-export
 export default async function ({ readConfigFile }: FtrConfigProviderContext) {
   const securitySolutionCypressConfig = await readConfigFile(require.resolve('./config.ts'));
+
   return {
     ...securitySolutionCypressConfig.getAll(),
 
-    testRunner: (context: FtrProviderContext) =>
-      ThreatIntelligenceConfigurableCypressTestRunner(context),
+    testRunner: ThreatIntelligenceConfigurableCypressTestRunner,
   };
 }

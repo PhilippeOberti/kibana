@@ -7,15 +7,18 @@
 
 /* Breadcrumbs */
 
-import { PANEL_TEST_ID, TITLE_TEST_ID } from '../../public/components/test_ids';
-import { INSPECT_BUTTON_TEST_ID } from '../../public/modules/indicators/hooks/test_ids';
+import {
+  PANEL_TEST_ID,
+  TITLE_TEST_ID,
+} from '@kbn/threat-intelligence-plugin/public/components/test_ids';
+import { INSPECT_BUTTON_TEST_ID } from '@kbn/threat-intelligence-plugin/public/modules/indicators/hooks/test_ids';
 import {
   DROPDOWN_TEST_ID,
   FILTER_IN_BUTTON_TEST_ID as LEGEND_FILTER_IN_BUTTON_TEST_ID,
   FILTER_OUT_BUTTON_TEST_ID as LEGEND_FILTER_OUT_BUTTON_TEST_ID,
   POPOVER_BUTTON_TEST_ID as LEGEND_POPOVER_BUTTON_TEST_ID,
   TIMELINE_BUTTON_TEST_ID as LEGEND_TIMELINE_BUTTON_TEST_ID,
-} from '../../public/modules/indicators/components/barchart/test_ids';
+} from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/barchart/test_ids';
 import {
   TAKE_ACTION_BUTTON_TEST_ID as INDICATOR_FLYOUT_TAKE_ACTION_TAKE_ACTION_BUTTON_TEST_ID,
   INDICATORS_FLYOUT_OVERVIEW_HIGH_LEVEL_BLOCKS,
@@ -27,14 +30,14 @@ import {
   FILTER_IN_BUTTON_TEST_ID as VALUE_ACTION_FILTER_IN_BUTTON_TEST_ID,
   FILTER_OUT_BUTTON_TEST_ID as VALUE_ACTION_FILTER_OUT_BUTTON_TEST_ID,
   POPOVER_BUTTON_TEST_ID as VALUE_ACTION_POPOVER_BUTTON_TEST_ID,
-} from '../../public/modules/indicators/components/flyout/test_ids';
+} from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/flyout/test_ids';
 import {
   MORE_ACTIONS_TEST_ID as INDICATORS_TABLE_MORE_ACTIONS_TEST_ID,
   BUTTON_TEST_ID,
   FILTER_IN_BUTTON_TEST_ID as CELL_FILTER_IN_BUTTON_TEST_ID,
   FILTER_OUT_BUTTON_TEST_ID as CELL_FILTER_OUT_BUTTON_TEST_ID,
   TABLE_TEST_ID,
-} from '../../public/modules/indicators/components/table/test_ids';
+} from '@kbn/threat-intelligence-plugin/public/modules/indicators/components/table/test_ids';
 
 /* Indicators Table */
 

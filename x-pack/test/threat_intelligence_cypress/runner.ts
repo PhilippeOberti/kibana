@@ -13,7 +13,7 @@ import { withProcRunner } from '@kbn/dev-proc-runner';
 
 import semver from 'semver';
 import { TransportResult } from '@elastic/elasticsearch';
-import { FtrProviderContext } from './ftr_provider_context';
+import { FtrProviderContext } from '../common/ftr_provider_context';
 
 import { tiAbusechMalware } from './pipelines/ti_abusech_malware';
 import { tiAbusechMalwareBazaar } from './pipelines/ti_abusech_malware_bazaar';

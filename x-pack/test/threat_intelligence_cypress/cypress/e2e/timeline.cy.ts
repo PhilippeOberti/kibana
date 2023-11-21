@@ -5,6 +5,7 @@
  * 2.0.
  */
 
+import { login } from '../../../security_solution_cypress/cypress/tasks/login';
 import {
   addToTimelineFromBarchartLegend,
   addToTimelineFromFlyoutOverviewTabBlock,
@@ -21,20 +22,19 @@ import {
   TIMELINE_DATA_PROVIDERS_WRAPPER,
   TIMELINE_DRAGGABLE_ITEM,
 } from '../screens/timeline';
-import { esArchiverLoad, esArchiverUnload } from '../tasks/es_archiver';
-import { login, visit } from '../tasks/login';
+import { visit } from '../tasks/visit';
 
 const THREAT_INTELLIGENCE = '/app/security/threat_intelligence/indicators';
 
 describe('Timeline', { tags: '@ess' }, () => {
   beforeEach(() => {
-    esArchiverLoad('threat_intelligence/indicators_data');
+    cy.task('esArchiverLoad', 'threat_intelligence/indicators_data');
     login();
     visit(THREAT_INTELLIGENCE);
   });
 
   afterEach(() => {
-    esArchiverUnload('threat_intelligence/indicators_data');
+    cy.task('esArchiverUnLoad', 'threat_intelligence/indicators_data');
   });
 
   // TODO: This appears to already be failing on main.

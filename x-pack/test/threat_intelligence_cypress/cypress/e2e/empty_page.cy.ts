@@ -5,7 +5,8 @@
  * 2.0.
  */
 
-import { login, visit } from '../tasks/login';
+import { login } from '../../../security_solution_cypress/cypress/tasks/login';
+import { visit } from '../tasks/visit';
 import {
   EMPTY_PAGE_BODY,
   EMPTY_PAGE_DOCS_LINK,

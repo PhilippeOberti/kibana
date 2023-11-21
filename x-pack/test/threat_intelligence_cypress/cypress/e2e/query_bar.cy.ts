@@ -5,6 +5,7 @@
  * 2.0.
  */
 
+import { login } from '../../../security_solution_cypress/cypress/tasks/login';
 import {
   closeFlyout,
   navigateToFlyoutTableTab,
@@ -26,20 +27,19 @@ import {
 } from '../tasks/query_bar';
 import { INDICATOR_TYPE_CELL } from '../screens/indicators';
 import { KQL_FILTER } from '../screens/query_bar';
-import { login, visit } from '../tasks/login';
-import { esArchiverLoad, esArchiverUnload } from '../tasks/es_archiver';
+import { visit } from '../tasks/visit';
 
 const THREAT_INTELLIGENCE = '/app/security/threat_intelligence/indicators';
 
 describe('Indicators query bar interaction', { tags: '@ess' }, () => {
   beforeEach(() => {
-    esArchiverLoad('threat_intelligence/indicators_data');
+    cy.task('esArchiverLoad', 'threat_intelligence/indicators_data');
     login();
     visit(THREAT_INTELLIGENCE);
   });
 
   afterEach(() => {
-    esArchiverUnload('threat_intelligence/indicators_data');
+    cy.task('esArchiverUnLoad', 'threat_intelligence/indicators_data');
   });
 
   it.skip('should add filter to kql', () => {

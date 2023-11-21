@@ -5,6 +5,7 @@
  * 2.0.
  */
 
+import { login } from '../../../security_solution_cypress/cypress/tasks/login';
 import {
   closeFlyout,
   navigateToThreatIntelligence,
@@ -18,8 +19,7 @@ import {
   openAddToBlocklistFromFlyout,
 } from '../tasks/blocklist';
 import { navigateToBlocklist } from '../tasks/common';
-import { login, visit } from '../tasks/login';
-import { esArchiverLoad, esArchiverUnload } from '../tasks/es_archiver';
+import { visit } from '../tasks/visit';
 import {
   BLOCK_LIST_VALUE_INPUT,
   FLYOUT_ADD_TO_BLOCK_LIST_ITEM,
@@ -38,13 +38,13 @@ const SECOND_BLOCK_LIST_NEW_DESCRIPTION = 'the second description';
 // FLAKY: https://github.com/elastic/kibana/issues/171783
 describe.skip('Block list with invalid indicators', { tags: '@ess' }, () => {
   beforeEach(() => {
-    esArchiverLoad('threat_intelligence/invalid_indicators_data');
+    cy.task('esArchiverLoad', 'invalid_indicators_data');
     login();
     visit(THREAT_INTELLIGENCE);
   });
 
   afterEach(() => {
-    esArchiverUnload('threat_intelligence/invalid_indicators_data');
+    cy.task('esArchiverUnload', 'threat_intelligence/invalid_indicators_data');
   });
 
   it('should disabled blocklist in the indicators table context menu item and flyout context menu items', () => {
@@ -59,13 +59,13 @@ describe.skip('Block list with invalid indicators', { tags: '@ess' }, () => {
 
 describe('Block list interactions', { tags: '@ess' }, () => {
   beforeEach(() => {
-    esArchiverLoad('threat_intelligence/indicators_data');
+    cy.task('esArchiverLoad', 'threat_intelligence/indicators_data');
     login();
     visit(THREAT_INTELLIGENCE);
   });
 
   afterEach(() => {
-    esArchiverUnload('threat_intelligence/indicators_data');
+    cy.task('esArchiverUnload', 'threat_intelligence/indicators_data');
   });
 
   it.skip('should add to block list from the indicators table and from flyout', () => {
