@@ -5,6 +5,6 @@
  * 2.0.
  */
 
-export { persistNoteRoute } from './persist_note';
+export { /* persistNoteRoute, */ persistNoteRouteForDocumentId } from './persist_note';
 export { deleteNoteRoute } from './delete_note';
 export { getNotesByDocumentIdsRoute } from './get_notes';

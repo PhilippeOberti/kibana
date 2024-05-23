@@ -63,6 +63,7 @@ export const AddNote = React.memo<{
   );
 
   const handleClick = useCallback(() => {
+    console.log('handleClick');
     const user = authenticatedUser?.username;
     if (user) {
       updateAndAssociateNode({

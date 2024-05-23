@@ -7,7 +7,7 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { EuiButtonIcon, EuiCheckbox, EuiLoadingSpinner, EuiToolTip } from '@elastic/eui';
+import { EuiButtonIcon, EuiToolTip } from '@elastic/eui';
 import styled from 'styled-components';
 
 import { TimelineTabs, TableId } from '@kbn/securitysolution-data-table';
@@ -108,7 +108,7 @@ const ActionsComponent: React.FC<ActionProps> = ({
   const nonAssociatedNotes = useSelector((state) =>
     appSelectors.nonAssociatedNotesByIdSelector(state, eventId)
   );
-  console.log('nonAssociatedNotes', nonAssociatedNotes);
+  // console.log('nonAssociatedNotes', nonAssociatedNotes);
   const isDisabled = !useIsInvestigateInResolverActionEnabled(ecsData);
   const { setGlobalFullScreen } = useGlobalFullScreen();
   const { setTimelineFullScreen } = useTimelineFullScreen();
@@ -255,37 +255,27 @@ const ActionsComponent: React.FC<ActionProps> = ({
             />
           )}
         </>
-        {timelineId === 'alerts-page' && (
+        {toggleShowNotes && (
           <AddEventNoteAction
             ariaLabel={i18n.ADD_NOTES_FOR_ROW({ ariaRowindex, columnValues })}
             key="add-event-note"
             showNotes={false}
-            toggleShowNotes={() => {}}
+            toggleShowNotes={toggleShowNotes}
             timelineType={timelineType}
             eventId={eventId}
             eventCount={nonAssociatedNotes.length}
           />
         )}
-        {!isEventViewer && toggleShowNotes && (
-          <>
-            <AddEventNoteAction
-              ariaLabel={i18n.ADD_NOTES_FOR_ROW({ ariaRowindex, columnValues })}
-              key="add-event-note"
-              showNotes={showNotes ?? false}
-              toggleShowNotes={toggleShowNotes}
-              timelineType={timelineType}
-              eventId={eventId}
-            />
-            <PinEventAction
-              ariaLabel={i18n.PIN_EVENT_FOR_ROW({ ariaRowindex, columnValues, isEventPinned })}
-              isAlert={isAlert(eventType)}
-              key="pin-event"
-              onPinClicked={handlePinClicked}
-              noteIds={eventIdToNoteIds ? eventIdToNoteIds[eventId] || emptyNotes : emptyNotes}
-              eventIsPinned={isEventPinned}
-              timelineType={timelineType}
-            />
-          </>
+        {timelineId !== 'alerts-page' && !isEventViewer && (
+          <PinEventAction
+            ariaLabel={i18n.PIN_EVENT_FOR_ROW({ ariaRowindex, columnValues, isEventPinned })}
+            isAlert={isAlert(eventType)}
+            key="pin-event"
+            onPinClicked={handlePinClicked}
+            noteIds={eventIdToNoteIds ? eventIdToNoteIds[eventId] || emptyNotes : emptyNotes}
+            eventIsPinned={isEventPinned}
+            timelineType={timelineType}
+          />
         )}
         <AlertContextMenu
           ariaLabel={i18n.MORE_ACTIONS_FOR_ROW({ ariaRowindex, columnValues })}
