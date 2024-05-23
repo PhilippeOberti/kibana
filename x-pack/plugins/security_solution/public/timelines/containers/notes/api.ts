@@ -35,9 +35,33 @@ export const persistNote = async ({
   return response;
 };
 
+export const deleteNote = async (noteId: string) => {
+  const response = await KibanaServices.get().http.delete<Note[]>(NOTE_URL, {
+    body: JSON.stringify({ noteId }),
+    version: '2023-10-31',
+  });
+  return response;
+};
+
 export const getNotesByIds = async (documentIds: string[]) => {
   const response = await KibanaServices.get().http.get<Note[]>(NOTE_URL, {
     query: { alertIds: documentIds },
+    version: '2023-10-31',
+  });
+  return response;
+};
+
+export const fetchNotesByDocumentId = async (documentId: string) => {
+  const response = await KibanaServices.get().http.get<Note[]>(NOTE_URL, {
+    query: { documentId },
+    version: '2023-10-31',
+  });
+  return response;
+};
+
+export const fetchNotesBySavedObjectIdId = async (savedObjectId: string) => {
+  const response = await KibanaServices.get().http.get<Note[]>(NOTE_URL, {
+    query: { savedObjectId },
     version: '2023-10-31',
   });
   return response;

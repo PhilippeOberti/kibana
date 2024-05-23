@@ -20,7 +20,7 @@ import type { ConfigType } from '../../../..';
 import { buildSiemResponse } from '../../../detection_engine/routes/utils';
 
 import { buildFrameworkRequest } from '../../utils/common';
-import { persistNoteSchema, persistNoteWithoutRefSchema } from '../../../../../common/api/timeline';
+import { persistNoteWithoutRefSchema } from '../../../../../common/api/timeline';
 import { persistNote } from '../../saved_object/notes';
 
 export const persistNoteRoute = (
@@ -47,6 +47,10 @@ export const persistNoteRoute = (
         const siemResponse = buildSiemResponse(response);
 
         try {
+          console.log('---------------------');
+          console.log('persistNoteRoute', request.body);
+          console.log('---------------------');
+
           const frameworkRequest = await buildFrameworkRequest(context, security, request);
           const { note } = request.body;
           const noteId = request.body?.noteId ?? null;
@@ -60,6 +64,72 @@ export const persistNoteRoute = (
 
           return response.ok({
             body: { data: { persistNote: res } },
+          });
+        } catch (err) {
+          const error = transformError(err);
+          return siemResponse.error({
+            body: error.message,
+            statusCode: error.statusCode,
+          });
+        }
+      }
+    );
+};
+
+export const persistNoteRouteForDocumentId = (
+  router: SecuritySolutionPluginRouter,
+  _: ConfigType,
+  security: SetupPlugins['security']
+) => {
+  router.versioned
+    .patch({
+      path: NOTE_URL,
+      options: {
+        tags: ['access:securitySolution'],
+      },
+      access: 'public',
+    })
+    .addVersion(
+      {
+        validate: {
+          request: { body: buildRouteValidation(persistNoteWithoutRefSchema) },
+        },
+        version: '2023-10-31',
+      },
+      async (context, request, response) => {
+        const siemResponse = buildSiemResponse(response);
+
+        try {
+          console.log('---------------------');
+          console.log('persistNoteRoute', request.body);
+          console.log('---------------------');
+
+          const frameworkRequest = await buildFrameworkRequest(context, security, request);
+          const { note } = request.body;
+          const noteId = request.body?.noteId ?? null;
+
+          const res = await persistNote({
+            request: frameworkRequest,
+            noteId,
+            note,
+            overrideOwner: true,
+          });
+          console.log('res', res);
+
+          const normalizedRes = {
+            entities: {
+              notes: {
+                [res.note.noteId]: res.note,
+              },
+            },
+            result: res.note.noteId,
+          };
+
+          return response.ok({
+            body: {
+              totalCount: 1,
+              notes: normalizedRes,
+            },
           });
         } catch (err) {
           const error = transformError(err);

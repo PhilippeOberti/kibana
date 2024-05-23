@@ -15,7 +15,7 @@ import type { SetupPlugins } from '../../../../plugin';
 import { buildSiemResponse } from '../../../detection_engine/routes/utils';
 
 import { CustomHttpRequestError } from '../../../../utils/custom_http_request_error';
-import { buildFrameworkRequest, getNotesByDocumentIds, throwErrors, escapeHatch } from '../../utils/common';
+import { buildFrameworkRequest, escapeHatch } from '../../utils/common';
 import { getAllSavedNote } from '../../saved_object/notes';
 import { noteSavedObjectType } from '../../saved_object_mappings/notes';
 
@@ -45,6 +45,7 @@ export const getNotesByDocumentIdsRoute = (
         try {
           const frameworkRequest = await buildFrameworkRequest(context, security, request);
           const alertIds = request.query?.alertIds ?? null;
+          console.group('getNotesByDocumentIdsRoute');
           console.log('alertIds:', alertIds);
           // const pageSize = queryParams?.page_size ? parseInt(queryParams.page_size, 10) : null;
           // const pageIndex = queryParams?.page_index ? parseInt(queryParams.page_index, 10) : null;
@@ -58,7 +59,78 @@ export const getNotesByDocumentIdsRoute = (
           };
           const res = await getAllSavedNote(frameworkRequest, options);
 
+          console.log('res', res);
+          console.groupEnd();
+
           return response.ok({ body: res ?? {} });
+        } catch (err) {
+          const error = transformError(err);
+          const siemResponse = buildSiemResponse(response);
+
+          return siemResponse.error({
+            body: error.message,
+            statusCode: error.statusCode,
+          });
+        }
+      }
+    );
+};
+
+export const getNotesByDocumentIdRoute = (
+  router: SecuritySolutionPluginRouter,
+  _: ConfigType,
+  security: SetupPlugins['security']
+) => {
+  router.versioned
+    .get({
+      path: NOTE_URL,
+      options: {
+        tags: ['access:securitySolution'],
+      },
+      access: 'public',
+    })
+    .addVersion(
+      {
+        validate: {
+          request: { query: escapeHatch },
+        },
+        version: '2023-10-31',
+      },
+      async (context, request, response) => {
+        const customHttpRequestError = (message: string) =>
+          new CustomHttpRequestError(message, 400);
+        try {
+          const frameworkRequest = await buildFrameworkRequest(context, security, request);
+          const documentId = request.query?.documentId ?? null;
+          console.group('getNotesByDocumentIdRoute');
+          console.log('documentId:', documentId);
+          const options = {
+            type: noteSavedObjectType,
+            search: documentId,
+          };
+          const res = await getAllSavedNote(frameworkRequest, options);
+          console.log('res', res);
+
+          const normalizedRes = {
+            entities: {
+              notes: res.notes.reduce(
+                (obj, item) => Object.assign(obj, { [item.noteId]: item }),
+                {}
+              ),
+            },
+            result: res.notes.map((note) => note.noteId),
+          };
+          console.log('normalizedRes', normalizedRes);
+          console.groupEnd();
+
+          return response.ok({
+            body: res
+              ? {
+                  totalCount: res.totalCount,
+                  notes: normalizedRes,
+                }
+              : {},
+          });
         } catch (err) {
           const error = transformError(err);
           const siemResponse = buildSiemResponse(response);

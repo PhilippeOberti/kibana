@@ -41,11 +41,20 @@ export const deleteNoteRoute = (
         version: '2023-10-31',
       },
       async (context, request, response) => {
+        console.log('context', context);
+        console.log('request', request);
+        console.log('response', response);
+
         const siemResponse = buildSiemResponse(response);
 
         try {
           const frameworkRequest = await buildFrameworkRequest(context, security, request);
+
+          console.log('request.body', request.body);
+
           const noteId = request.body?.noteId ?? '';
+
+          console.log('noteId', noteId);
 
           const res = await deleteNote({
             request: frameworkRequest,
