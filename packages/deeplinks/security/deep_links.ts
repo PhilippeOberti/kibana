@@ -75,6 +75,7 @@ export enum SecurityPageName {
   threatIntelligence = 'threat_intelligence',
   timelines = 'timelines',
   timelinesTemplates = 'timelines-templates',
+  notesManagement = 'notes-management',
   trustedApps = 'trusted_apps',
   users = 'users',
   usersAll = 'users-all',

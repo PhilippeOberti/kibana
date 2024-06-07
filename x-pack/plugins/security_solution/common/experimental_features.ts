@@ -120,6 +120,11 @@ export const allowedExperimentalValues = Object.freeze({
   notesEnabled: true,
 
   /**
+   * Enables new notes management screen
+   */
+  notesManagementEnabled: true,
+
+  /**
    * Enables the Assistant Model Evaluation advanced setting and API endpoint, introduced in `8.11.0`.
    */
   assistantModelEvaluation: false,

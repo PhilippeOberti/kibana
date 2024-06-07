@@ -303,6 +303,13 @@ export const TAB_TEMPLATES = i18n.translate(
   }
 );
 
+export const TAB_NOTES = i18n.translate(
+  'xpack.securitySolution.timelines.components.tabs.ntoesTitle',
+  {
+    defaultMessage: 'Notes',
+  }
+);
+
 export const FILTER_ELASTIC_TIMELINES = i18n.translate(
   'xpack.securitySolution.timelines.components.templateFilter.elasticTitle',
   {

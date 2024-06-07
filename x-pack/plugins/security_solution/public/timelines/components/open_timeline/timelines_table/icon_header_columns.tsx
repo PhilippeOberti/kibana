@@ -21,7 +21,7 @@ import { TimelineType } from '../../../../../common/api/timeline';
 export const getIconHeaderColumns = ({
   timelineType,
 }: {
-  timelineType: TimelineTypeLiteralWithNull;
+  timelineType: TimelineTypeLiteralWithNull | 'note';
 }) => {
   const columns = {
     note: {
@@ -76,5 +76,9 @@ export const getIconHeaderColumns = ({
   };
   const templateColumns = [columns.note, columns.favorite];
   const defaultColumns = [columns.pinnedEvent, columns.note, columns.favorite];
-  return timelineType === TimelineType.template ? templateColumns : defaultColumns;
+  return timelineType === TimelineType.template
+    ? templateColumns
+    : TimelineType.default
+    ? defaultColumns
+    : [];
 };

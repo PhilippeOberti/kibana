@@ -194,7 +194,7 @@ export interface OpenTimelineProps {
   /** the requested field to sort on */
   sortField: string;
   /** this affects timeline's behaviour like editable / duplicatible */
-  timelineType: TimelineTypeLiteralWithNull;
+  timelineType: TimelineTypeLiteralWithNull | 'note';
   /* active or immutable */
   timelineStatus: TimelineStatusLiteralWithNull;
   /** when timelineType === template, templatetimelineFilter is a JSX.Element */
@@ -238,7 +238,7 @@ export enum TimelineTabsStyle {
 export interface TimelineTab {
   disabled: boolean;
   href: string;
-  id: TimelineTypeLiteral;
+  id: TimelineTypeLiteral | 'note';
   name: string;
   onClick: (ev: { preventDefault: () => void }) => void;
 }

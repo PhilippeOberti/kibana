@@ -28,7 +28,7 @@ export const useTimelineStatus = ({
   elasticTemplateTimelineCount,
   customTemplateTimelineCount,
 }: {
-  timelineType: TimelineTypeLiteralWithNull;
+  timelineType: TimelineTypeLiteralWithNull | 'note';
   elasticTemplateTimelineCount?: number | null;
   customTemplateTimelineCount?: number | null;
 }): {

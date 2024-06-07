@@ -41,7 +41,7 @@ export const getCommonColumns = ({
   onOpenTimeline: OnOpenTimeline;
   onToggleShowNotes: OnToggleShowNotes;
   itemIdToExpandedNotesRowMap: Record<string, JSX.Element>;
-  timelineType: TimelineType | null;
+  timelineType: TimelineType | 'note' | null;
 }) => [
   {
     isExpander: true,
@@ -66,7 +66,12 @@ export const getCommonColumns = ({
   {
     dataType: 'string',
     field: 'title',
-    name: timelineType === TimelineType.default ? i18n.TIMELINE_NAME : i18n.TIMELINE_TEMPLATE_NAME,
+    name:
+      timelineType === TimelineType.default
+        ? i18n.TIMELINE_NAME
+        : TimelineType.template
+        ? i18n.TIMELINE_TEMPLATE_NAME
+        : 'note',
     render: (title: string, timelineResult: OpenTimelineResult) =>
       timelineResult.savedObjectId != null ? (
         <EuiLink

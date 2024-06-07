@@ -18,32 +18,29 @@ import * as i18n from './translations';
 import type { TimelineTab } from './types';
 import { TimelineTabsStyle } from './types';
 import { useKibana } from '../../../common/lib/kibana';
-export interface UseTimelineTypesArgs {
-  defaultTimelineCount?: number | null;
-  templateTimelineCount?: number | null;
-}
 
 export interface UseTimelineTypesResult {
-  timelineType: TimelineTypeLiteralWithNull;
+  timelineType: TimelineTypeLiteralWithNull | 'note';
   timelineTabs: JSX.Element;
   timelineFilters: JSX.Element;
 }
 
-export const useTimelineTypes = ({
-  defaultTimelineCount,
-  templateTimelineCount,
-}: UseTimelineTypesArgs): UseTimelineTypesResult => {
+export const useTimelineTypes = (): UseTimelineTypesResult => {
   const { formatUrl, search: urlSearch } = useFormatUrl(SecurityPageName.timelines);
   const { navigateToUrl } = useKibana().services.application;
   const { tabName } = useParams<{ pageName: SecurityPageName; tabName: string }>();
-  const [timelineType, setTimelineTypes] = useState<TimelineTypeLiteralWithNull>(
-    tabName === TimelineType.default || tabName === TimelineType.template
+  const [timelineType, setTimelineTypes] = useState<TimelineTypeLiteralWithNull | 'note'>(
+    tabName === TimelineType.default || tabName === TimelineType.template || tabName === 'note'
       ? tabName
       : TimelineType.default
   );
 
   const timelineUrl = formatUrl(getTimelineTabsUrl(TimelineType.default, urlSearch));
+  // console.log('timelineUrl', timelineUrl);
   const templateUrl = formatUrl(getTimelineTabsUrl(TimelineType.template, urlSearch));
+  // console.log('templateUrl', templateUrl);
+  const noteUrl = formatUrl(getTimelineTabsUrl('note', urlSearch));
+  // console.log('noteUrl', noteUrl);
 
   const goToTimeline = useCallback(
     (ev) => {
@@ -60,6 +57,15 @@ export const useTimelineTypes = ({
     },
     [navigateToUrl, templateUrl]
   );
+
+  const goToNote = useCallback(
+    (ev) => {
+      ev.preventDefault();
+      navigateToUrl(noteUrl);
+    },
+    [navigateToUrl, noteUrl]
+  );
+
   const getFilterOrTabs: (timelineTabsStyle: TimelineTabsStyle) => TimelineTab[] = useCallback(
     (timelineTabsStyle: TimelineTabsStyle) => [
       {
@@ -78,12 +84,20 @@ export const useTimelineTypes = ({
 
         onClick: timelineTabsStyle === TimelineTabsStyle.tab ? goToTemplateTimeline : noop,
       },
+      {
+        id: 'note',
+        name: i18n.TAB_NOTES,
+        href: noteUrl,
+        disabled: false,
+
+        onClick: timelineTabsStyle === TimelineTabsStyle.tab ? goToNote : noop,
+      },
     ],
-    [timelineUrl, templateUrl, goToTimeline, goToTemplateTimeline]
+    [timelineUrl, goToTimeline, templateUrl, goToTemplateTimeline, noteUrl, goToNote]
   );
 
   const onFilterClicked = useCallback(
-    (tabId, tabStyle: TimelineTabsStyle) => {
+    (tabId) => {
       setTimelineTypes((prevTimelineTypes) => {
         if (prevTimelineTypes !== tabId) {
           setTimelineTypes(tabId);
@@ -107,7 +121,7 @@ export const useTimelineTypes = ({
               href={tab.href}
               onClick={(ev) => {
                 tab.onClick(ev);
-                onFilterClicked(tab.id, TimelineTabsStyle.tab);
+                onFilterClicked(tab.id);
               }}
             >
               {tab.name}
@@ -130,7 +144,7 @@ export const useTimelineTypes = ({
             key={`timeline-${TimelineTabsStyle.filter}-${tab.id}`}
             onClick={(ev: { preventDefault: () => void }) => {
               tab.onClick(ev);
-              onFilterClicked(tab.id, TimelineTabsStyle.filter);
+              onFilterClicked(tab.id);
             }}
           >
             {tab.name}

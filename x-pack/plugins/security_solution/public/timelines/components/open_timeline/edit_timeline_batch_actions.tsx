@@ -26,7 +26,7 @@ export const useEditTimelineBatchActions = ({
   deleteTimelines?: DeleteTimelines;
   selectedItems?: OpenTimelineResult[];
   tableRef: React.MutableRefObject<EuiBasicTable<OpenTimelineResult> | undefined>;
-  timelineType: TimelineType | null;
+  timelineType: TimelineType | 'note' | null;
 }) => {
   const {
     enableExportTimelineDownloader,
@@ -110,7 +110,9 @@ export const useEditTimelineBatchActions = ({
               selectedItems?.length !== 1
                 ? timelineType === TimelineType.template
                   ? i18n.SELECTED_TEMPLATES(selectedItems?.length ?? 0)
-                  : i18n.SELECTED_TIMELINES(selectedItems?.length ?? 0)
+                  : timelineType === TimelineType.default
+                  ? i18n.SELECTED_TIMELINES(selectedItems?.length ?? 0)
+                  : 'note'
                 : selectedItems[0]?.title ?? ''
             }
           />

@@ -18,6 +18,7 @@ import { useNavigation } from '../../../common/lib/kibana';
 import { SecurityPageName } from '../../../../common/constants';
 import { useShallowEqualSelector } from '../../../common/hooks/use_selector';
 import type { SortFieldTimeline } from '../../../../common/api/timeline';
+import { TimelineType } from '../../../../common/api/timeline';
 import { TimelineId } from '../../../../common/types/timeline';
 import type { TimelineModel } from '../../store/model';
 import { timelineSelectors } from '../../store';
@@ -165,19 +166,14 @@ export const StatefulOpenTimelineComponent = React.memo<OpenTimelineOwnProps>(
 
     const {
       customTemplateTimelineCount,
-      defaultTimelineCount,
       elasticTemplateTimelineCount,
       favoriteCount,
       fetchAllTimeline,
       timelines,
       loading,
       totalCount,
-      templateTimelineCount,
     } = useGetAllTimeline();
-    const { timelineType, timelineTabs, timelineFilters } = useTimelineTypes({
-      defaultTimelineCount,
-      templateTimelineCount,
-    });
+    const { timelineType, timelineTabs, timelineFilters } = useTimelineTypes();
     const { timelineStatus, templateTimelineFilter, installPrepackagedTimelines } =
       useTimelineStatus({
         timelineType,
@@ -185,20 +181,24 @@ export const StatefulOpenTimelineComponent = React.memo<OpenTimelineOwnProps>(
         elasticTemplateTimelineCount,
       });
     const refetch = useCallback(() => {
-      fetchAllTimeline({
-        pageInfo: {
-          pageIndex: pageIndex + 1,
-          pageSize,
-        },
-        search,
-        sort: {
-          sortField: sortField as SortFieldTimeline,
-          sortOrder: sortDirection as Direction,
-        },
-        onlyUserFavorite: onlyFavorites,
-        timelineType,
-        status: timelineStatus,
-      });
+      if (timelineType === TimelineType.default || timelineType === TimelineType.template) {
+        fetchAllTimeline({
+          pageInfo: {
+            pageIndex: pageIndex + 1,
+            pageSize,
+          },
+          search,
+          sort: {
+            sortField: sortField as SortFieldTimeline,
+            sortOrder: sortDirection as Direction,
+          },
+          onlyUserFavorite: onlyFavorites,
+          timelineType,
+          status: timelineStatus,
+        });
+      } else if (timelineType === 'note') {
+        console.log('fetching notes');
+      }
     }, [
       fetchAllTimeline,
       pageIndex,

@@ -75,7 +75,7 @@ export const getTimelinesTableColumns = ({
   onSelectionChange: OnSelectionChange;
   onToggleShowNotes: OnToggleShowNotes;
   showExtendedColumns: boolean;
-  timelineType: TimelineTypeLiteralWithNull;
+  timelineType: TimelineTypeLiteralWithNull | 'note';
   hasCrudAccess: boolean;
 }) => {
   return [
@@ -122,7 +122,7 @@ export interface TimelinesTableProps {
   showExtendedColumns: boolean;
   sortDirection: 'asc' | 'desc';
   sortField: string;
-  timelineType: TimelineTypeLiteralWithNull;
+  timelineType: TimelineTypeLiteralWithNull | 'note';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tableRef?: React.MutableRefObject<_EuiBasicTable<any> | undefined>;
   totalSearchResultsCount: number;
@@ -224,7 +224,9 @@ export const TimelinesTable = React.memo<TimelinesTableProps>(
         ? i18n.LOADING
         : timelineType === TimelineType.template
         ? i18n.ZERO_TIMELINE_TEMPLATES_MATCH
-        : i18n.ZERO_TIMELINES_MATCH;
+        : timelineType === TimelineType.default
+        ? i18n.ZERO_TIMELINES_MATCH
+        : 'note';
 
     return (
       <BasicTable

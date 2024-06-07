@@ -30,5 +30,14 @@ export const links: LinkItem = {
       path: `${TIMELINES_PATH}/template`,
       sideNavDisabled: true,
     },
+    {
+      id: SecurityPageName.notesManagement,
+      title: i18n.translate('xpack.securitySolution.appLinks.timeline.notes', {
+        defaultMessage: 'Notes',
+      }),
+      path: `${TIMELINES_PATH}/note`,
+      sideNavDisabled: true,
+      hideTimeline: true,
+    },
   ],
 };
