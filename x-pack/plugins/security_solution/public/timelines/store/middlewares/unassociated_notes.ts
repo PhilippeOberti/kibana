@@ -14,6 +14,7 @@ import type { State } from '../../../common/store/types';
 import type { Note } from '../../../common/lib/note';
 import {
   deleteNote,
+  fetchNotes,
   fetchNotesByDocumentId,
   getNotesByIds,
   persistNote,
@@ -36,6 +37,17 @@ export const displayUnassociatedNotesMiddleware: (kibana: CoreStart) => Middlewa
         console.error('Error fetching notes:', error);
       }
       store.dispatch(appActions.setNonTimelineEventNotesLoading({ isLoading: false }));
+    }
+
+    if (action.type === appActions.fetchAllNotesRequest.type) {
+      try {
+        const response = await fetchNotes();
+        const data: NormalizedEntities<Note> = response.notes;
+        store.dispatch(appActions.fetchAllNotesSuccess({ data }));
+      } catch (error) {
+        store.dispatch(appActions.fetchAllNotesFailure());
+        console.error('middleware - error fetching all notes', error);
+      }
     }
 
     if (action.type === appActions.fetchNotesByDocumentRequest.type) {

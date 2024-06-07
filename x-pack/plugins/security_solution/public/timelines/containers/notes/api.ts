@@ -51,6 +51,19 @@ export const getNotesByIds = async (documentIds: string[]) => {
   return response;
 };
 
+export const fetchNotes = async () => {
+  const response = await KibanaServices.get().http.get<Note[]>(NOTE_URL, {
+    query: {
+      page: '1',
+      perPage: '10',
+      search: '',
+      filter: '',
+    },
+    version: '2023-10-31',
+  });
+  return response;
+};
+
 export const fetchNotesByDocumentId = async (documentId: string) => {
   const response = await KibanaServices.get().http.get<Note[]>(NOTE_URL, {
     query: {

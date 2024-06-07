@@ -36,6 +36,9 @@ import {
   deleteNoteRequest,
   deleteNoteSuccess,
   deleteNoteFailure,
+  fetchAllNotesRequest,
+  fetchAllNotesSuccess,
+  fetchAllNotesFailure,
 } from './actions';
 import type { AppModel, NotesById } from './model';
 import { allowedExperimentalValues } from '../../../../common/experimental_features';
@@ -80,6 +83,29 @@ export const updateNotesById = ({ note, notesById }: UpdateNotesByIdParams): Not
 });
 
 export const appReducer = reducerWithInitialState(initialAppState)
+  .case(fetchAllNotesRequest, (state) => {
+    return {
+      ...state,
+      loadingFetchByDocument: true,
+      errorFetchByDocument: false,
+    };
+  })
+  .case(fetchAllNotesSuccess, (state, { data }) => {
+    return {
+      ...state,
+      byId: { ...state.byId, ...data.entities.notes },
+      allIds: [...state.allIds, ...data.result],
+      loadingFetchByDocument: false,
+      errorFetchByDocument: false,
+    };
+  })
+  .case(fetchAllNotesFailure, (state) => {
+    return {
+      ...state,
+      loadingFetchByDocument: false,
+      errorFetchByDocument: true,
+    };
+  })
   .case(fetchNotesByDocumentRequest, (state, { documentId }) => {
     return {
       ...state,

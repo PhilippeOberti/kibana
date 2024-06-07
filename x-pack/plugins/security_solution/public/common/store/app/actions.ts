@@ -37,6 +37,14 @@ export const serverReturnedNonAssociatedNotes = actionCreator<{ notes: Note[] }>
   'SERVER_RETURNED_NON_ASSOCIATED_NOTES'
 );
 
+export const fetchAllNotesRequest = actionCreator('FETCH_ALL_NOTES_REQUEST');
+
+export const fetchAllNotesSuccess = actionCreator<{
+  data: NormalizedEntities<Note>;
+}>('FETCH_ALL_NOTES_SUCCESS');
+
+export const fetchAllNotesFailure = actionCreator('FETCH_ALL_NOTES_FAILURE');
+
 export const fetchNotesByDocumentRequest = actionCreator<{ documentId: string }>(
   'FETCH_NOTES_BY_DOCUMENT_ID_REQUEST'
 );

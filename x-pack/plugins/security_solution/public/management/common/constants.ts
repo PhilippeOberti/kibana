@@ -33,6 +33,8 @@ export const MANAGEMENT_STORE_GLOBAL_NAMESPACE: ManagementStoreGlobalNamespace =
 export const MANAGEMENT_STORE_POLICY_DETAILS_NAMESPACE = 'policyDetails';
 /** Namespace within the Management state where endpoint-host state is maintained */
 export const MANAGEMENT_STORE_ENDPOINTS_NAMESPACE = 'endpoints';
+/** Namespace within the Management state where notes state is maintained */
+export const MANAGEMENT_STORE_NOTES_NAMESPACE = 'notesManagement';
 
 export const MANAGEMENT_PAGE_SIZE_OPTIONS: readonly number[] = [10, 20, 50];
 export const MANAGEMENT_DEFAULT_PAGE = 0;
