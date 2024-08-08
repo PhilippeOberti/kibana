@@ -22,8 +22,14 @@ describe('useHighlightedFields', () => {
   it('should return data', () => {
     const hookResult = renderHook(() => useHighlightedFields({ dataFormattedForFieldBrowser }));
     expect(hookResult.result.current).toEqual({
+      'host.name': {
+        values: ['host-name'],
+      },
       'kibana.alert.rule.type': {
         values: ['query'],
+      },
+      'user.name': {
+        values: ['user-name'],
       },
     });
   });
@@ -62,8 +68,14 @@ describe('useHighlightedFields', () => {
     );
 
     expect(hookResult.result.current).toEqual({
+      'host.name': {
+        values: ['host-name'],
+      },
       'kibana.alert.rule.type': {
         values: ['query'],
+      },
+      'user.name': {
+        values: ['user-name'],
       },
     });
   });
@@ -92,11 +104,17 @@ describe('useHighlightedFields', () => {
     );
 
     expect(hookResult.result.current).toEqual({
+      'host.name': {
+        values: ['host-name'],
+      },
       'kibana.alert.rule.type': {
         values: ['query'],
       },
       'agent.id': {
-        values: ['deb35a20-70f8-458e-a64a-c9e6f7575893'],
+        values: ['agent.id'],
+      },
+      'user.name': {
+        values: ['user-name'],
       },
     });
   });
@@ -116,8 +134,14 @@ describe('useHighlightedFields', () => {
     );
 
     expect(hookResult.result.current).toEqual({
+      'host.name': {
+        values: ['host-name'],
+      },
       'kibana.alert.rule.type': {
         values: ['query'],
+      },
+      'user.name': {
+        values: ['user-name'],
       },
     });
   });
@@ -137,8 +161,14 @@ describe('useHighlightedFields', () => {
     );
 
     expect(hookResult.result.current).toEqual({
+      'host.name': {
+        values: ['host-name'],
+      },
       'kibana.alert.rule.type': {
         values: ['query'],
+      },
+      'user.name': {
+        values: ['user-name'],
       },
     });
   });
@@ -167,11 +197,17 @@ describe('useHighlightedFields', () => {
     );
 
     expect(hookResult.result.current).toEqual({
+      'host.name': {
+        values: ['host-name'],
+      },
       'kibana.alert.rule.type': {
         values: ['query'],
       },
       'observer.serial_number': {
         values: ['deb35a20-70f8-458e-a64a-c9e6f7575893'],
+      },
+      'user.name': {
+        values: ['user-name'],
       },
     });
   });
@@ -200,11 +236,17 @@ describe('useHighlightedFields', () => {
     );
 
     expect(hookResult.result.current).toEqual({
+      'host.name': {
+        values: ['host-name'],
+      },
       'kibana.alert.rule.type': {
         values: ['query'],
       },
       'device.id': {
         values: ['expectedCrowdstrikeAgentId'],
+      },
+      'user.name': {
+        values: ['user-name'],
       },
     });
   });

@@ -7,42 +7,14 @@
 
 import { i18n } from '@kbn/i18n';
 
-export const OBSERVED_BADGE = i18n.translate(
-  'xpack.securitySolution.timeline.userDetails.observedBadge',
-  {
-    defaultMessage: 'OBSERVED',
-  }
-);
-
-export const MANAGED_BADGE = i18n.translate(
-  'xpack.securitySolution.timeline.userDetails.managedBadge',
-  {
-    defaultMessage: 'MANAGED',
-  }
-);
-
 export const USER = i18n.translate('xpack.securitySolution.timeline.userDetails.userLabel', {
   defaultMessage: 'User',
 });
-
-export const FAIL_MANAGED_USER = i18n.translate(
-  'xpack.securitySolution.timeline.userDetails.failManagedUserDescription',
-  {
-    defaultMessage: 'Failed to run search on user managed data',
-  }
-);
 
 export const MANAGED_DATA_TITLE = i18n.translate(
   'xpack.securitySolution.timeline.userDetails.managedDataTitle',
   {
     defaultMessage: 'Managed data',
-  }
-);
-
-export const OBSERVED_DATA_TITLE = i18n.translate(
-  'xpack.securitySolution.timeline.userDetails.observedDataTitle',
-  {
-    defaultMessage: 'Observed data',
   }
 );
 
