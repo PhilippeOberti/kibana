@@ -9,7 +9,7 @@ import { TestProviders } from '../../../../common/mock';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { ManagedUserAccordion } from './managed_user_accordion';
-import { mockEntraUserFields } from '../mocks';
+import { mockEntraUserFields } from '../__mocks__';
 import { UserAssetTableType } from '../../../../explore/users/store/model';
 
 describe('ManagedUserAccordion', () => {

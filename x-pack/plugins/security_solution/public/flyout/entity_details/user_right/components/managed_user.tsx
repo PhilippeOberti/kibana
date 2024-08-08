@@ -18,6 +18,7 @@ import {
 import React, { useMemo } from 'react';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { css } from '@emotion/css';
+import { MANAGED_USER_QUERY_ID } from '../../shared/constants';
 import type { EntityDetailsLeftPanelTab } from '../../shared/components/left_panel/left_panel_header';
 import { UserAssetTableType } from '../../../../explore/users/store/model';
 import type { ManagedUserFields } from '../../../../../common/search_strategy/security_solution/users/managed_details';
@@ -29,7 +30,6 @@ import { getManagedUserTableColumns } from '../utils/columns';
 
 import type { ManagedUserData } from '../types';
 import { INSTALL_EA_INTEGRATIONS_HREF } from '../constants';
-import { MANAGED_USER_QUERY_ID } from '../../shared/constants';
 import { InspectButton, InspectButtonContainer } from '../../../../common/components/inspect';
 import { useAppUrl } from '../../../../common/lib/kibana';
 import { ManagedUserAccordion } from './managed_user_accordion';
