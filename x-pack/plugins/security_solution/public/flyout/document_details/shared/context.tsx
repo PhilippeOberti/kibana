@@ -15,7 +15,7 @@ import { FlyoutLoading } from '../../shared/components/flyout_loading';
 import type { SearchHit } from '../../../../common/search_strategy';
 import { useBasicDataFromDetailsData } from '../../../timelines/components/side_panel/event_details/helpers';
 import type { DocumentDetailsProps } from './types';
-import type { GetFieldsData } from '../../../common/hooks/use_get_fields_data';
+import type { GetFieldsData } from './hooks/use_get_fields_data';
 import { useRuleWithFallback } from '../../../detection_engine/rule_management/logic/use_rule_with_fallback';
 
 export interface DocumentDetailsContext {
