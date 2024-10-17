@@ -69,7 +69,7 @@ describe(
     it('should be able to add event note', () => {
       const note = 'event note';
       addNoteToFirstRowEvent(note);
-      cy.get(NOTE_CARD_CONTENT).should('contain', 'event note');
+      cy.get(NOTE_CARD_CONTENT(0)).should('contain', 'event note');
     });
 
     it('should display pinned events', () => {
