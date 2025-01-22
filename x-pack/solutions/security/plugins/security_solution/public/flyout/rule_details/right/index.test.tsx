@@ -7,7 +7,6 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from 'styled-components';
 import { getMockTheme } from '../../../common/lib/kibana/kibana_react.mock';
 import { TestProviders } from '../../../common/mock';
 import { useRuleDetailsLink } from '../../document_details/shared/hooks/use_rule_details_link';
@@ -23,14 +22,14 @@ import type { RuleResponse } from '../../../../common/api/detection_engine';
 import { BODY_TEST_ID, LOADING_TEST_ID } from './test_ids';
 import { RULE_PREVIEW_FOOTER_TEST_ID } from '../preview/test_ids';
 import type {
-  FlyoutPanelProps,
-  ExpandableFlyoutState,
   ExpandableFlyoutApi,
+  ExpandableFlyoutState,
+  FlyoutPanelProps,
 } from '@kbn/expandable-flyout';
 import {
   useExpandableFlyoutApi,
-  useExpandableFlyoutState,
   useExpandableFlyoutHistory,
+  useExpandableFlyoutState,
 } from '@kbn/expandable-flyout';
 
 jest.mock('../../document_details/shared/hooks/use_rule_details_link');
@@ -60,9 +59,7 @@ const ERROR_MESSAGE = 'There was an error displaying data.';
 const renderRulePanel = (isPreviewMode = false) =>
   render(
     <TestProviders>
-      <ThemeProvider theme={mockTheme}>
-        <RulePanel ruleId={'ruleId'} isPreviewMode={isPreviewMode} />
-      </ThemeProvider>
+      <RulePanel ruleId={'ruleId'} isPreviewMode={isPreviewMode} />
     </TestProviders>
   );
 

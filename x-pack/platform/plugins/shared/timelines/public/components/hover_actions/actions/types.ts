@@ -14,7 +14,6 @@ export interface FilterValueFnArgs {
   field: string;
   value: string[] | string | null | undefined;
   filterManager: FilterManager | undefined;
-  onFilterAdded: (() => void) | undefined;
   dataViewId?: string;
 }
 

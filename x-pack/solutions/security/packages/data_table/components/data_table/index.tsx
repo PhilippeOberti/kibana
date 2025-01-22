@@ -15,14 +15,13 @@ import type {
   EuiDataGridStyle,
   EuiDataGridToolBarVisibilityOptions,
 } from '@elastic/eui';
-import { EuiDataGrid, EuiProgress } from '@elastic/eui';
+import { EuiDataGrid, EuiProgress, useEuiTheme } from '@elastic/eui';
 import { getOr } from 'lodash/fp';
 import memoizeOne from 'memoize-one';
-import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-
-import styled, { ThemeContext } from 'styled-components';
-import type { EuiTheme } from '@kbn/kibana-react-plugin/common';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import type {
   FieldBrowserOptions,
   FieldBrowserProps,
@@ -41,15 +40,12 @@ import {
 } from '@kbn/cell-actions';
 import { FieldSpec } from '@kbn/data-views-plugin/common';
 import { DataTableModel, DataTableState } from '../../store/data_table/types';
-
 import { getColumnHeader, getColumnHeaders } from './column_headers/helpers';
 import { addBuildingBlockStyle, mapSortDirectionToDirection, mapSortingColumns } from './helpers';
-
 import { REMOVE_COLUMN } from './column_headers/translations';
 import { dataTableActions, dataTableSelectors } from '../../store/data_table';
 import type { BulkActionsProp } from '../toolbar/bulk_actions/types';
 import { getPageRowIndex } from './pagination';
-import { UnitCount } from '../toolbar/unit';
 import { useShallowEqualSelector } from '../../hooks/use_selector';
 import { tableDefaults } from '../../store/data_table/defaults';
 
@@ -133,6 +129,26 @@ const EuiDataGridContainer = styled.div<{ hideLastPage: boolean }>`
   }
 `;
 
+const UnitCount = memo(({ count }: { count: string }) => {
+  const { euiTheme } = useEuiTheme();
+
+  return (
+    <span
+      data-test-subj="server-side-event-count"
+      css={css`
+        font-size: ${euiTheme.font.scale.xs};
+        font-weight: ${euiTheme.font.weight.semiBold};
+        border-right: ${euiTheme.border.thin};
+        margin-right: ${euiTheme.size.s};
+        padding-right: ${euiTheme.size.m};
+      `}
+    >
+      {count}
+    </span>
+  );
+});
+UnitCount.displayName = 'UnitCount';
+
 const memoizedGetColumnHeaders: (
   headers: ColumnHeaderOptions[],
   browserFields: BrowserFields
@@ -181,7 +197,7 @@ export const DataTableComponent = React.memo<DataTableProps>(
 
     const selectedCount = useMemo(() => Object.keys(selectedEventIds).length, [selectedEventIds]);
 
-    const theme: EuiTheme = useContext(ThemeContext);
+    const { euiTheme } = useEuiTheme();
 
     const showBulkActions = useMemo(() => {
       if (selectedCount === 0 || !showCheckboxes) {
@@ -226,7 +242,7 @@ export const DataTableComponent = React.memo<DataTableProps>(
             append: (
               <>
                 {isLoading && <EuiProgress size="xs" position="absolute" color="accent" />}
-                <UnitCount data-test-subj="server-side-event-count">{unitCountText}</UnitCount>
+                <UnitCount count={unitCountText} />
                 {additionalControls ?? null}
                 {getFieldBrowser({
                   browserFields,
@@ -402,7 +418,7 @@ export const DataTableComponent = React.memo<DataTableProps>(
 
         useEffect(() => {
           if (ecs && rowData) {
-            addBuildingBlockStyle(ecs, theme, setCellProps);
+            addBuildingBlockStyle(ecs, euiTheme, setCellProps);
           } else {
             // disable the cell when it has no data
             setCellProps({ style: { display: 'none' } });
@@ -439,11 +455,11 @@ export const DataTableComponent = React.memo<DataTableProps>(
       browserFields,
       columnHeaders,
       data,
+      euiTheme,
       id,
       pagination.pageSize,
       renderCellValue,
       rowRenderers,
-      theme,
     ]);
 
     return (

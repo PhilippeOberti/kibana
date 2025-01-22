@@ -12,7 +12,7 @@ import { EuiButtonIcon, EuiToolTip } from '@elastic/eui';
 import { stopPropagationAndPreventDefault } from '../../../../common/utils/accessibility';
 import { TooltipWithKeyboardShortcut } from '../../tooltip_with_keyboard_shortcut';
 import { createFilter, getAdditionalScreenReaderOnlyContext } from '../utils';
-import { HoverActionComponentProps, FilterValueFnArgs } from './types';
+import { FilterValueFnArgs, HoverActionComponentProps } from './types';
 
 export const FILTER_OUT_VALUE = i18n.translate('xpack.timelines.hoverActions.filterOut', {
   defaultMessage: 'Filter Out',
@@ -27,7 +27,6 @@ const FilterOutValueButton: React.FC<HoverActionComponentProps & FilterValueFnAr
     field,
     filterManager,
     keyboardEvent,
-    onFilterAdded,
     ownFocus,
     onClick,
     size,
@@ -48,14 +47,11 @@ const FilterOutValueButton: React.FC<HoverActionComponentProps & FilterValueFnAr
 
       if (activeFilterManager != null) {
         activeFilterManager.addFilters(filters);
-        if (onFilterAdded != null) {
-          onFilterAdded();
-        }
       }
       if (onClick != null) {
         onClick();
       }
-    }, [field, filterManager, onClick, onFilterAdded, value, dataViewId]);
+    }, [field, filterManager, onClick, value, dataViewId]);
 
     useEffect(() => {
       if (!ownFocus) {

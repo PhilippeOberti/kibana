@@ -18,34 +18,13 @@ import {
   useEuiTheme,
 } from '@elastic/eui';
 import React, { useMemo, useState } from 'react';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import { TableId } from '@kbn/securitysolution-data-table';
 import type { AlertsProgressBarData, GroupBySelection } from './types';
 import type { AddFilterProps } from '../common/types';
 import { getAggregateData } from './helpers';
 import { DefaultDraggable } from '../../../../common/components/draggables';
 import * as i18n from './translations';
-
-const ProgressWrapper = styled.div`
-  height: 160px;
-`;
-
-const StyledEuiHorizontalRule = styled(EuiHorizontalRule)`
-  margin-top: 0;
-  margin-bottom: ${({ theme }) => theme.eui.euiSizeS};
-`;
-
-const StyledEuiFlexGroup = styled(EuiFlexGroup)`
-  margin-top: -${({ theme }) => theme.eui.euiSizeM};
-`;
-
-const StyledEuiProgress = styled(EuiProgress)`
-  margin-bottom: ${({ theme }) => theme.eui.euiSizeS};
-`;
-
-const DataStatsWrapper = styled.div`
-  width: 250px;
-`;
 
 export interface AlertsProcessBarProps {
   data: AlertsProgressBarData[];
@@ -78,7 +57,11 @@ export const AlertsProgressBar: React.FC<AlertsProcessBarProps> = ({
   );
 
   const dataStatsMessage = (
-    <DataStatsWrapper>
+    <div
+      css={css`
+        width: 250px;
+      `}
+    >
       <EuiPopoverTitle>{i18n.DATA_STATISTICS_TITLE(formattedNonEmptyPercent)}</EuiPopoverTitle>
       <EuiText size="s">
         {i18n.DATA_STATISTICS_MESSAGE(groupBySelection)}
@@ -94,7 +77,7 @@ export const AlertsProgressBar: React.FC<AlertsProcessBarProps> = ({
           {i18n.NON_EMPTY_FILTER(groupBySelection)}
         </EuiLink>
       </EuiText>
-    </DataStatsWrapper>
+    </div>
   );
 
   const labelWithHoverActions = (key: string) => {
@@ -125,7 +108,13 @@ export const AlertsProgressBar: React.FC<AlertsProcessBarProps> = ({
 
   return (
     <>
-      <StyledEuiFlexGroup alignItems="center" gutterSize="xs">
+      <EuiFlexGroup
+        alignItems="center"
+        gutterSize="xs"
+        css={css`
+          margin-top: -${euiTheme.size.m};
+        `}
+      >
         <EuiFlexItem grow={false}>
           <EuiText size="s" data-test-subj="alerts-progress-bar-title">
             <h5>{groupBySelection}</h5>
@@ -142,13 +131,30 @@ export const AlertsProgressBar: React.FC<AlertsProcessBarProps> = ({
             {dataStatsMessage}
           </EuiPopover>
         </EuiFlexItem>
-      </StyledEuiFlexGroup>
+      </EuiFlexGroup>
       {isLoading ? (
-        <StyledEuiProgress size="xs" color="primary" />
+        <EuiProgress
+          size="xs"
+          color="primary"
+          css={css`
+            margin-bottom: ${euiTheme.size.s};
+          `}
+        />
       ) : (
         <>
-          <StyledEuiHorizontalRule />
-          <ProgressWrapper data-test-subj="progress-bar" className="eui-yScroll">
+          <EuiHorizontalRule
+            css={css`
+              margin-top: 0;
+              margin-bottom: ${euiTheme.size.s};
+            `}
+          />
+          <div
+            data-test-subj="progress-bar"
+            className="eui-yScroll"
+            css={css`
+              height: 160px;
+            `}
+          >
             {nonEmpty === 0 ? (
               <>
                 <EuiText size="s" textAlign="center" data-test-subj="empty-proress-bar">
@@ -183,7 +189,7 @@ export const AlertsProgressBar: React.FC<AlertsProcessBarProps> = ({
               </>
             )}
             <EuiSpacer size="s" />
-          </ProgressWrapper>
+          </div>
         </>
       )}
     </>

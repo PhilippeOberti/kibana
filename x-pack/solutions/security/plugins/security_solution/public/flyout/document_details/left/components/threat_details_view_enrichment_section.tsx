@@ -17,7 +17,7 @@ import {
   EuiToolTip,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FormattedMessage } from '@kbn/i18n-react';
 import {
   THREAT_INTELLIGENCE_ENRICHMENTS_TITLE_TEST_ID,

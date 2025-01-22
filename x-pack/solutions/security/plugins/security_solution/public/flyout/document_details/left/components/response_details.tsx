@@ -7,15 +7,15 @@
 
 import React from 'react';
 import { EuiSpacer, EuiTitle } from '@elastic/eui';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { RESPONSE_DETAILS_TEST_ID } from './test_ids';
 import { useDocumentDetailsContext } from '../../shared/context';
 import { useResponseActionsView } from '../hooks/use_response_actions_view';
 
 const ExtendedFlyoutWrapper = styled.div`
- figure {
-  background-color: white
+  figure {
+    background-color: white
 `;
 
 /**

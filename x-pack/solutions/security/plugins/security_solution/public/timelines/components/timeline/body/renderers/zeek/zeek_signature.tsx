@@ -9,7 +9,6 @@ import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiToolTip } from '@elastic/eui';
 import { get } from 'lodash/fp';
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-
 import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
 import type { DraggableWrapperProps } from '../../../../../../common/components/drag_and_drop/draggable_wrapper';
 import { DraggableWrapper } from '../../../../../../common/components/drag_and_drop/draggable_wrapper';

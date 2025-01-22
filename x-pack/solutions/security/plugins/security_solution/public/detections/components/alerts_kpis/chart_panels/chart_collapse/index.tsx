@@ -4,14 +4,15 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
+
+import { css } from '@emotion/react';
 import { EuiFlexGroup, EuiFlexItem, EuiHealth, EuiText, useEuiTheme } from '@elastic/eui';
-import { ALERT_SEVERITY, ALERT_RULE_NAME } from '@kbn/rule-data-utils';
+import { ALERT_RULE_NAME, ALERT_SEVERITY } from '@kbn/rule-data-utils';
 import type { MappingRuntimeFields } from '@elastic/elasticsearch/lib/api/types';
 import type { Filter, Query } from '@kbn/es-query';
 import { v4 as uuid } from 'uuid';
 import { capitalize } from 'lodash';
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import React, { memo, useMemo } from 'react';
 import type { GroupBySelection } from '../../alerts_progress_bar_panel/types';
 import { getGroupByLabel } from '../../alerts_progress_bar_panel/helpers';
 import { InspectButton, InspectButtonContainer } from '../../../../../common/components/inspect';
@@ -47,22 +48,30 @@ const combinedAggregations = (groupBySelection: GroupBySelection) => {
   };
 };
 
-const StyledEuiFlexGroup = styled(EuiFlexGroup)`
-  margin-top: ${({ theme }) => theme.eui.euiSizeXS};
-  @media only screen and (min-width: ${({ theme }) => theme.eui.euiBreakpoints.l}) {
+const TopAlertedComponent = memo(
+  ({ title, children }: { title: string; children: React.ReactNode }) => {
+    const { euiTheme } = useEuiTheme();
+
+    return (
+      <EuiText
+        size="xs"
+        className="eui-textTruncate"
+        data-test-subj="chart-collapse-top-rule"
+        css={css`
+          border-left: 1px solid ${euiTheme.colors.lightShade};
+          padding-left: ${euiTheme.size.l};
+          // allows text to truncate
+          max-width: 250px;
+        `}
+      >
+        <strong>{title}</strong>
+        {children}
+      </EuiText>
+    );
   }
-`;
+);
+TopAlertedComponent.displayName = 'TopAlertedComponent';
 
-const SeverityWrapper = styled(EuiFlexItem)`
-  min-width: 380px;
-`;
-
-const StyledEuiText = styled(EuiText)`
-  border-left: 1px solid ${({ theme }) => theme.eui.euiColorLightShade};
-  padding-left: ${({ theme }) => theme.eui.euiSizeL};
-  // allows text to truncate
-  max-width: 250px;
-`;
 interface Props {
   groupBySelection: GroupBySelection;
   filters?: Filter[];
@@ -79,6 +88,7 @@ export const ChartCollapse: React.FC<Props> = ({
   runtimeMappings,
 }: Props) => {
   const { euiTheme } = useEuiTheme();
+
   const uniqueQueryId = useMemo(() => `${DETECTIONS_ALERTS_COLLAPSED_CHART_ID}-${uuid()}`, []);
   const aggregations = useMemo(() => combinedAggregations(groupBySelection), [groupBySelection]);
 
@@ -108,45 +118,55 @@ export const ChartCollapse: React.FC<Props> = ({
   }, [data, severityColors]);
   const groupBy = useMemo(() => getGroupByLabel(groupBySelection), [groupBySelection]);
 
+  const severitiesComponent = useMemo(
+    () => (
+      <>
+        {severities.map((severity) => (
+          <EuiFlexItem key={severity.key} grow={false}>
+            <EuiHealth color={getSeverityColor(severity.key)}>
+              <EuiText size="xs">
+                {`${severity.label}: `}
+                <FormattedCount count={severity.value || 0} />
+              </EuiText>
+            </EuiHealth>
+          </EuiFlexItem>
+        ))}
+      </>
+    ),
+    [severities]
+  );
+
   return (
     <InspectButtonContainer>
       {!isLoading && (
-        <StyledEuiFlexGroup alignItems="center" data-test-subj="chart-collapse" wrap>
-          <SeverityWrapper grow={false}>
+        <EuiFlexGroup
+          alignItems="center"
+          data-test-subj="chart-collapse"
+          wrap
+          css={css`
+            margin-top: ${euiTheme.size.xs};
+            @media only screen and (min-width: ${euiTheme.breakpoint.l}) {
+            }
+          `}
+        >
+          <EuiFlexItem
+            grow={false}
+            css={css`
+              min-width: 380px;
+            `}
+          >
             <EuiFlexGroup data-test-subj="chart-collapse-severities">
-              {severities.map((severity) => (
-                <EuiFlexItem key={severity.key} grow={false}>
-                  <EuiHealth color={getSeverityColor(severity.key, euiTheme)}>
-                    <EuiText size="xs">
-                      {`${severity.label}: `}
-                      <FormattedCount count={severity.value || 0} />
-                    </EuiText>
-                  </EuiHealth>
-                </EuiFlexItem>
-              ))}
+              {severitiesComponent}
             </EuiFlexGroup>
-          </SeverityWrapper>
-          <EuiFlexItem grow={false}>
-            <StyledEuiText
-              size="xs"
-              className="eui-textTruncate"
-              data-test-subj="chart-collapse-top-rule"
-            >
-              <strong>{i18n.TOP_RULE_TITLE}</strong>
-              {topRule}
-            </StyledEuiText>
           </EuiFlexItem>
+          <EuiFlexItem grow={false} />
+          <TopAlertedComponent title={i18n.TOP_RULE_TITLE}>{topRule}</TopAlertedComponent>
           <EuiFlexItem>
             <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
               <EuiFlexItem grow={false}>
-                <StyledEuiText
-                  size="xs"
-                  className="eui-textTruncate"
-                  data-test-subj="chart-collapse-top-group"
-                >
-                  <strong>{`${i18n.TOP_GROUP_TITLE} ${groupBy}: `}</strong>
+                <TopAlertedComponent title={`${i18n.TOP_GROUP_TITLE} ${groupBy}: `}>
                   {topGroup}
-                </StyledEuiText>
+                </TopAlertedComponent>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
                 <InspectButton
@@ -157,7 +177,7 @@ export const ChartCollapse: React.FC<Props> = ({
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
-        </StyledEuiFlexGroup>
+        </EuiFlexGroup>
       )}
     </InspectButtonContainer>
   );

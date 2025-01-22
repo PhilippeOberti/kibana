@@ -5,18 +5,16 @@
  * 2.0.
  */
 
-import styled from 'styled-components';
-
+import styled from '@emotion/styled';
 import { i18n } from '@kbn/i18n';
-
 import React, { memo } from 'react';
+import { useCubeAssets } from '../use_cube_assets';
+import { useSymbolIDs } from '../use_symbol_ids';
+import type { NodeDataStatus } from '../../types';
 
 interface StyledSVGCube {
   readonly isOrigin?: boolean;
 }
-import { useCubeAssets } from '../use_cube_assets';
-import { useSymbolIDs } from '../use_symbol_ids';
-import type { NodeDataStatus } from '../../types';
 
 /**
  * Icon representing a process node.

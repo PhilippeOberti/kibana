@@ -5,9 +5,9 @@
  * 2.0.
  */
 
-import { EuiSpacer, EuiTitle, EuiText } from '@elastic/eui';
+import { EuiSpacer, EuiText, EuiTitle, useEuiTheme } from '@elastic/eui';
 import React, { createContext } from 'react';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
 import { i18n } from '@kbn/i18n';
 import type { UseBasicDataFromDetailsDataResult } from '../../shared/hooks/use_basic_data_from_details_data';
 import { LineClamp } from '../../../../common/components/line_clamp';
@@ -19,11 +19,6 @@ const INVESTIGATION_GUIDE = i18n.translate(
     defaultMessage: 'Investigation guide',
   }
 );
-
-export const Indent = styled.div`
-  padding: 0 8px;
-  word-break: break-word;
-`;
 
 export const BasicAlertDataContext = createContext<Partial<UseBasicDataFromDetailsDataResult>>({});
 
@@ -56,6 +51,7 @@ const InvestigationGuideViewComponent: React.FC<InvestigationGuideViewProps> = (
   showFullView = false,
   showTitle = true,
 }) => {
+  const { euiTheme } = useEuiTheme();
   return (
     <BasicAlertDataContext.Provider value={basicData}>
       {showTitle && (
@@ -67,7 +63,12 @@ const InvestigationGuideViewComponent: React.FC<InvestigationGuideViewProps> = (
           <EuiSpacer size="s" />
         </>
       )}
-      <Indent>
+      <div
+        css={css`
+          padding: 0 ${euiTheme.size.s}px;
+          word-break: break-word;
+        `}
+      >
         {showFullView ? (
           <EuiText size="xs" data-test-subj="investigation-guide-full-view">
             <MarkdownRenderer>{ruleNote}</MarkdownRenderer>
@@ -79,7 +80,7 @@ const InvestigationGuideViewComponent: React.FC<InvestigationGuideViewProps> = (
             </LineClamp>
           </EuiText>
         )}
-      </Indent>
+      </div>
     </BasicAlertDataContext.Provider>
   );
 };

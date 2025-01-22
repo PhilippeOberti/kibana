@@ -5,8 +5,8 @@
  * 2.0.
  */
 
-import { EuiPanel, EuiCallOut } from '@elastic/eui';
-import styled from 'styled-components';
+import { EuiCallOut, EuiPanel } from '@elastic/eui';
+import styled from '@emotion/styled';
 import { NodeSubMenuComponents } from './submenu';
 
 /**
@@ -84,17 +84,20 @@ export const StyledMapContainer = styled.div<{ backgroundColor: string }>`
   /**
    * Take up all availble space
    */
+
   &,
   .resolver-graph {
     display: flex;
     flex-grow: 1;
   }
+
   .loading-container {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
   }
+
   /**
   * Set to force base-height necessary for resolver to show up in timeline.
   * Was previously set in events_viewer.tsx, but more appropriate here

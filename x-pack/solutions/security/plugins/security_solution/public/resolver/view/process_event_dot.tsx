@@ -5,15 +5,15 @@
  * 2.0.
  */
 
-import React, { useCallback, useMemo, useContext } from 'react';
-import styled from 'styled-components';
-import { htmlIdGenerator, EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useCallback, useContext, useMemo } from 'react';
+import styled from '@emotion/styled';
+import { EuiButton, EuiFlexGroup, EuiFlexItem, htmlIdGenerator } from '@elastic/eui';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { i18n } from '@kbn/i18n';
 import { NodeSubMenu } from './styles';
 import { applyMatrix3 } from '../models/vector2';
-import type { Vector2, Matrix3 } from '../types';
+import type { Matrix3, Vector2 } from '../types';
 import type { ResolverNode } from '../../../common/endpoint/types';
 import { SideEffectContext } from './side_effect_context';
 import * as nodeModel from '../../../common/endpoint/models/node';
@@ -25,7 +25,7 @@ import { useCubeAssets } from './use_cube_assets';
 import { useSymbolIDs } from './use_symbol_ids';
 import { useColors } from './use_colors';
 import { useLinkProps } from './use_link_props';
-import { userSelectedResolverNode, userFocusedOnResolverNode } from '../store/actions';
+import { userFocusedOnResolverNode, userSelectedResolverNode } from '../store/actions';
 import { userReloadedResolverNode } from '../store/data/action';
 import type { State } from '../../common/store/types';
 
@@ -574,11 +574,13 @@ export const ProcessEventDot = styled(UnstyledProcessEventDot)`
   //when it is transitioned.
   //The value is tuned to look good when animated, but to preserve
   //the effect, it should always be _at least_ the length of the stroke
+
   & .backing {
     stroke-dasharray: 500;
     stroke-dashoffset: 500;
     fill-opacity: 0;
   }
+
   &:hover:not([aria-current]) .backing {
     transition-property: fill-opacity;
     transition-duration: 0.25s;
@@ -599,12 +601,15 @@ export const ProcessEventDot = styled(UnstyledProcessEventDot)`
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
   }
+
   & .euiSelectableListItem {
     background-color: black;
   }
+
   & .euiSelectableListItem path {
     fill: white;
   }
+
   & .euiSelectableListItem__text {
     color: white;
   }

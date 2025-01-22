@@ -10,7 +10,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { waitFor } from '@testing-library/react';
 import { mockBrowserFields } from '../../containers/source/mock';
-import { mockGlobalState, TestProviders, createMockStore, mockDataViewSpec } from '../../mock';
+import { createMockStore, mockDataViewSpec, mockGlobalState, TestProviders } from '../../mock';
 import type { State } from '../../store';
 
 import type { Props } from './top_n';
@@ -148,35 +148,16 @@ const testProps = {
   indexPattern: mockDataViewSpec,
   scopeId: TableId.hostsPageEvents,
   toggleTopN: jest.fn(),
-  onFilterAdded: jest.fn(),
 };
 
 describe('StatefulTopN', () => {
   describe('rendering globalFilter', () => {
     let wrapper: ReactWrapper;
-    const globalFilters = [
-      {
-        meta: {
-          alias: null,
-          negate: false,
-          disabled: false,
-          type: 'phrase',
-          key: 'signal.rule.id',
-          params: {
-            query: 'd62249f0-1632-11ec-b035-19607969bc20',
-          },
-        },
-        query: {
-          match_phrase: {
-            'signal.rule.id': 'd62249f0-1632-11ec-b035-19607969bc20',
-          },
-        },
-      },
-    ];
+
     beforeEach(() => {
       wrapper = mount(
         <TestProviders store={store}>
-          <StatefulTopN {...testProps} globalFilters={globalFilters} />
+          <StatefulTopN {...testProps} />
         </TestProviders>
       );
     });

@@ -10,16 +10,16 @@ import { useSelector } from 'react-redux';
 import { i18n } from '@kbn/i18n';
 import type { EuiBasicTableColumn } from '@elastic/eui';
 import {
-  htmlIdGenerator,
+  EuiInMemoryTable,
+  EuiLink,
   EuiSpacer,
-  EuiTitle,
   EuiText,
   EuiTextColor,
-  EuiLink,
-  EuiInMemoryTable,
+  EuiTitle,
+  htmlIdGenerator,
 } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { EventKind } from '../../../flyout/document_details/shared/constants/event_kinds';
 import { StyledTitle } from './styles';
 import * as selectors from '../../store/selectors';
@@ -88,6 +88,7 @@ export interface NodeDetailsTableView {
   description: string;
   value?: string | number;
 }
+
 /**
  * A description list view of all the Metadata that goes with a particular process event, like:
  * Created, PID, User/Domain, etc.

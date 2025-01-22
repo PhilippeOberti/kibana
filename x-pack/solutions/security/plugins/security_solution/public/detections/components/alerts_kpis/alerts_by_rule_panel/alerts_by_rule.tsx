@@ -6,9 +6,9 @@
  */
 
 import type { EuiBasicTableColumn } from '@elastic/eui';
-import { EuiInMemoryTable, EuiSpacer, EuiText } from '@elastic/eui';
+import { EuiInMemoryTable, EuiSpacer, EuiText, useEuiTheme } from '@elastic/eui';
+import { css } from '@emotion/react';
 import React from 'react';
-import styled from 'styled-components';
 import type { SortOrder } from '@elastic/elasticsearch/lib/api/typesWithBodyKey';
 import { ALERT_RULE_NAME } from '@kbn/rule-data-utils';
 import { TableId } from '@kbn/securitysolution-data-table';
@@ -18,12 +18,7 @@ import { DefaultDraggable } from '../../../../common/components/draggables';
 import { ALERTS_HEADERS_RULE_NAME } from '../../alerts_table/translations';
 import { COUNT_TABLE_TITLE } from '../alerts_count_panel/translations';
 
-const Wrapper = styled.div`
-  margin-top: -${({ theme }) => theme.eui.euiSizeM};
-`;
-const TableWrapper = styled.div`
-  height: 178px;
-`;
+const TABLE_HEIGHT = 178; // px
 
 export interface AlertsByRuleProps {
   data: AlertsByRuleData[];
@@ -73,16 +68,27 @@ const SORTING: { sort: { field: keyof AlertsByRuleData; direction: SortOrder } }
   },
 };
 
-const PAGINATION: {} = {
+const PAGINATION = {
   pageSize: 25,
   showPerPageOptions: false,
 };
 
 export const AlertsByRule: React.FC<AlertsByRuleProps> = ({ data, isLoading }) => {
+  const { euiTheme } = useEuiTheme();
   return (
-    <Wrapper data-test-subj="alerts-by-rule">
+    <div
+      data-test-subj="alerts-by-rule"
+      css={css`
+        margin-top: -${euiTheme.size.m};
+      `}
+    >
       <EuiSpacer size="xs" />
-      <TableWrapper className="eui-yScroll">
+      <div
+        className="eui-yScroll"
+        css={css`
+          height: ${TABLE_HEIGHT}px;
+        `}
+      >
         <EuiInMemoryTable
           data-test-subj="alerts-by-rule-table"
           columns={COLUMNS}
@@ -91,8 +97,8 @@ export const AlertsByRule: React.FC<AlertsByRuleProps> = ({ data, isLoading }) =
           sorting={SORTING}
           pagination={PAGINATION}
         />
-      </TableWrapper>
-    </Wrapper>
+      </div>
+    </div>
   );
 };
 

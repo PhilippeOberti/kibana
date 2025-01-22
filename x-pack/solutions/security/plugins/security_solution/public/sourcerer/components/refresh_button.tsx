@@ -6,22 +6,23 @@
  */
 import { EuiButton } from '@elastic/eui';
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
-
+import css from '@emotion/react';
 import { RELOAD_PAGE_TITLE } from './translations';
-
-const StyledRefreshButton = styled(EuiButton)`
-  float: right;
-`;
 
 export const RefreshButton = React.memo(() => {
   const onPageRefresh = useCallback(() => {
     document.location.reload();
   }, []);
   return (
-    <StyledRefreshButton onClick={onPageRefresh} data-test-subj="page-refresh">
+    <EuiButton
+      onClick={onPageRefresh}
+      data-test-subj="page-refresh"
+      css={css`
+        float: right;
+      `}
+    >
       {RELOAD_PAGE_TITLE}
-    </StyledRefreshButton>
+    </EuiButton>
   );
 });
 

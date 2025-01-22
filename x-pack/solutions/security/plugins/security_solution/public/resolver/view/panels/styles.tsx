@@ -6,9 +6,9 @@
  */
 
 import { memo } from 'react';
-import { EuiCode, EuiBreadcrumbs, EuiDescriptionList } from '@elastic/eui';
+import { EuiBreadcrumbs, EuiCode, EuiDescriptionList } from '@elastic/eui';
 
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 /**
  * Used by the nodeDetail view, eventDetail view and control panel to show attributes of the related events.
@@ -17,6 +17,7 @@ export const StyledDescriptionList = memo(styled(EuiDescriptionList)`
   .euiDescriptionList__title {
     word-break: normal;
   }
+
   .euiDescriptionList__title,
   .euiDescriptionList__description {
     overflow-wrap: break-word;

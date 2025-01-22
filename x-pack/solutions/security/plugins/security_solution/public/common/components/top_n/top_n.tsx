@@ -51,12 +51,10 @@ export interface Props extends Pick<GlobalTimeArgs, 'from' | 'to' | 'deleteQuery
   filters: Filter[];
   indexPattern?: DataViewSpec;
   options: TopNOption[];
-  paddingSize?: 's' | 'm' | 'l' | 'none';
   query: Query;
   setAbsoluteRangeDatePickerTarget: InputsModelId;
   scopeId?: string;
   toggleTopN: () => void;
-  onFilterAdded?: () => void; // eslint-disable-line react/no-unused-prop-types
   applyGlobalQueriesAndFilters?: boolean;
 }
 
@@ -69,7 +67,6 @@ const TopNComponent: React.FC<Props> = ({
   from,
   indexPattern,
   options,
-  paddingSize,
   query,
   setAbsoluteRangeDatePickerTarget,
   setQuery,
@@ -121,7 +118,6 @@ const TopNComponent: React.FC<Props> = ({
             headerChildren={headerChildren}
             dataViewSpec={indexPattern}
             onlyField={field}
-            paddingSize={paddingSize}
             query={query}
             queryType="topN"
             setQuery={setQuery}
@@ -137,7 +133,6 @@ const TopNComponent: React.FC<Props> = ({
             filters={applicableFilters}
             headerChildren={headerChildren}
             onlyField={field}
-            paddingSize={paddingSize}
             setAbsoluteRangeDatePickerTarget={setAbsoluteRangeDatePickerTarget}
             hideQueryToggle
           />

@@ -40,12 +40,11 @@ export const TopValuesPopover = React.memo(() => {
       attachToAnchor={false}
     >
       <StatefulTopN
+        browserFields={browserFields}
         field={data.fieldName}
-        showLegend
+        dataViewSpec={sourcererDataView}
         scopeId={data.scopeId}
         toggleTopN={onClose}
-        dataViewSpec={sourcererDataView}
-        browserFields={browserFields}
       />
     </EuiWrappingPopover>
   );

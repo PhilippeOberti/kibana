@@ -6,7 +6,7 @@
  */
 
 import React, { memo } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { i18n } from '@kbn/i18n';
 import { useDarkMode } from '@kbn/kibana-react-plugin/public';
 import { useSymbolIDs } from './use_symbol_ids';

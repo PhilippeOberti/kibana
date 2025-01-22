@@ -8,7 +8,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { PanelContent } from './content';
-import { ThemeProvider } from 'styled-components';
 import { getMockTheme } from '../../../common/lib/kibana/kibana_react.mock';
 import { TestProviders } from '../../../common/mock';
 import { useRuleDetails } from '../hooks/use_rule_details';
@@ -20,15 +19,15 @@ import {
 } from '../../../detection_engine/rule_management_ui/components/rules_table/__mocks__/mock';
 import type { RuleResponse } from '../../../../common/api/detection_engine';
 import {
-  BODY_TEST_ID,
-  ABOUT_HEADER_TEST_ID,
   ABOUT_CONTENT_TEST_ID,
-  DEFINITION_HEADER_TEST_ID,
-  DEFINITION_CONTENT_TEST_ID,
-  SCHEDULE_HEADER_TEST_ID,
-  SCHEDULE_CONTENT_TEST_ID,
-  ACTIONS_HEADER_TEST_ID,
+  ABOUT_HEADER_TEST_ID,
   ACTIONS_CONTENT_TEST_ID,
+  ACTIONS_HEADER_TEST_ID,
+  BODY_TEST_ID,
+  DEFINITION_CONTENT_TEST_ID,
+  DEFINITION_HEADER_TEST_ID,
+  SCHEDULE_CONTENT_TEST_ID,
+  SCHEDULE_HEADER_TEST_ID,
 } from './test_ids';
 
 const mockUseRuleDetails = useRuleDetails as jest.Mock;
@@ -43,9 +42,7 @@ const rule = { name: 'rule name', description: 'rule description' } as RuleRespo
 const renderRulePreview = () =>
   render(
     <TestProviders>
-      <ThemeProvider theme={mockTheme}>
-        <PanelContent rule={rule} />
-      </ThemeProvider>
+      <PanelContent rule={rule} />
     </TestProviders>
   );
 

@@ -7,21 +7,18 @@
 
 import React from 'react';
 import { i18n } from '@kbn/i18n';
-import styled from 'styled-components';
-import { EuiCodeBlock, EuiFlexGroup, EuiTitle, EuiSpacer, EuiText } from '@elastic/eui';
-
-const StyledEuiCodeBlock = styled(EuiCodeBlock)`
-  align-self: flex-start;
-  display: inline-block;
-`;
-
-const StyledEuiFlexGroup = styled(EuiFlexGroup)`
-  max-width: 600px;
-  margin: 60px auto 0;
-`;
+import css from '@emotion/react';
+import { EuiCodeBlock, EuiFlexGroup, EuiSpacer, EuiText, EuiTitle } from '@elastic/eui';
 
 export const ResolverNoProcessEvents = () => (
-  <StyledEuiFlexGroup data-test-subj="resolver:no-process-events" direction="column">
+  <EuiFlexGroup
+    data-test-subj="resolver:no-process-events"
+    direction="column"
+    css={css`
+      max-width: 600px;
+      margin: 60px auto 0;
+    `}
+  >
     <EuiTitle>
       <h4>
         {i18n.translate('xpack.securitySolution.resolver.noProcessEvents.title', {
@@ -56,8 +53,16 @@ export const ResolverNoProcessEvents = () => (
       })}
     </EuiText>
     <EuiSpacer size="m" />
-    <StyledEuiCodeBlock language="html" paddingSize="s" isCopyable>
+    <EuiCodeBlock
+      language="html"
+      paddingSize="s"
+      isCopyable
+      css={css`
+        align-self: flex-start;
+        display: inline-block;
+      `}
+    >
       {'event.category: "process"'}
-    </StyledEuiCodeBlock>
-  </StyledEuiFlexGroup>
+    </EuiCodeBlock>
+  </EuiFlexGroup>
 );

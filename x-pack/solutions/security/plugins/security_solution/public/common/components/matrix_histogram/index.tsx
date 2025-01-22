@@ -5,7 +5,7 @@
  * 2.0.
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { EuiFlexGroup, EuiFlexItem, EuiSelect, EuiSpacer } from '@elastic/eui';
@@ -16,9 +16,9 @@ import { HeaderSection } from '../header_section';
 import { Panel } from '../panel';
 
 import type {
+  MatrixHistogramConfigs,
   MatrixHistogramOption,
   MatrixHistogramQueryProps,
-  MatrixHistogramConfigs,
 } from './types';
 import type { GlobalTimeArgs } from '../../containers/use_global_time';
 import { HoverVisibilityContainer } from '../hover_visibility_container';
@@ -74,7 +74,6 @@ export const MatrixHistogramComponent: React.FC<MatrixHistogramComponentProps> =
   id,
   isPtrIncluded,
   lensAttributes,
-  paddingSize = 'm',
   panelHeight = DEFAULT_PANEL_HEIGHT,
   setQuery,
   showSpacer = true,
@@ -186,7 +185,7 @@ export const MatrixHistogramComponent: React.FC<MatrixHistogramComponentProps> =
         <HistogramPanel
           data-test-subj={`${id}Panel`}
           height={toggleStatus ? panelHeight : undefined}
-          paddingSize={paddingSize}
+          paddingSize="m"
         >
           <HeaderSection
             id={id}

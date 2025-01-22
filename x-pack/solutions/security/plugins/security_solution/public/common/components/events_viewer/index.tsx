@@ -14,10 +14,9 @@ import {
   getEventIdToDataMapping,
 } from '@kbn/securitysolution-data-table';
 import { AlertConsumers } from '@kbn/rule-data-utils';
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ConnectedProps } from 'react-redux';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { ThemeContext } from 'styled-components';
 import type { Filter } from '@kbn/es-query';
 import type {
   ColumnHeaderOptions,
@@ -28,8 +27,7 @@ import type {
 } from '@kbn/timelines-plugin/common';
 import { isEmpty } from 'lodash';
 import { getEsQueryConfig } from '@kbn/data-plugin/common';
-import type { EuiTheme } from '@kbn/kibana-react-plugin/common';
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, useEuiTheme } from '@elastic/eui';
 import type { RunTimeMappings } from '@kbn/timelines-plugin/common/search_strategy';
 import { InspectButton } from '../inspect';
 import type {
@@ -112,7 +110,7 @@ const StatefulEventsViewerComponent: React.FC<EventsViewerProps & PropsFromRedux
   unit = defaultUnit,
 }) => {
   const dispatch = useDispatch();
-  const theme: EuiTheme = useContext(ThemeContext);
+  const { euiTheme } = useEuiTheme();
   const tableContext = useMemo(() => ({ tableId }), [tableId]);
 
   const {
@@ -430,7 +428,7 @@ const StatefulEventsViewerComponent: React.FC<EventsViewerProps & PropsFromRedux
         sort,
         browserFields,
         onSelectPage,
-        theme,
+        theme: euiTheme,
         setEventsLoading,
         setEventsDeleted,
         pageSize: itemsPerPage,
@@ -450,7 +448,7 @@ const StatefulEventsViewerComponent: React.FC<EventsViewerProps & PropsFromRedux
     sort,
     browserFields,
     onSelectPage,
-    theme,
+    euiTheme,
     setEventsLoading,
     setEventsDeleted,
     itemsPerPage,
@@ -511,9 +509,9 @@ const StatefulEventsViewerComponent: React.FC<EventsViewerProps & PropsFromRedux
               <div
                 css={css`
                   position: absolute;
-                  top: ${theme.eui.euiSizeXS};
-                  z-index: ${theme.eui.euiZLevel1 - 3};
-                  right: ${nonDeletedEvents.length > 0 ? '72px' : theme.eui.euiSizeXS};
+                  top: ${euiTheme.size.xs};
+                  z-index: ${(euiTheme.levels.flyout as number) - 3};
+                  right: ${nonDeletedEvents.length > 0 ? '72px' : euiTheme.size.xs};
                 `}
               >
                 <EuiFlexGroup data-test-subj="events-viewer-updated" gutterSize="m">

@@ -8,8 +8,7 @@
 import type { IconType, ToolTipPositions } from '@elastic/eui';
 import { EuiBadge, EuiToolTip } from '@elastic/eui';
 import React, { useCallback, useMemo } from 'react';
-import styled from '@emotion/styled';
-
+import { css } from '@emotion/react';
 import type { DraggableWrapperProps } from '../drag_and_drop/draggable_wrapper';
 import { DraggableWrapper } from '../drag_and_drop/draggable_wrapper';
 import { escapeDataProviderId } from '../drag_and_drop/helpers';
@@ -17,7 +16,7 @@ import { getEmptyStringTag } from '../empty_value';
 import type { DataProvider } from '../../../timelines/components/timeline/data_providers/data_provider';
 import { IS_OPERATOR } from '../../../timelines/components/timeline/data_providers/data_provider';
 
-export interface DefaultDraggableType {
+interface DefaultDraggableType {
   hideTopN?: boolean;
   id: string;
   fieldType?: string;
@@ -58,7 +57,7 @@ export const getDefaultWhenTooltipIsUnspecified = ({
 /**
  * Renders the content of the draggable, wrapped in a tooltip
  */
-export const Content = React.memo<{
+const Content = React.memo<{
   children?: React.ReactNode;
   field: string;
   tooltipContent?: React.ReactNode;
@@ -77,7 +76,6 @@ export const Content = React.memo<{
     <>{children ? children : value}</>
   )
 );
-
 Content.displayName = 'Content';
 
 /**
@@ -157,16 +155,9 @@ export const DefaultDraggable = React.memo<DefaultDraggableType>(
     );
   }
 );
-
 DefaultDraggable.displayName = 'DefaultDraggable';
 
-export const Badge = styled(EuiBadge)`
-  vertical-align: top;
-`;
-
-Badge.displayName = 'Badge';
-
-export type BadgeDraggableType = Omit<DefaultDraggableType, 'id'> & {
+type BadgeDraggableType = Omit<DefaultDraggableType, 'id'> & {
   contextId: string;
   eventId: string;
   iconType?: IconType;
@@ -186,39 +177,44 @@ export type BadgeDraggableType = Omit<DefaultDraggableType, 'id'> & {
  * prevent a tooltip from being displayed, or pass arbitrary content
  * @param queryValue - defaults to `value`, this query overrides the `queryMatch.value` used by the `DataProvider` that represents the data
  */
-const DraggableBadgeComponent: React.FC<BadgeDraggableType> = ({
-  contextId,
-  eventId,
-  field,
-  value,
-  iconType,
-  isAggregatable,
-  fieldType,
-  name,
-  children,
-  scopeId,
-  tooltipContent,
-  queryValue,
-}) =>
-  value != null ? (
-    <DefaultDraggable
-      id={`draggable-badge-default-draggable-${contextId}-${eventId}-${field}-${value}`}
-      isAggregatable={isAggregatable}
-      fieldType={fieldType}
-      field={field}
-      name={name}
-      value={value}
-      scopeId={scopeId}
-      tooltipContent={tooltipContent}
-      queryValue={queryValue}
-    >
-      <Badge iconType={iconType} color="hollow" title="">
-        {children ? children : value !== '' ? value : getEmptyStringTag()}
-      </Badge>
-    </DefaultDraggable>
-  ) : null;
-
-DraggableBadgeComponent.displayName = 'DraggableBadgeComponent';
-
-export const DraggableBadge = React.memo(DraggableBadgeComponent);
+export const DraggableBadge = React.memo<BadgeDraggableType>(
+  ({
+    contextId,
+    eventId,
+    field,
+    value,
+    iconType,
+    isAggregatable,
+    fieldType,
+    name,
+    children,
+    scopeId,
+    tooltipContent,
+    queryValue,
+  }) =>
+    value != null ? (
+      <DefaultDraggable
+        id={`draggable-badge-default-draggable-${contextId}-${eventId}-${field}-${value}`}
+        isAggregatable={isAggregatable}
+        fieldType={fieldType}
+        field={field}
+        name={name}
+        value={value}
+        scopeId={scopeId}
+        tooltipContent={tooltipContent}
+        queryValue={queryValue}
+      >
+        <EuiBadge
+          iconType={iconType}
+          color="hollow"
+          title=""
+          css={css`
+            vertical-align: top;
+          `}
+        >
+          {children ? children : value !== '' ? value : getEmptyStringTag()}
+        </EuiBadge>
+      </DefaultDraggable>
+    ) : null
+);
 DraggableBadge.displayName = 'DraggableBadge';

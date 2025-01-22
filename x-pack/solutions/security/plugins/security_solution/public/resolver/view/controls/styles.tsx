@@ -4,14 +4,15 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
+
 import type { EuiRangeProps } from '@elastic/eui';
 import {
-  EuiRange,
   EuiButtonIcon,
-  EuiDescriptionListTitle,
   EuiDescriptionListDescription,
+  EuiDescriptionListTitle,
+  EuiRange,
 } from '@elastic/eui';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const COLUMN_WIDTH = ['fit-content(10em)', 'auto'];
 
@@ -22,6 +23,7 @@ export const StyledEuiRange = styled(EuiRange)<EuiRangeProps>`
     transform: rotate(90deg);
   }
 `;
+
 export interface StyledGraphControlProps {
   $backgroundColor: string;
   $iconColor: string;
@@ -88,6 +90,7 @@ export const StyledGraphControls = styled.div<Partial<StyledGraphControlProps>>`
       }
     }
   }
+
   .panning-controls {
     text-align: center;
   }

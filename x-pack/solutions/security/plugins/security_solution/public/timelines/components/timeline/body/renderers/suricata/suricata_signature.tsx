@@ -8,12 +8,10 @@
 import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiToolTip } from '@elastic/eui';
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-
 import type { DraggableWrapperProps } from '../../../../../../common/components/drag_and_drop/draggable_wrapper';
 import { DraggableWrapper } from '../../../../../../common/components/drag_and_drop/draggable_wrapper';
 import { escapeDataProviderId } from '../../../../../../common/components/drag_and_drop/helpers';
 import { GoogleLink } from '../../../../../../common/components/links';
-
 import { TokensFlexItem } from '../helpers';
 import { getBeginningTokens } from './suricata_links';
 import { DefaultDraggable } from '../../../../../../common/components/draggables';
