@@ -4,7 +4,7 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import type { History } from '@kbn/expandable-flyout/src/store/state';
 
 /**
  * Helper function that reverses the history array,
@@ -15,9 +15,9 @@ export const getProcessedHistory = ({
   history,
   maxCount,
 }: {
-  history: FlyoutPanelProps[];
+  history: History[];
   maxCount: number;
-}): FlyoutPanelProps[] => {
+}): History[] => {
   // Step 1: reverse history so the most recent is first
   const reversedHistory = history.slice().reverse();
 

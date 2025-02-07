@@ -6,24 +6,33 @@
  */
 
 import type { FC } from 'react';
-import React, { memo, useMemo, useCallback } from 'react';
-import { EuiContextMenuItem, type EuiIconProps } from '@elastic/eui';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import React, { memo, useCallback, useMemo } from 'react';
+import { css } from '@emotion/react';
+import {
+  EuiContextMenuItem,
+  EuiFlexGroup,
+  EuiFlexItem,
+  type EuiIconProps,
+  useEuiTheme,
+} from '@elastic/eui';
 import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import type { History } from '@kbn/expandable-flyout/src/store/state';
+import { FormattedRelativePreferenceDate } from '../../../common/components/formatted_date';
 import { DocumentDetailsRightPanelKey } from '../../document_details/shared/constants/panel_keys';
 import { useBasicDataFromDetailsData } from '../../document_details/shared/hooks/use_basic_data_from_details_data';
 import { useEventDetails } from '../../document_details/shared/hooks/use_event_details';
-import { getField, getAlertTitle, getEventTitle } from '../../document_details/shared/utils';
+import { getAlertTitle, getEventTitle, getField } from '../../document_details/shared/utils';
 import { RulePanelKey } from '../../rule_details/right';
 import { NetworkPanelKey } from '../../network_details';
 import { useRuleDetails } from '../../rule_details/hooks/use_rule_details';
 import {
   DOCUMENT_DETAILS_HISTORY_ROW_TEST_ID,
-  RULE_HISTORY_ROW_TEST_ID,
   GENERIC_HISTORY_ROW_TEST_ID,
   HOST_HISTORY_ROW_TEST_ID,
-  USER_HISTORY_ROW_TEST_ID,
   NETWORK_HISTORY_ROW_TEST_ID,
+  RULE_HISTORY_ROW_TEST_ID,
+  USER_HISTORY_ROW_TEST_ID,
 } from './test_ids';
 import { HostPanelKey, UserPanelKey } from '../../entity_details/shared/constants';
 
@@ -31,7 +40,7 @@ export interface FlyoutHistoryRowProps {
   /**
    * Flyout item to display
    */
-  item: FlyoutPanelProps;
+  item: History;
   /**
    * Index of the flyout in the list
    */
@@ -42,7 +51,7 @@ export interface FlyoutHistoryRowProps {
  * Row item for a flyout history row
  */
 export const FlyoutHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }) => {
-  switch (item.id) {
+  switch (item.panel.id) {
     case DocumentDetailsRightPanelKey:
       return <DocumentDetailsHistoryRow item={item} index={index} />;
     case RulePanelKey:
@@ -50,9 +59,10 @@ export const FlyoutHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }
     case HostPanelKey:
       return (
         <GenericHistoryRow
-          item={item}
+          panel={item.panel}
+          lastOpen={item.lastOpen}
           index={index}
-          title={String(item?.params?.hostName)}
+          title={String(item.panel.params?.hostName)}
           icon={'storage'}
           name={'Host'}
           dataTestSubj={HOST_HISTORY_ROW_TEST_ID}
@@ -61,9 +71,10 @@ export const FlyoutHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }
     case UserPanelKey:
       return (
         <GenericHistoryRow
-          item={item}
+          panel={item.panel}
+          lastOpen={item.lastOpen}
           index={index}
-          title={String(item?.params?.userName)}
+          title={String(item.panel.params?.userName)}
           icon={'user'}
           name={'User'}
           dataTestSubj={USER_HISTORY_ROW_TEST_ID}
@@ -72,9 +83,10 @@ export const FlyoutHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }
     case NetworkPanelKey:
       return (
         <GenericHistoryRow
-          item={item}
+          panel={item.panel}
+          lastOpen={item.lastOpen}
           index={index}
-          title={String(item?.params?.ip)}
+          title={String(item?.panel?.params?.ip)}
           icon={'globe'}
           name={'Network'}
           dataTestSubj={NETWORK_HISTORY_ROW_TEST_ID}
@@ -90,8 +102,8 @@ export const FlyoutHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }
  */
 export const DocumentDetailsHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }) => {
   const { dataFormattedForFieldBrowser, getFieldsData } = useEventDetails({
-    eventId: String(item?.params?.id),
-    indexName: String(item?.params?.indexName),
+    eventId: String(item?.panel?.params?.id),
+    indexName: String(item?.panel?.params?.indexName),
   });
   const { ruleName, isAlert } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
   const eventKind = useMemo(() => getField(getFieldsData('event.kind')), [getFieldsData]);
@@ -107,7 +119,8 @@ export const DocumentDetailsHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item
 
   return (
     <GenericHistoryRow
-      item={item}
+      panel={item.panel}
+      lastOpen={item.lastOpen}
       index={index}
       title={title}
       icon={isAlert ? 'warning' : 'analyzeEvent'}
@@ -121,12 +134,13 @@ export const DocumentDetailsHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item
  * Row item for a rule details flyout
  */
 export const RuleHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }) => {
-  const ruleId = String(item?.params?.ruleId);
+  const ruleId = String(item?.panel?.params?.ruleId);
   const { rule } = useRuleDetails({ ruleId });
 
   return (
     <GenericHistoryRow
-      item={item}
+      panel={item.panel}
+      lastOpen={item.lastOpen}
       index={index}
       title={rule?.name ?? ''}
       icon={'indexSettings'}
@@ -137,6 +151,18 @@ export const RuleHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }) 
 });
 
 interface GenericHistoryRowProps extends FlyoutHistoryRowProps {
+  /**
+   *
+   */
+  panel: FlyoutPanelProps;
+  /**
+   *
+   */
+  lastOpen: number;
+  /**
+   *
+   */
+  index: number;
   /**
    * Icon to display
    */
@@ -159,21 +185,45 @@ interface GenericHistoryRowProps extends FlyoutHistoryRowProps {
  * Row item for a generic history row where the title is accessible in flyout params
  */
 export const GenericHistoryRow: FC<GenericHistoryRowProps> = memo(
-  ({ item, index, title, icon, name, dataTestSubj }) => {
+  ({ panel, lastOpen, index, title, icon, name, dataTestSubj }) => {
+    const { euiTheme } = useEuiTheme();
     const { openFlyout } = useExpandableFlyoutApi();
     const onClick = useCallback(() => {
-      openFlyout({ right: item });
-    }, [openFlyout, item]);
+      openFlyout({ right: panel });
+    }, [openFlyout, panel]);
 
     return (
       <EuiContextMenuItem
         key={index}
         onClick={onClick}
         icon={icon}
+        css={css`
+          align-items: flex-start;
+        `}
         data-test-subj={`${index}-${dataTestSubj ?? GENERIC_HISTORY_ROW_TEST_ID}`}
       >
-        <i>{`${name}: `}</i>
-        {title}
+        <EuiFlexGroup direction="column" gutterSize="xs">
+          <EuiFlexItem
+            css={css`
+              flex-direction: row;
+            `}
+          >
+            <i>{`${name}: `}</i>
+            {title}
+          </EuiFlexItem>
+          <EuiFlexItem
+            css={css`
+              flex-direction: row;
+              justify-content: flex-end;
+              color: ${euiTheme.colors.textSubdued};
+              font-size: ${euiTheme.font.scale.xs};
+              font-weight: ${euiTheme.font.weight.semiBold};
+              font-style: italic;
+            `}
+          >
+            {'last open'} <FormattedRelativePreferenceDate value={lastOpen} />
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </EuiContextMenuItem>
     );
   }

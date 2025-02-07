@@ -7,6 +7,17 @@
 
 import { FlyoutPanelProps } from '../..';
 
+export interface History {
+  /**
+   * Time at which the flyout was opened
+   */
+  lastOpen: number;
+  /**
+   * Panel that was opened
+   */
+  panel: FlyoutPanelProps;
+}
+
 export interface FlyoutPanels {
   /**
    * Panel to render in the left section
@@ -20,10 +31,10 @@ export interface FlyoutPanels {
    * Panels to render in the preview section
    */
   preview: FlyoutPanelProps[] | undefined;
-  /*
+  /**
    * History of the right panels that were opened
    */
-  history: FlyoutPanelProps[];
+  history: History[];
 }
 
 export interface PanelsState {
