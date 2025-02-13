@@ -6,13 +6,29 @@
  */
 
 import { css } from '@emotion/react';
-import React from 'react';
-import { euiThemeVars } from '@kbn/ui-theme';
+import React, { memo } from 'react';
 import { FormattedMessage } from '@kbn/i18n-react';
+import { useEuiTheme } from '@elastic/eui';
 import { DefaultFieldRenderer } from '../../../../../timelines/components/field_renderers/default_renderer';
 import { getEmptyTagValue } from '../../../../../common/components/empty_value';
 import type { BasicEntityData, EntityTableColumns } from './types';
 import { hasPreview, PreviewLink } from '../../../../shared/components/preview_link';
+
+const LabelComponent = memo(({ label, field }: { label: string; field: string | undefined }) => {
+  const { euiTheme } = useEuiTheme();
+  return (
+    <span
+      data-test-subj="entity-table-label"
+      css={css`
+        font-weight: ${euiTheme.font.weight.medium};
+        color: ${euiTheme.colors.textHeading};
+      `}
+    >
+      {label ?? field}
+    </span>
+  );
+});
+LabelComponent.displayName = 'LabelComponent';
 
 export const getEntityTableColumns = <T extends BasicEntityData>(
   contextID: string,
@@ -27,17 +43,7 @@ export const getEntityTableColumns = <T extends BasicEntityData>(
       />
     ),
     field: 'label',
-    render: (label: string, { field }) => (
-      <span
-        data-test-subj="entity-table-label"
-        css={css`
-          font-weight: ${euiThemeVars.euiFontWeightMedium};
-          color: ${euiThemeVars.euiTitleColor};
-        `}
-      >
-        {label ?? field}
-      </span>
-    ),
+    render: (label: string, { field }) => <LabelComponent label={label} field={field} />,
   },
   {
     name: (

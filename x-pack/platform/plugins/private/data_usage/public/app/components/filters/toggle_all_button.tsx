@@ -6,14 +6,8 @@
  */
 
 import { css } from '@emotion/react';
-import { euiThemeVars } from '@kbn/ui-theme';
 import React, { memo } from 'react';
-import { EuiButtonEmpty, EuiButtonEmptyProps } from '@elastic/eui';
-
-const EuiButtonEmptyCss = css`
-  border-top: ${euiThemeVars.euiBorderThin};
-  border-radius: 0;
-`;
+import { EuiButtonEmpty, EuiButtonEmptyProps, useEuiTheme } from '@elastic/eui';
 
 interface ToggleAllButtonProps {
   'data-test-subj'?: string;
@@ -26,14 +20,18 @@ interface ToggleAllButtonProps {
 
 export const ToggleAllButton = memo<ToggleAllButtonProps>(
   ({ color, 'data-test-subj': dataTestSubj, icon, isDisabled, label, onClick }) => {
+    const { euiTheme } = useEuiTheme();
     return (
       <EuiButtonEmpty
         color={color}
-        css={EuiButtonEmptyCss}
         data-test-subj={dataTestSubj}
         iconType={icon}
         isDisabled={isDisabled}
         onClick={onClick}
+        css={css`
+          border-top: ${euiTheme.border.thin};
+          border-radius: 0;
+        `}
       >
         {label}
       </EuiButtonEmpty>

@@ -6,18 +6,18 @@
  */
 import React, { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage } from '@kbn/i18n-react';
-import { euiThemeVars } from '@kbn/ui-theme';
 import {
-  EuiLink,
-  EuiPopover,
-  EuiToolTip,
-  EuiText,
-  EuiTextColor,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiLink,
+  EuiPopover,
+  EuiText,
+  EuiTextColor,
+  EuiToolTip,
+  useEuiTheme,
 } from '@elastic/eui';
 import styled from 'styled-components';
-import { SecurityCellActions, CellActionsMode, SecurityCellActionsTrigger } from '../cell_actions';
+import { CellActionsMode, SecurityCellActions, SecurityCellActionsTrigger } from '../cell_actions';
 import { escapeDataProviderId } from '../drag_and_drop/helpers';
 import { defaultToEmptyTag, getEmptyTagValue } from '../empty_value';
 import { MoreRowItems } from '../page';
@@ -98,6 +98,7 @@ export const RowItemOverflowComponent: React.FC<RowItemOverflowProps> = ({
   overflowIndexStart = 5,
   maxOverflowItems = 5,
 }) => {
+  const { euiTheme } = useEuiTheme();
   const maxVisibleValues = useMemo(
     () => values.slice(0, maxOverflowItems + 1),
     [values, maxOverflowItems]
@@ -117,7 +118,7 @@ export const RowItemOverflowComponent: React.FC<RowItemOverflowProps> = ({
           </EuiText>
           {values.length > overflowIndexStart + maxOverflowItems && (
             <EuiFlexGroup
-              css={{ paddingTop: euiThemeVars.euiSizeM }}
+              css={{ paddingTop: euiTheme.size.m }}
               data-test-subj="popover-additional-overflow"
             >
               <EuiFlexItem>

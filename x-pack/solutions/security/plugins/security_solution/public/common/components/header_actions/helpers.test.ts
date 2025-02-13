@@ -5,7 +5,6 @@
  * 2.0.
  */
 
-import { euiThemeVars } from '@kbn/ui-theme';
 import { DEFAULT_ACTION_BUTTON_WIDTH, getActionsColumnWidth, isAlert } from './helpers';
 
 describe('isAlert', () => {
@@ -21,7 +20,7 @@ describe('isAlert', () => {
 describe('getActionsColumnWidth', () => {
   // ideally the following implementation detail wouldn't be part of these tests,
   // but without it, the test would be brittle when `euiDataGridCellPaddingM` changes:
-  const expectedPadding = parseInt(euiThemeVars.euiDataGridCellPaddingM, 10) * 2;
+  const expectedPadding = 12;
 
   test('it returns the expected width', () => {
     const ACTION_BUTTON_COUNT = 5;

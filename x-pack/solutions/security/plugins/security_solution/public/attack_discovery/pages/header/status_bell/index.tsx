@@ -6,10 +6,9 @@
  */
 
 import React from 'react';
-import { EuiFlexItem, EuiIconTip } from '@elastic/eui';
+import { EuiFlexItem, EuiIconTip, useEuiTheme } from '@elastic/eui';
 import { css } from '@emotion/react';
 import type { AttackDiscoveryStats } from '@kbn/elastic-assistant-common';
-import { euiThemeVars } from '@kbn/ui-theme';
 import * as i18n from './translations';
 
 interface Props {
@@ -17,11 +16,12 @@ interface Props {
 }
 
 export const StatusBell: React.FC<Props> = ({ stats }) => {
+  const { euiTheme } = useEuiTheme();
   if (stats && stats.newConnectorResultsCount > 0) {
     return (
       <EuiFlexItem grow={false}>
         <EuiIconTip
-          color={euiThemeVars.euiColorAccentText}
+          color={euiTheme.colors.textAccent}
           type="bell"
           content={i18n.ATTACK_DISCOVERY_STATS_MESSAGE(stats)}
           position="bottom"

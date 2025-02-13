@@ -6,26 +6,26 @@
  */
 
 import type { FC, PropsWithChildren } from 'react';
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { css } from '@emotion/css';
-import { euiThemeVars } from '@kbn/ui-theme';
+import type { EuiFlyoutProps, EuiTabbedContentProps, EuiTabbedContentTab } from '@elastic/eui';
 import {
   EuiButtonEmpty,
-  EuiTitle,
-  EuiFlyout,
-  EuiFlyoutHeader,
-  EuiFlyoutBody,
-  EuiFlyoutFooter,
-  EuiTabbedContent,
-  EuiSpacer,
   EuiFlexGroup,
   EuiFlexItem,
-  useGeneratedHtmlId,
+  EuiFlyout,
+  EuiFlyoutBody,
+  EuiFlyoutFooter,
+  EuiFlyoutHeader,
   EuiSkeletonLoading,
-  EuiSkeletonTitle,
   EuiSkeletonText,
+  EuiSkeletonTitle,
+  EuiSpacer,
+  EuiTabbedContent,
+  EuiTitle,
+  useEuiTheme,
+  useGeneratedHtmlId,
 } from '@elastic/eui';
-import type { EuiTabbedContentTab, EuiTabbedContentProps, EuiFlyoutProps } from '@elastic/eui';
 
 import { RuleTranslationResult } from '../../../../../common/siem_migrations/constants';
 import type { RuleMigration } from '../../../../../common/siem_migrations/model/rule_migration.gen';
@@ -61,13 +61,18 @@ const ScrollableFlyoutTabbedContent = (props: EuiTabbedContentProps) => (
   </EuiFlexGroup>
 );
 
-const tabPaddingClassName = css`
-  padding: 0 ${euiThemeVars.euiSizeM} ${euiThemeVars.euiSizeXL} ${euiThemeVars.euiSizeM};
-`;
-
-export const TabContentPadding: FC<PropsWithChildren<unknown>> = ({ children }) => (
-  <div className={tabPaddingClassName}>{children}</div>
-);
+export const TabContentPadding: FC<PropsWithChildren<unknown>> = ({ children }) => {
+  const { euiTheme } = useEuiTheme();
+  return (
+    <div
+      css={css`
+        padding: 0 ${euiTheme.size.m} ${euiTheme.size.xl} ${euiTheme.size.m};
+      `}
+    >
+      {children}
+    </div>
+  );
+};
 
 interface MigrationRuleDetailsFlyoutProps {
   ruleMigration: RuleMigration;

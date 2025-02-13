@@ -6,15 +6,9 @@
  */
 
 import type { EuiThemeComputed } from '@elastic/eui';
-import { useEuiTheme } from '@elastic/eui';
+import { euiPaletteColorBlindBehindText, useEuiTheme } from '@elastic/eui';
 import type { Severity } from '@kbn/securitysolution-io-ts-alerting-types';
 import { useMemo } from 'react';
-import {
-  RISK_COLOR_CRITICAL,
-  RISK_COLOR_HIGH,
-  RISK_COLOR_LOW,
-  RISK_COLOR_MEDIUM,
-} from '../constants';
 
 // Temporary solution until we have a decision for color palette https://github.com/elastic/kibana/issues/203387
 export const SEVERITY_COLOR = {
@@ -30,11 +24,12 @@ const isAmsterdam = (euiThemeName: string) => {
 
 export const getRiskSeverityColors = (euiTheme: EuiThemeComputed) => {
   if (euiTheme && isAmsterdam(euiTheme.themeName)) {
+    const colorBlindBehindText = euiPaletteColorBlindBehindText();
     return {
-      low: RISK_COLOR_LOW,
-      medium: RISK_COLOR_MEDIUM,
-      high: RISK_COLOR_HIGH,
-      critical: RISK_COLOR_CRITICAL,
+      low: euiTheme.colors.vis.euiColorVis0,
+      medium: colorBlindBehindText[5],
+      high: colorBlindBehindText[9],
+      critical: euiTheme.colors.danger,
     };
   }
   return SEVERITY_COLOR;
