@@ -28,35 +28,39 @@ import {
 import { initialPanelsState, initialUiState } from './state';
 
 export const panelsReducer = createReducer(initialPanelsState, (builder) => {
-  builder.addCase(openPanelsAction, (state, { payload: { preview, left, right, id } }) => {
-    if (id in state.byId) {
-      state.byId[id].right = right;
-      state.byId[id].left = left;
-      state.byId[id].preview = preview ? [preview] : undefined;
-      if (right) {
-        state.byId[id].history?.push({
-          lastOpen: Date.now(),
-          panel: right,
-        });
+  builder.addCase(
+    openPanelsAction,
+    (state, { payload: { preview, left, right, id, addToHistory } }) => {
+      if (id in state.byId) {
+        state.byId[id].right = right;
+        state.byId[id].left = left;
+        state.byId[id].preview = preview ? [preview] : undefined;
+        if (addToHistory && right) {
+          state.byId[id].history?.push({
+            lastOpen: Date.now(),
+            panel: right,
+          });
+        }
+      } else {
+        state.byId[id] = {
+          left,
+          right,
+          preview: preview ? [preview] : undefined,
+          history:
+            addToHistory && right
+              ? [
+                  {
+                    lastOpen: Date.now(),
+                    panel: right,
+                  },
+                ]
+              : [],
+        };
       }
-    } else {
-      state.byId[id] = {
-        left,
-        right,
-        preview: preview ? [preview] : undefined,
-        history: right
-          ? [
-              {
-                lastOpen: Date.now(),
-                panel: right,
-              },
-            ]
-          : [],
-      };
-    }
 
-    state.needsSync = true;
-  });
+      state.needsSync = true;
+    }
+  );
 
   builder.addCase(openLeftPanelAction, (state, { payload: { left, id } }) => {
     if (id in state.byId) {
@@ -73,38 +77,89 @@ export const panelsReducer = createReducer(initialPanelsState, (builder) => {
     state.needsSync = true;
   });
 
-  builder.addCase(openRightPanelAction, (state, { payload: { right, id } }) => {
+  builder.addCase(openRightPanelAction, (state, { payload: { right, id, addToHistory } }) => {
     if (id in state.byId) {
       state.byId[id].right = right;
+      if (addToHistory) {
+        state.byId[id].history?.push({
+          lastOpen: Date.now(),
+          panel: right,
+        });
+      }
     } else {
       state.byId[id] = {
         right,
         left: undefined,
         preview: undefined,
-        history: [],
+        history: addToHistory
+          ? [
+              {
+                lastOpen: Date.now(),
+                panel: right,
+              },
+            ]
+          : [],
       };
     }
 
     state.needsSync = true;
   });
 
-  builder.addCase(openPreviewPanelAction, (state, { payload: { preview, id } }) => {
+  builder.addCase(openPreviewPanelAction, (state, { payload: { preview, id, addToHistory } }) => {
+    let updatedId: string;
+    switch (preview.id) {
+      case 'document-details-preview':
+        updatedId = 'document-details-right';
+        break;
+      case 'user-preview-panel':
+        updatedId = 'user-panel';
+        break;
+      case 'host-preview-panel':
+        updatedId = 'host-panel';
+        break;
+      case 'network-preview':
+        updatedId = 'network-details';
+        break;
+      default:
+        updatedId = '';
+    }
+    const updatedPreview = { ...preview, id: updatedId };
+
     if (id in state.byId) {
       if (state.byId[id].preview) {
         const previewIdenticalToLastOne = deepEqual(preview, state.byId[id].preview?.at(-1));
         // Only append preview when it does not match the last item in state.data.byId[id].preview
         if (!previewIdenticalToLastOne) {
           state.byId[id].preview?.push(preview);
+          if (addToHistory) {
+            state.byId[id].history?.push({
+              lastOpen: Date.now(),
+              panel: updatedPreview,
+            });
+          }
         }
       } else {
         state.byId[id].preview = preview ? [preview] : undefined;
+        if (addToHistory) {
+          state.byId[id].history?.push({
+            lastOpen: Date.now(),
+            panel: updatedPreview,
+          });
+        }
       }
     } else {
       state.byId[id] = {
         right: undefined,
         left: undefined,
         preview: preview ? [preview] : undefined,
-        history: [],
+        history: addToHistory
+          ? [
+              {
+                lastOpen: Date.now(),
+                panel: updatedPreview,
+              },
+            ]
+          : [],
       };
     }
 

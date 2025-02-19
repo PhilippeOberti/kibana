@@ -12,9 +12,9 @@ import { FlowTargetSourceDest } from '../../../../common/search_strategy/securit
 import { getEcsField } from '../../document_details/right/components/table_field_name_cell';
 import {
   HOST_NAME_FIELD_NAME,
-  USER_NAME_FIELD_NAME,
-  SIGNAL_RULE_NAME_FIELD_NAME,
   IP_FIELD_TYPE,
+  SIGNAL_RULE_NAME_FIELD_NAME,
+  USER_NAME_FIELD_NAME,
 } from '../../../timelines/components/timeline/body/renderers/constants';
 import { useKibana } from '../../../common/lib/kibana';
 import { FLYOUT_PREVIEW_LINK_TEST_ID } from './test_ids';
@@ -22,8 +22,8 @@ import { HostPreviewPanelKey } from '../../entity_details/host_right';
 import { HOST_PREVIEW_BANNER } from '../../document_details/right/components/host_entity_overview';
 import { UserPreviewPanelKey } from '../../entity_details/user_right';
 import { USER_PREVIEW_BANNER } from '../../document_details/right/components/user_entity_overview';
-import { NetworkPreviewPanelKey, NETWORK_PREVIEW_BANNER } from '../../network_details';
-import { RulePreviewPanelKey, RULE_PREVIEW_BANNER } from '../../rule_details/right';
+import { NETWORK_PREVIEW_BANNER, NetworkPreviewPanelKey } from '../../network_details';
+import { RULE_PREVIEW_BANNER, RulePreviewPanelKey } from '../../rule_details/right';
 import { DocumentEventTypes } from '../../../common/lib/telemetry';
 
 const PREVIEW_FIELDS = [HOST_NAME_FIELD_NAME, USER_NAME_FIELD_NAME, SIGNAL_RULE_NAME_FIELD_NAME];
@@ -104,6 +104,10 @@ interface PreviewLinkProps {
    */
   isPreview?: boolean;
   /**
+   *
+   */
+  addToHistory?: boolean;
+  /**
    * Optional data-test-subj value
    */
   ['data-test-subj']?: string;
@@ -131,10 +135,13 @@ export const PreviewLink: FC<PreviewLinkProps> = ({
   const onClick = useCallback(() => {
     const previewParams = getPreviewParams(value, field, scopeId, ruleId);
     if (previewParams) {
-      openPreviewPanel({
-        id: previewParams.id,
-        params: previewParams.params,
-      });
+      openPreviewPanel(
+        {
+          id: previewParams.id,
+          params: previewParams.params,
+        },
+        true
+      );
       telemetry.reportEvent(DocumentEventTypes.DetailsFlyoutOpened, {
         location: scopeId,
         panel: 'preview',

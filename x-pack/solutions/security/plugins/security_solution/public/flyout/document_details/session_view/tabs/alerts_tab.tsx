@@ -49,16 +49,19 @@ export const AlertsTab = memo(() => {
   const { openPreviewPanel, openLeftPanel } = useExpandableFlyoutApi();
   const openAlertDetailsPreview = useCallback(
     (evtId?: string, onClose?: () => void) => {
-      openPreviewPanel({
-        id: DocumentDetailsPreviewPanelKey,
-        params: {
-          id: evtId,
-          indexName,
-          scopeId,
-          banner: ALERT_PREVIEW_BANNER,
-          isPreviewMode: true,
+      openPreviewPanel(
+        {
+          id: DocumentDetailsPreviewPanelKey,
+          params: {
+            id: evtId,
+            indexName,
+            scopeId,
+            banner: ALERT_PREVIEW_BANNER,
+            isPreviewMode: true,
+          },
         },
-      });
+        true
+      );
     },
     [openPreviewPanel, indexName, scopeId]
   );

@@ -62,16 +62,19 @@ export const SessionView: FC = memo(() => {
       // In order to NOT modify the SessionView code, the setTimeout here guarantees that the alert details preview
       // will be opened in second, so that we have a correct order in the opened preview panels
       setTimeout(() => {
-        openPreviewPanel({
-          id: DocumentDetailsPreviewPanelKey,
-          params: {
-            id: evtId,
-            indexName: eventDetailsIndex,
-            scopeId,
-            banner: ALERT_PREVIEW_BANNER,
-            isPreviewMode: true,
+        openPreviewPanel(
+          {
+            id: DocumentDetailsPreviewPanelKey,
+            params: {
+              id: evtId,
+              indexName: eventDetailsIndex,
+              scopeId,
+              banner: ALERT_PREVIEW_BANNER,
+              isPreviewMode: true,
+            },
           },
-        });
+          true
+        );
       }, 100);
       telemetry.reportEvent(DocumentEventTypes.DetailsFlyoutOpened, {
         location: scopeId,

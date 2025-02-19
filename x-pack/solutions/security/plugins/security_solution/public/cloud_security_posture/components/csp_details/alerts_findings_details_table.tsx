@@ -10,12 +10,12 @@ import { encode } from '@kbn/rison';
 import { capitalize } from 'lodash';
 import type { Criteria, EuiBasicTableColumn, EuiTableSortingType } from '@elastic/eui';
 import {
-  EuiSpacer,
-  EuiPanel,
-  EuiText,
   EuiBasicTable,
   EuiIcon,
   EuiLink,
+  EuiPanel,
+  EuiSpacer,
+  EuiText,
   useEuiTheme,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
@@ -45,7 +45,7 @@ import { useSignalIndex } from '../../../detections/containers/detection_engine/
 import { getSeverityColor } from '../../../detections/components/alerts_kpis/severity_level_panel/helpers';
 import { SeverityBadge } from '../../../common/components/severity_badge';
 import { ALERT_PREVIEW_BANNER } from '../../../flyout/document_details/preview/constants';
-import { FILTER_OPEN, FILTER_ACKNOWLEDGED } from '../../../../common/types';
+import { FILTER_ACKNOWLEDGED, FILTER_OPEN } from '../../../../common/types';
 import { useNonClosedAlerts } from '../../hooks/use_non_closed_alerts';
 import type { CloudPostureEntityIdentifier } from '../entity_insight';
 
@@ -261,16 +261,19 @@ export const AlertsDetailsTable = memo(
 
     const handleOnEventAlertDetailPanelOpened = useCallback(
       (eventId: string, indexName: string, tableId: string) => {
-        openPreviewPanel({
-          id: DocumentDetailsPreviewPanelKey,
-          params: {
-            id: eventId,
-            indexName,
-            scopeId: tableId,
-            isPreviewMode: true,
-            banner: ALERT_PREVIEW_BANNER,
+        openPreviewPanel(
+          {
+            id: DocumentDetailsPreviewPanelKey,
+            params: {
+              id: eventId,
+              indexName,
+              scopeId: tableId,
+              isPreviewMode: true,
+              banner: ALERT_PREVIEW_BANNER,
+            },
           },
-        });
+          true
+        );
       },
       [openPreviewPanel]
     );

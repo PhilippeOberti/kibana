@@ -21,7 +21,7 @@ import {
   previousPreviewPanelAction,
 } from '../store/actions';
 import { useDispatch } from '../store/redux';
-import { FlyoutPanelProps, type ExpandableFlyoutApi } from '../types';
+import { type ExpandableFlyoutApi, FlyoutPanelProps } from '../types';
 
 export type { ExpandableFlyoutApi };
 
@@ -37,20 +37,24 @@ export const useExpandableFlyoutApi = () => {
   const id = urlKey || REDUX_ID_FOR_MEMORY_STORAGE;
 
   const openPanels = useCallback(
-    ({
-      right,
-      left,
-      preview,
-    }: {
-      right?: FlyoutPanelProps;
-      left?: FlyoutPanelProps;
-      preview?: FlyoutPanelProps;
-    }) => dispatch(openPanelsAction({ right, left, preview, id })),
+    (
+      {
+        right,
+        left,
+        preview,
+      }: {
+        right?: FlyoutPanelProps;
+        left?: FlyoutPanelProps;
+        preview?: FlyoutPanelProps;
+      },
+      addToHistory = true
+    ) => dispatch(openPanelsAction({ right, left, preview, id, addToHistory })),
     [dispatch, id]
   );
 
   const openRightPanel = useCallback(
-    (panel: FlyoutPanelProps) => dispatch(openRightPanelAction({ right: panel, id })),
+    (panel: FlyoutPanelProps, addToHistory = true) =>
+      dispatch(openRightPanelAction({ right: panel, id, addToHistory })),
     [dispatch, id]
   );
 
@@ -60,7 +64,8 @@ export const useExpandableFlyoutApi = () => {
   );
 
   const openPreviewPanel = useCallback(
-    (panel: FlyoutPanelProps) => dispatch(openPreviewPanelAction({ preview: panel, id })),
+    (panel: FlyoutPanelProps, addToHistory = false) =>
+      dispatch(openPreviewPanelAction({ preview: panel, id, addToHistory })),
     [dispatch, id]
   );
 

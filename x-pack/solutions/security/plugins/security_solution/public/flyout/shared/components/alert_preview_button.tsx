@@ -7,8 +7,8 @@
 
 import { EuiButtonIcon } from '@elastic/eui';
 import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import React, { useCallback } from 'react';
 import type { FC } from 'react';
+import React, { useCallback } from 'react';
 import { i18n } from '@kbn/i18n';
 import { ALERT_PREVIEW_BANNER } from '../../document_details/preview/constants';
 import { DocumentDetailsPreviewPanelKey } from '../../document_details/shared/constants/panel_keys';
@@ -45,16 +45,19 @@ export const AlertPreviewButton: FC<AlertPreviewButtonProps> = ({
 
   const openAlertPreview = useCallback(
     () =>
-      openPreviewPanel({
-        id: DocumentDetailsPreviewPanelKey,
-        params: {
-          id,
-          indexName,
-          scopeId,
-          isPreviewMode: true,
-          banner: ALERT_PREVIEW_BANNER,
+      openPreviewPanel(
+        {
+          id: DocumentDetailsPreviewPanelKey,
+          params: {
+            id,
+            indexName,
+            scopeId,
+            isPreviewMode: true,
+            banner: ALERT_PREVIEW_BANNER,
+          },
         },
-      }),
+        true
+      ),
     [openPreviewPanel, id, indexName, scopeId]
   );
 

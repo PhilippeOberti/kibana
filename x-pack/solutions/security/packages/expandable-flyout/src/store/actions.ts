@@ -49,6 +49,10 @@ export const openPanelsAction = createAction<{
    * Unique identifier for the flyout (either the urlKey or 'memory')
    */
   id: string;
+  /**
+   *
+   */
+  addToHistory?: boolean;
 }>(ActionType.openFlyout);
 
 export const openRightPanelAction = createAction<{
@@ -60,6 +64,10 @@ export const openRightPanelAction = createAction<{
    * Unique identifier for the flyout (either the urlKey or 'memory')
    */
   id: string;
+  /**
+   *
+   */
+  addToHistory?: boolean;
 }>(ActionType.openRightPanel);
 export const openLeftPanelAction = createAction<{
   /**
@@ -76,7 +84,14 @@ export const openPreviewPanelAction = createAction<{
    * Panels to render in the preview section
    */
   preview: FlyoutPanelProps;
+  /**
+   * Unique identifier for the flyout (either the urlKey or 'memory')
+   */
   id: string;
+  /**
+   *
+   */
+  addToHistory?: boolean;
 }>(ActionType.openPreviewPanel);
 
 export const closePanelsAction = createAction<{

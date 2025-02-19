@@ -31,19 +31,22 @@ export const PreviewPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) =
   const { tabsDisplayed, selectedTabId } = useTabs({ flyoutIsExpandable, path });
 
   const setSelectedTabId = (tabId: RightPanelTabType['id']) => {
-    openPreviewPanel({
-      id: DocumentDetailsPreviewPanelKey,
-      path: {
-        tab: tabId,
+    openPreviewPanel(
+      {
+        id: DocumentDetailsPreviewPanelKey,
+        path: {
+          tab: tabId,
+        },
+        params: {
+          id: eventId,
+          indexName,
+          scopeId,
+          isPreviewMode: true,
+          banner: ALERT_PREVIEW_BANNER,
+        },
       },
-      params: {
-        id: eventId,
-        indexName,
-        scopeId,
-        isPreviewMode: true,
-        banner: ALERT_PREVIEW_BANNER,
-      },
-    });
+      true
+    );
   };
 
   return (

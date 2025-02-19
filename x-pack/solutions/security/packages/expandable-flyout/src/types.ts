@@ -11,15 +11,18 @@ export interface ExpandableFlyoutApi {
   /**
    * Open the flyout with left, right and/or preview panels
    */
-  openFlyout: (panels: {
-    left?: FlyoutPanelProps;
-    right?: FlyoutPanelProps;
-    preview?: FlyoutPanelProps;
-  }) => void;
+  openFlyout: (
+    panels: {
+      left?: FlyoutPanelProps;
+      right?: FlyoutPanelProps;
+      preview?: FlyoutPanelProps;
+    },
+    addToHistory?: boolean
+  ) => void;
   /**
    * Replaces the current right panel with a new one
    */
-  openRightPanel: (panel: FlyoutPanelProps) => void;
+  openRightPanel: (panel: FlyoutPanelProps, addToHistory?: boolean) => void;
   /**
    * Replaces the current left panel with a new one
    */
@@ -27,7 +30,7 @@ export interface ExpandableFlyoutApi {
   /**
    * Add a new preview panel to the list of current preview panels
    */
-  openPreviewPanel: (panel: FlyoutPanelProps) => void;
+  openPreviewPanel: (panel: FlyoutPanelProps, addToHistory?: boolean) => void;
   /**
    * Closes right panel
    */
