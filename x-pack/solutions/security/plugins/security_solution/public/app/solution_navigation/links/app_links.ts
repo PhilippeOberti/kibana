@@ -6,7 +6,7 @@
  */
 
 import { SecurityPageName } from '@kbn/security-solution-navigation';
-import { cloneDeep, remove, find } from 'lodash';
+import { cloneDeep, find, remove } from 'lodash';
 import type { AppLinkItems, LinkItem } from '../../../common/links/types';
 import { createInvestigationsLink, createTimelineLink } from './sections/investigations_links';
 import { mlAppLink } from './sections/ml_links';
@@ -46,6 +46,8 @@ export const solutionAppLinksSwitcher = (appLinks: AppLinkItems): AppLinkItems =
 
   // Add ML link
   solutionAppLinks.push(mlAppLink);
+
+  console.log('solutionAppLinks', solutionAppLinks);
 
   return Object.freeze(solutionAppLinks);
 };
