@@ -25,10 +25,18 @@ export const sourceAddress = i18n.translate(
     defaultMessage: 'Source address',
   }
 );
-
 export const destinationAddress = i18n.translate(
   'xpack.securitySolution.selector.groups.destinationAddress.label',
   {
     defaultMessage: 'Destination address',
   }
 );
+export const sourceName = i18n.translate(
+  'xpack.securitySolution.selector.groups.sourceName.label',
+  {
+    defaultMessage: 'Source',
+  }
+);
+export const severity = i18n.translate('xpack.securitySolution.selector.groups.severity.label', {
+  defaultMessage: 'Severity',
+});

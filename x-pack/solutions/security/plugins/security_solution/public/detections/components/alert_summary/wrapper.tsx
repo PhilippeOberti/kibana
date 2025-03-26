@@ -18,6 +18,7 @@ import type { DataView, DataViewSpec } from '@kbn/data-views-plugin/common';
 import type { PackageListItem } from '@kbn/fleet-plugin/common';
 import { useKibana } from '../../../common/lib/kibana';
 import { SearchBarSection } from './search_bar/search_bar_section';
+import { TableSection } from './table/table_section';
 
 const DATAVIEW_ERROR = i18n.translate('xpack.securitySolution.alertSummary.dataViewError', {
   defaultMessage: 'Unable to create data view',
@@ -92,6 +93,8 @@ export const Wrapper = memo(({ packages }: WrapperProps) => {
           ) : (
             <div data-test-subj={CONTENT_TEST_ID}>
               <SearchBarSection dataView={dataView} packages={packages} />
+              <EuiSpacer />
+              <TableSection dataView={dataView} />
             </div>
           )}
         </>

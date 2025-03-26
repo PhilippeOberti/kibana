@@ -11,13 +11,13 @@ import type { Filter, Query } from '@kbn/es-query';
 import { buildEsQuery } from '@kbn/es-query';
 import type { GroupingAggregation } from '@kbn/grouping';
 import { isNoneGroup } from '@kbn/grouping';
-import { getEsQueryConfig } from '@kbn/data-plugin/common';
+import { type DataView, getEsQueryConfig } from '@kbn/data-plugin/common';
 import type { DynamicGroupingProps } from '@kbn/grouping/src';
 import { parseGroupingQuery } from '@kbn/grouping/src';
 import type { TableIdLiteral } from '@kbn/securitysolution-data-table';
 import type { RunTimeMappings } from '../../../sourcerer/store/model';
-import { combineQueries } from '../../../common/lib/kuery';
 import { SourcererScopeName } from '../../../sourcerer/store/model';
+import { combineQueries } from '../../../common/lib/kuery';
 import type { AlertsGroupingAggregation } from './grouping_settings/types';
 import type { Status } from '../../../../common/api/detection_engine';
 import { InspectButton } from '../../../common/components/inspect';
@@ -38,6 +38,10 @@ const DEFAULT_FILTERS: Filter[] = [];
 
 interface OwnProps {
   currentAlertStatusFilterValue?: Status[];
+  /**
+   * If dataView is passed, we use this instead of sourcererDataView retrieved internally
+   */
+  dataView?: DataView;
   defaultFilters?: Filter[];
   from: string;
   getGrouping: (
@@ -67,6 +71,7 @@ export type AlertsTableComponentProps = OwnProps;
 
 export const GroupedSubLevelComponent: React.FC<AlertsTableComponentProps> = ({
   currentAlertStatusFilterValue,
+  dataView,
   defaultFilters = DEFAULT_FILTERS,
   from,
   getGrouping,
@@ -100,7 +105,7 @@ export const GroupedSubLevelComponent: React.FC<AlertsTableComponentProps> = ({
         return combineQueries({
           config: getEsQueryConfig(uiSettings),
           dataProviders: [],
-          indexPattern: sourcererDataView,
+          indexPattern: dataView ? dataView.toSpec() : sourcererDataView,
           browserFields,
           filters: [
             ...(defaultFilters ?? []),

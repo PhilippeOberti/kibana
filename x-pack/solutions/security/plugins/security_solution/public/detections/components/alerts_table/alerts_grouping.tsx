@@ -7,6 +7,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import type { DataView } from '@kbn/data-views-plugin/common';
 import type { Filter, Query } from '@kbn/es-query';
 import { isNoneGroup, useGrouping } from '@kbn/grouping';
 import { isEmpty, isEqual } from 'lodash/fp';
@@ -20,15 +21,19 @@ import { updateGroups } from '../../../common/store/grouping/actions';
 import type { Status } from '../../../../common/api/detection_engine';
 import { defaultUnit } from '../../../common/components/toolbar/unit';
 import { useSourcererDataView } from '../../../sourcerer/containers';
-import { SourcererScopeName } from '../../../sourcerer/store/model';
 import type { RunTimeMappings } from '../../../sourcerer/store/model';
-import { renderGroupPanel, getStats } from './grouping_settings';
+import { SourcererScopeName } from '../../../sourcerer/store/model';
+import { getStats, renderGroupPanel } from './grouping_settings';
 import { useKibana } from '../../../common/lib/kibana';
 import { GroupedSubLevel } from './alerts_sub_grouping';
 import { AlertsEventTypes, track } from '../../../common/lib/telemetry';
 
 export interface AlertsTableComponentProps {
   currentAlertStatusFilterValue?: Status[];
+  /**
+   * If dataView is passed, we use this instead of sourcererDataView retrieved internally
+   */
+  dataView?: DataView;
   defaultFilters?: Filter[];
   from: string;
   globalFilters: Filter[];
@@ -108,7 +113,13 @@ const GroupedAlertsTableComponent: React.FC<AlertsTableComponentProps> = (props)
     [dispatch, props.tableId]
   );
 
-  const fields = useMemo(() => Object.values(sourcererDataView.fields || {}), [sourcererDataView]);
+  const fields = useMemo(
+    () =>
+      props.dataView
+        ? Object.values(props.dataView.fields.map((f) => f.spec) || {})
+        : Object.values(sourcererDataView.fields || {}),
+    [props.dataView, sourcererDataView]
+  );
 
   const { getGrouping, selectedGroups, setSelectedGroups } = useGrouping({
     componentProps: {
@@ -259,7 +270,7 @@ const GroupedAlertsTableComponent: React.FC<AlertsTableComponentProps> = (props)
     [getGrouping, pageIndex, pageSize, props, selectedGroups, setPageVar]
   );
 
-  if (isEmpty(selectedPatterns)) {
+  if ((props.dataView && isEmpty(props.dataView.getIndexPattern())) || isEmpty(selectedPatterns)) {
     return null;
   }
 

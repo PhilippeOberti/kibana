@@ -119,6 +119,7 @@ export interface Alert {
   _index: string;
   '@timestamp': string;
   signal: Signal;
+
   [key: string]: unknown;
 }
 
@@ -160,6 +161,17 @@ export const getDefaultGroupingOptions = (tableId: TableId): GroupOption[] => {
       {
         label: i18n.destinationAddress,
         key: 'destination.address,',
+      },
+    ];
+  } else if (tableId === TableId.alertsOnAlertSummaryPage) {
+    return [
+      {
+        label: i18n.sourceName,
+        key: 'kibana.alert.rule.name',
+      },
+      {
+        label: i18n.severity,
+        key: 'kibana.alert.severity',
       },
     ];
   }
