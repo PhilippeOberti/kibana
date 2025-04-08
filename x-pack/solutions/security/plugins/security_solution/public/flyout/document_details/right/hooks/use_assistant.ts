@@ -69,10 +69,12 @@ export const useAssistant = ({
 }: UseAssistantParams): UseAssistantResult => {
   const { hasAssistantPrivilege, isAssistantEnabled } = useAssistantAvailability();
   const useAssistantHook = hasAssistantPrivilege ? useAssistantOverlay : useAssistantNoop;
-  const getPromptContext = useCallback(
-    async () => getRawData(dataFormattedForFieldBrowser ?? []),
-    [dataFormattedForFieldBrowser]
-  );
+  const getPromptContext = useCallback(async () => {
+    console.log('dataFormattedForFieldBrowser', dataFormattedForFieldBrowser);
+    const rawData = getRawData(dataFormattedForFieldBrowser ?? []);
+    console.log('rawData', rawData);
+    return rawData;
+  }, [dataFormattedForFieldBrowser]);
 
   const uniqueName = useMemo(() => {
     const ruleName: string =

@@ -5,14 +5,11 @@
  * 2.0.
  */
 
-import React, { memo, useCallback } from 'react';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import { EuiButtonIcon, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import React, { memo } from 'react';
+import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import type { Alert } from '@kbn/alerting-types';
-import { i18n } from '@kbn/i18n';
-import { IOCPanelKey } from '../../../../flyout/ai_for_soc/constants/panel_keys';
-
-export const ROW_ACTION_FLYOUT_ICON_TEST_ID = 'alert-summary-table-row-action-flyout-icon';
+import { AssistantRowControlColumn } from './assistant_row_control_column';
+import { OpenFlyoutRowControlColumn } from './open_flyout_row_control_column';
 
 export interface ActionsCellProps {
   /**
@@ -26,38 +23,18 @@ export interface ActionsCellProps {
  * It is passed to the renderActionsCell property of the EuiDataGrid.
  * It renders all the icons in the row action icons:
  * - open flyout
- * - assistant (soon)
+ * - assistant
  * - more actions (soon)
  */
-export const ActionsCell = memo(({ alert }: ActionsCellProps) => {
-  const { openFlyout } = useExpandableFlyoutApi();
-  const onOpenFlyout = useCallback(
-    () =>
-      openFlyout({
-        right: {
-          id: IOCPanelKey,
-          params: {
-            id: alert._id,
-            indexName: alert._index,
-          },
-        },
-      }),
-    [alert, openFlyout]
-  );
-
+export const ActionsCell = memo(({ alert, ...props }: ActionsCellProps) => {
+  // debugger;
   return (
     <EuiFlexGroup alignItems="center" gutterSize="xs">
       <EuiFlexItem>
-        <EuiButtonIcon
-          aria-label={i18n.translate('xpack.securitySolution.alertSummary.table.flyoutIcon', {
-            defaultMessage: 'Open flyout',
-          })}
-          color="primary"
-          data-test-subj={ROW_ACTION_FLYOUT_ICON_TEST_ID}
-          iconType="expand"
-          onClick={onOpenFlyout}
-          size="xs"
-        />
+        <OpenFlyoutRowControlColumn alert={alert} />
+      </EuiFlexItem>
+      <EuiFlexItem>
+        <AssistantRowControlColumn alert={alert} />
       </EuiFlexItem>
     </EuiFlexGroup>
   );

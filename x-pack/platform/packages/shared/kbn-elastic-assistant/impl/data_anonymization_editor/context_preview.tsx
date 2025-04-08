@@ -22,12 +22,14 @@ const Strong = styled.strong<{ showRealValues: boolean }>`
       : props.theme.euiTheme.colors.textAccent};
   cursor: pointer;
 `;
+
 export interface Props {
   selectedPromptContext: SelectedPromptContext;
   showRealValues: boolean;
   currentReplacements: AnonymizedData['replacements'] | undefined;
   onToggleShowAnonymizedValues: () => void;
 }
+
 const SelectedPromptContextPreviewComponent = ({
   selectedPromptContext,
   currentReplacements,

@@ -8,16 +8,22 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import type { Alert } from '@kbn/alerting-types';
-import { ActionsCell, ROW_ACTION_FLYOUT_ICON_TEST_ID } from './actions_cell';
+import { ActionsCell } from './actions_cell';
 import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import { IOCPanelKey } from '../../../../flyout/ai_for_soc/constants/panel_keys';
+import { ROW_ACTION_FLYOUT_ICON_TEST_ID } from './open_flyout_row_control_column';
+import { useAssistant } from '../../../hooks/alert_summary/use_assistant';
 
 jest.mock('@kbn/expandable-flyout');
+jest.mock('../../../hooks/alert_summary/use_assistant');
 
 describe('ActionsCell', () => {
   it('should render icons', () => {
     (useExpandableFlyoutApi as jest.Mock).mockReturnValue({
       openFlyout: jest.fn(),
+    });
+    (useAssistant as jest.Mock).mockReturnValue({
+      showAssistant: true,
+      showAssistantOverlay: jest.fn(),
     });
 
     const alert: Alert = {
@@ -28,31 +34,6 @@ describe('ActionsCell', () => {
     const { getByTestId } = render(<ActionsCell alert={alert} />);
 
     expect(getByTestId(ROW_ACTION_FLYOUT_ICON_TEST_ID)).toBeInTheDocument();
-  });
-
-  it('should open flyout after click', () => {
-    const openFlyout = jest.fn();
-    (useExpandableFlyoutApi as jest.Mock).mockReturnValue({
-      openFlyout,
-    });
-
-    const alert: Alert = {
-      _id: '_id',
-      _index: '_index',
-    };
-
-    const { getByTestId } = render(<ActionsCell alert={alert} />);
-
-    getByTestId(ROW_ACTION_FLYOUT_ICON_TEST_ID).click();
-
-    expect(openFlyout).toHaveBeenCalledWith({
-      right: {
-        id: IOCPanelKey,
-        params: {
-          id: alert._id,
-          indexName: alert._index,
-        },
-      },
-    });
+    expect(getByTestId('newChatByTitle')).toBeInTheDocument();
   });
 });
