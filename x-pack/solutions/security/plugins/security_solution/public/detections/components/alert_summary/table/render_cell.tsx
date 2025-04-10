@@ -5,10 +5,11 @@
  * 2.0.
  */
 
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import type { Alert } from '@kbn/alerting-types';
-import type { JsonValue } from '@kbn/utility-types';
-import { getOrEmptyTagFromValue } from '../../../../common/components/empty_value';
+import { BasicCellRenderer } from './basic_cell_renderer';
+import { KibanaAlertSeverityCellRenderer } from './kibana_alert_severity_cell_renderer';
+import { KibanaAlertRelatedIntegrationsCellRenderer } from './kibana_alert_related_integrations_cell_renderer';
 
 const styles = { display: 'flex', alignItems: 'center', height: '100%' };
 
@@ -29,34 +30,15 @@ export interface CellValueProps {
  * It will be soon improved to support custom renders for specific fields (like kibana.alert.rule.parameters and kibana.alert.severity).
  */
 export const CellValue = memo(({ alert, columnId }: CellValueProps) => {
-  const displayValue: string | null = useMemo(() => {
-    const cellValues: string | JsonValue[] = alert[columnId];
+  if (columnId === 'kibana.alert.rule.parameters') {
+    return <KibanaAlertRelatedIntegrationsCellRenderer alert={alert} columnId={columnId} />;
+  }
 
-    // Displays string as is.
-    // Joins values of array with more than one element.
-    // Returns null if the value is null.
-    // Return the string of the value otherwise.
-    if (typeof cellValues === 'string') {
-      return cellValues;
-    } else if (Array.isArray(cellValues)) {
-      if (cellValues.length > 1) {
-        return cellValues.join(', ');
-      } else {
-        const value: JsonValue = cellValues[0];
-        if (typeof value === 'string') {
-          return value;
-        } else if (value == null) {
-          return null;
-        } else {
-          return value.toString();
-        }
-      }
-    } else {
-      return null;
-    }
-  }, [alert, columnId]);
+  if (columnId === 'kibana.alert.severity') {
+    return <KibanaAlertSeverityCellRenderer alert={alert} columnId={columnId} />;
+  }
 
-  return <div style={styles}>{getOrEmptyTagFromValue(displayValue)}</div>;
+  return <BasicCellRenderer alert={alert} columnId={columnId} />;
 });
 
 CellValue.displayName = 'CellValue';
