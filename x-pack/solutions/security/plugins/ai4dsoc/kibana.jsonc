@@ -1,0 +1,27 @@
+{
+  "type": "plugin",
+  "id": "@kbn/cloud-ai4dsoc-plugin",
+  "owner": [
+    "@elastic/kibana-ai4dsoc"
+  ],
+  "group": "security",
+  "visibility": "private",
+  "description": "The AI4DSOC plugin",
+  "plugin": {
+    "id": "ai4dsoc",
+    "browser": true,
+    "server": true,
+    "configPath": [
+      "xpack",
+      "ai4dsoc"
+    ],
+    "requiredPlugins": [],
+    "optionalPlugins": [
+      "usageCollection"
+    ],
+    "requiredBundles": [
+      "kibanaReact",
+      "usageCollection"
+    ]
+  }
+}

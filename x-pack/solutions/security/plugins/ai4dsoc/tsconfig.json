@@ -1,0 +1,21 @@
+{
+  "extends": "../../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "target/types"
+  },
+  "include": [
+    "common/**/*",
+    "public/**/*",
+    "server/**/*",
+    "scripts/**/*",
+    // have to declare *.json explicitly due to https://github.com/microsoft/TypeScript/issues/25636
+    "server/**/*.json",
+    "public/**/*.json",
+    "../../../../../typings/**/*"
+  ],
+  "kbn_references": [
+  ],
+  "exclude": [
+    "target/**/*"
+  ]
+}
