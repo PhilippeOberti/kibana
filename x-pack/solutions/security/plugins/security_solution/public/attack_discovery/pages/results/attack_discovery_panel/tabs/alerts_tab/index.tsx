@@ -10,7 +10,7 @@ import type { AttackDiscovery, Replacements } from '@kbn/elastic-assistant-commo
 import { SECURITY_SOLUTION_RULE_TYPE_IDS } from '@kbn/securitysolution-rules';
 
 import { TableId } from '@kbn/securitysolution-data-table';
-import { AiForSOCAlertsTab } from './ai_for_soc/wrapper';
+import { AiForSOCAlertsTable } from '../../../../../../common/lib/search_ai_lake/components/alerts_table/wrapper';
 import { useKibana } from '../../../../../../common/lib/kibana';
 import { SECURITY_FEATURE_ID } from '../../../../../../../common';
 import { DetectionEngineAlertsTable } from '../../../../../../detections/components/alerts_table';
@@ -53,7 +53,7 @@ const AlertsTabComponent: React.FC<Props> = ({ attackDiscovery, replacements }) 
     <div data-test-subj="alertsTab">
       {AIForSOC ? (
         <div data-test-subj="ai4dsoc-alerts-table">
-          <AiForSOCAlertsTab id={id} query={alertIdsQuery} />
+          <AiForSOCAlertsTable id={id} query={alertIdsQuery} />
         </div>
       ) : (
         <div data-test-subj="detection-engine-alerts-table">

@@ -6,12 +6,14 @@
  */
 
 import React, { useMemo } from 'react';
-import { EuiFlexItem, EuiSpacer, EuiBadge } from '@elastic/eui';
+import { EuiBadge, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 import { installationStatuses, type IntegrationCardItem } from '@kbn/fleet-plugin/public';
 import { SECURITY_UI_APP_ID } from '@kbn/security-solution-navigation';
-import { CONFIGURATIONS_PATH } from '../../../../../../common/constants';
-import { IntegrationsFacets } from '../../../../../configurations/constants';
-import { RETURN_APP_ID, RETURN_PATH } from './constants';
+import { CONFIGURATIONS_PATH } from '../../../../../common/constants';
+import { IntegrationsFacets } from '../../../../configurations/constants';
+
+const RETURN_APP_ID = 'returnAppId';
+const RETURN_PATH = 'returnPath';
 
 export interface EnhancedCardOptions {
   showInstallationStatus?: boolean;

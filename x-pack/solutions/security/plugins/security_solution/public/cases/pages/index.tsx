@@ -18,12 +18,7 @@ import { DocumentDetailsRightPanelKey } from '../../flyout/document_details/shar
 import { RulePanelKey } from '../../flyout/rule_details/right';
 import { TimelineId } from '../../../common/types/timeline';
 import { useKibana, useNavigation } from '../../common/lib/kibana';
-import {
-  APP_ID,
-  CASES_PATH,
-  SECURITY_FEATURE_ID,
-  SecurityPageName,
-} from '../../../common/constants';
+import { APP_ID, CASES_PATH, SECURITY_FEATURE_ID, SecurityPageName } from '../../../common/constants';
 import { timelineActions } from '../../timelines/store';
 import { SecuritySolutionPageWrapper } from '../../common/components/page_wrapper';
 import { getEndpointDetailsPath } from '../../management/common/routing';
@@ -35,7 +30,7 @@ import { useFetchAlertData } from './use_fetch_alert_data';
 import { useUpsellingMessage } from '../../common/hooks/use_upselling';
 import { useFetchNotes } from '../../notes/hooks/use_fetch_notes';
 import { DocumentEventTypes } from '../../common/lib/telemetry';
-import { AiForSOCAlertsTable } from '../components/ai_for_soc/wrapper';
+import { AiForSOCAlertsTable } from '../../common/lib/search_ai_lake/components/alerts_table/wrapper';
 
 const CaseContainerComponent: React.FC = () => {
   const {

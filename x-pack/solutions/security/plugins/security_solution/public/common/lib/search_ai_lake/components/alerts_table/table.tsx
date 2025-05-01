@@ -10,10 +10,10 @@ import type { DataView } from '@kbn/data-views-plugin/common';
 import { AlertsTable } from '@kbn/response-ops-alerts-table';
 import type { PackageListItem } from '@kbn/fleet-plugin/common';
 import type { QueryDslQueryContainer } from '@elastic/elasticsearch/lib/api/types';
-import type { Alert } from '@kbn/alerting-types';
-import type { EuiDataGridColumn } from '@elastic/eui';
 import type { AlertsTableImperativeApi } from '@kbn/response-ops-alerts-table/types';
-import type { AdditionalTableContext } from '../../../detections/components/alert_summary/table/table';
+import type { EuiDataGridColumn } from '@elastic/eui';
+import type { Alert } from '@kbn/alerting-types';
+import type { AdditionalTableContext } from '../../../../../detections/components/alert_summary/table/table';
 import {
   ACTION_COLUMN_WIDTH,
   ALERT_TABLE_CONSUMERS,
@@ -24,13 +24,13 @@ import {
   ROW_HEIGHTS_OPTIONS,
   RULE_TYPE_IDS,
   TOOLBAR_VISIBILITY,
-} from '../../../detections/components/alert_summary/table/table';
-import { ActionsCell } from '../../../detections/components/alert_summary/table/actions_cell';
-import { getDataViewStateFromIndexFields } from '../../../common/containers/source/use_data_view';
-import { useKibana } from '../../../common/lib/kibana';
-import { CellValue } from '../../../detections/components/alert_summary/table/render_cell';
-import type { RuleResponse } from '../../../../common/api/detection_engine';
-import { useAdditionalBulkActions } from '../../../detections/hooks/alert_summary/use_additional_bulk_actions';
+} from '../../../../../detections/components/alert_summary/table/table';
+import { ActionsCell } from '../../../../../detections/components/alert_summary/table/actions_cell';
+import { getDataViewStateFromIndexFields } from '../../../../containers/source/use_data_view';
+import { useKibana } from '../../../kibana';
+import { CellValue } from '../../../../../detections/components/alert_summary/table/render_cell';
+import type { RuleResponse } from '../../../../../../common/api/detection_engine';
+import { useAdditionalBulkActions } from '../../../../../detections/hooks/alert_summary/use_additional_bulk_actions';
 
 export interface TableProps {
   /**
@@ -69,7 +69,7 @@ export interface TableProps {
 }
 
 /**
- * Component used in the Cases page under Alerts tab, only in the AI4DSOC tier.
+ * Component used in the Attack Discovery alerts table, only in the AI4DSOC tier.
  * It leverages a lot of configurations and constants from the Alert summary page alerts table, and renders the ResponseOps AlertsTable.
  */
 export const Table = memo(

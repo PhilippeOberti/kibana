@@ -7,22 +7,21 @@
 
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { AiForSOCAlertsTable, CONTENT_TEST_ID, ERROR_TEST_ID, SKELETON_TEST_ID } from './wrapper';
-import { useKibana } from '../../../common/lib/kibana';
-import { TestProviders } from '../../../common/mock';
-import { useFetchIntegrations } from '../../../detections/hooks/alert_summary/use_fetch_integrations';
-import { useFindRulesQuery } from '../../../detection_engine/rule_management/api/hooks/use_find_rules_query';
+import { AiForSOCAlertsTab, CONTENT_TEST_ID, ERROR_TEST_ID } from './wrapper';
+import { useKibana } from '../../../kibana';
+import { TestProviders } from '../../../../mock';
+import { useFetchIntegrations } from '../../../../../detections/hooks/alert_summary/use_fetch_integrations';
+import { useFindRulesQuery } from '../../../../../detection_engine/rule_management/api/hooks/use_find_rules_query';
 
 jest.mock('./table', () => ({
   Table: () => <div />,
 }));
-jest.mock('../../../common/lib/kibana');
-jest.mock('../../../detections/hooks/alert_summary/use_fetch_integrations');
-jest.mock('../../../detection_engine/rule_management/api/hooks/use_find_rules_query');
+jest.mock('../../../kibana');
+jest.mock('../../../../../detections/hooks/alert_summary/use_fetch_integrations');
+jest.mock('../../../../../detection_engine/rule_management/api/hooks/use_find_rules_query');
 
 const id = 'id';
 const query = { ids: { values: ['abcdef'] } };
-const onLoaded = jest.fn();
 
 describe('<AiForSOCAlertsTab />', () => {
   beforeEach(() => {
@@ -51,10 +50,10 @@ describe('<AiForSOCAlertsTab />', () => {
       },
     });
 
-    render(<AiForSOCAlertsTable id={id} onLoaded={onLoaded} query={query} />);
+    render(<AiForSOCAlertsTab id={id} query={query} />);
 
     await waitFor(() => {
-      expect(screen.getByTestId(SKELETON_TEST_ID)).toBeInTheDocument();
+      expect(screen.getByTestId(LOADING_SKELETON_TEST_ID)).toBeInTheDocument();
     });
   });
 
@@ -75,9 +74,9 @@ describe('<AiForSOCAlertsTab />', () => {
       isLoading: true,
     });
 
-    render(<AiForSOCAlertsTable id={id} onLoaded={onLoaded} query={query} />);
+    render(<AiForSOCAlertsTab id={id} query={query} />);
 
-    expect(await screen.findByTestId(SKELETON_TEST_ID)).toBeInTheDocument();
+    expect(await screen.findByTestId(LOADING_SKELETON_TEST_ID)).toBeInTheDocument();
   });
 
   it('should render an error if the dataView fail to be created correctly', async () => {
@@ -97,7 +96,7 @@ describe('<AiForSOCAlertsTab />', () => {
       useEffect: jest.fn((f) => f()),
     }));
 
-    render(<AiForSOCAlertsTable id={id} onLoaded={onLoaded} query={query} />);
+    render(<AiForSOCAlertsTab id={id} query={query} />);
 
     expect(await screen.findByTestId(ERROR_TEST_ID)).toHaveTextContent(
       'Unable to create data view'
@@ -126,7 +125,7 @@ describe('<AiForSOCAlertsTab />', () => {
 
     render(
       <TestProviders>
-        <AiForSOCAlertsTable id={id} onLoaded={onLoaded} query={query} />
+        <AiForSOCAlertsTab id={id} query={query} />
       </TestProviders>
     );
 

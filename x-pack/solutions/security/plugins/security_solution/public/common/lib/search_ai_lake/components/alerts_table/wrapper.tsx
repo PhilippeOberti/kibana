@@ -7,32 +7,37 @@
 
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import type { DataView, DataViewSpec } from '@kbn/data-views-plugin/common';
-import { EuiEmptyPrompt, EuiSkeletonRectangle } from '@elastic/eui';
+import { type EuiDataGridColumn, EuiEmptyPrompt, EuiSkeletonRectangle } from '@elastic/eui';
 import type { QueryDslQueryContainer } from '@elastic/elasticsearch/lib/api/types';
 import { i18n } from '@kbn/i18n';
+import type { Alert } from '@kbn/alerting-types';
 import { Table } from './table';
-import { useFetchIntegrations } from '../../../../../../../detections/hooks/alert_summary/use_fetch_integrations';
-import { useFindRulesQuery } from '../../../../../../../detection_engine/rule_management/api/hooks/use_find_rules_query';
-import { useKibana } from '../../../../../../../common/lib/kibana';
+import { useFetchIntegrations } from '../../hooks/use_fetch_integrations';
+import { useFindRulesQuery } from '../../../../../detection_engine/rule_management/api/hooks/use_find_rules_query';
+import { useKibana } from '../../../kibana';
 
 const DATAVIEW_ERROR = i18n.translate(
-  'xpack.securitySolution.attackDiscovery.aiForSocTableTab.dataViewError',
+  'xpack.securitySolution.common.aiForSocTableTab.dataViewError',
   {
     defaultMessage: 'Unable to create data view',
   }
 );
 
-export const ERROR_TEST_ID = 'attack-discovery-alert-error';
-export const SKELETON_TEST_ID = 'attack-discovery-alert-skeleton';
-export const CONTENT_TEST_ID = 'attack-discovery-alert-content';
+export const ERROR_TEST_ID = 'ai4dsoc-alerts-table-dataview-error';
+export const LOADING_SKELETON_TEST_ID = 'ai4dsoc-alerts-table-dataview-loading-skeleton';
+export const CONTENT_TEST_ID = 'ai4dsoc-alerts-table-dataview-content';
 
 const dataViewSpec: DataViewSpec = { title: '.alerts-security.alerts-default' };
 
-interface AiForSOCAlertsTabProps {
+interface AIForSOCAlertsTableProps {
   /**
    * Id to pass down to the ResponseOps alerts table
    */
   id: string;
+  /**
+   * Callback fired when the alerts have been first loaded
+   */
+  onLoaded?: (alerts: Alert[], columns: EuiDataGridColumn[]) => void;
   /**
    * Query that contains the id of the alerts to display in the table
    */
@@ -40,11 +45,11 @@ interface AiForSOCAlertsTabProps {
 }
 
 /**
- * Component used in the Attack Discovery alerts table, only in the AI4DSOC tier.
- * It fetches rules, packages (integrations) and creates a local dataView.
+ * Component used in the Attack Discovery and Cases alerts tables, only in the AI4DSOC tier.
+ * It fetches rules, packages (integrations) and creates a local adhoc dataView.
  * It renders a loading skeleton while packages are being fetched and while the dataView is being created.
  */
-export const AiForSOCAlertsTab = memo(({ id, query }: AiForSOCAlertsTabProps) => {
+export const AIForSOCAlertsTable = memo(({ id, onLoaded, query }: AIForSOCAlertsTableProps) => {
   const { data } = useKibana().services;
   const [dataView, setDataView] = useState<DataView | undefined>(undefined);
   const [dataViewLoading, setDataViewLoading] = useState<boolean>(true);
@@ -85,7 +90,7 @@ export const AiForSOCAlertsTab = memo(({ id, query }: AiForSOCAlertsTabProps) =>
 
   return (
     <EuiSkeletonRectangle
-      data-test-subj={SKELETON_TEST_ID}
+      data-test-subj={LOADING_SKELETON_TEST_ID}
       height={400}
       isLoading={integrationIsLoading || dataViewLoading}
       width="100%"
@@ -103,6 +108,7 @@ export const AiForSOCAlertsTab = memo(({ id, query }: AiForSOCAlertsTabProps) =>
             <Table
               dataView={dataView}
               id={id}
+              onLoaded={onLoaded}
               packages={installedPackages}
               query={query}
               ruleResponse={ruleResponse}
@@ -114,4 +120,4 @@ export const AiForSOCAlertsTab = memo(({ id, query }: AiForSOCAlertsTabProps) =>
   );
 });
 
-AiForSOCAlertsTab.displayName = 'AiForSOCAlertsTab';
+AIForSOCAlertsTable.displayName = 'AIForSOCAlertsTable';
