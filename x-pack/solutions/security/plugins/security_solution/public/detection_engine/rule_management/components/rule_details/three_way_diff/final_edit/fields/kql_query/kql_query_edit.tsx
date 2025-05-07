@@ -16,7 +16,7 @@ import { QueryBarField } from '../../../../../../../rule_creation_ui/components/
 import * as stepDefineRuleI18n from '../../../../../../../rule_creation_ui/components/step_define_rule/translations';
 import type { DiffableRule } from '../../../../../../../../../common/api/detection_engine';
 import type { SetRuleQuery } from '../../../../../../../../detections/containers/detection_engine/rules/use_rule_from_timeline';
-import { useRuleFromTimeline } from '../../../../../../../../detections/containers/detection_engine/rules/use_rule_from_timeline';
+import { useRuleFromTimeline } from '../../../../../../../common/hooks/use_rule_from_timeline';
 import { useGetSavedQuery } from '../../../../../../../common/use_get_saved_query';
 import type { RuleFieldEditComponentProps } from '../../../field_final_side';
 import { useDiffableRuleDataView } from '../hooks/use_diffable_rule_data_view';

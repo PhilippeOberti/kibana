@@ -14,9 +14,10 @@ import {
 } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
 import React, { useCallback, useMemo, useRef } from 'react';
+import type { FindRulesSortField } from '../../../../../common/api/detection_engine';
 import { Loader } from '../../../../common/components/loader';
 import { useBoolState } from '../../../../common/hooks/use_bool_state';
-import { PrePackagedRulesPrompt } from '../../../../detections/components/rules/pre_packaged_rules/load_empty_prompt';
+import { PrePackagedRulesPrompt } from './pre_packaged_rules/load_empty_prompt';
 import type { Rule } from '../../../rule_management/logic';
 import * as i18n from '../../../common/translations';
 import type { EuiBasicTableOnChange } from '../../../common/types';
@@ -39,7 +40,6 @@ import { BulkActionDuplicateExceptionsConfirmation } from './bulk_actions/bulk_d
 import { useStartMlJobs } from '../../../rule_management/logic/use_start_ml_jobs';
 import { RULES_TABLE_PAGE_SIZE_OPTIONS } from './constants';
 import { useRuleManagementFilters } from '../../../rule_management/logic/use_rule_management_filters';
-import type { FindRulesSortField } from '../../../../../common/api/detection_engine/rule_management';
 import { useIsUpgradingSecurityPackages } from '../../../rule_management/logic/use_upgrade_security_packages';
 import { useManualRuleRunConfirmation } from '../../../rule_gaps/components/manual_rule_run/use_manual_rule_run_confirmation';
 import { ManualRuleRunModal } from '../../../rule_gaps/components/manual_rule_run';

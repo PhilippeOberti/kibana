@@ -6,18 +6,18 @@
  */
 
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-
-import { FilterByAssigneesPopover } from './filter_by_assignees_popover';
+import { fireEvent, render } from '@testing-library/react';
+import {
+  FILTER_BY_ASSIGNEES_BUTTON,
+  FilterByAssigneesPopover,
+} from './filter_by_assignees_popover';
 import { TestProviders } from '../../mock';
 import type { AssigneesIdsSelection } from '../assignees/types';
-
 import { useGetCurrentUserProfile } from '../user_profiles/use_get_current_user_profile';
 import { useBulkGetUserProfiles } from '../user_profiles/use_bulk_get_user_profiles';
 import { useSuggestUsers } from '../user_profiles/use_suggest_users';
 import { useLicense } from '../../hooks/use_license';
 import { useUpsellingMessage } from '../../hooks/use_upselling';
-import { FILTER_BY_ASSIGNEES_BUTTON } from './test_ids';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('../user_profiles/use_get_current_user_profile');
