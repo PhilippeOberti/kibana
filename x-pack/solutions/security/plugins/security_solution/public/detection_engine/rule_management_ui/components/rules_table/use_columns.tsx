@@ -10,6 +10,7 @@ import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiLink, EuiText, EuiToolTip } fro
 import { FormattedMessage } from '@kbn/i18n-react';
 import moment from 'moment';
 import React, { useMemo } from 'react';
+import type { RuleExecutionSummary } from '../../../../../common/api/detection_engine';
 import { RulesTableEmptyColumnName } from './rules_table_empty_column_name';
 import type { SecurityJob } from '../../../../common/components/ml_popover/types';
 import {
@@ -17,7 +18,6 @@ import {
   SecurityPageName,
   SHOW_RELATED_INTEGRATIONS_SETTING,
 } from '../../../../../common/constants';
-import type { RuleExecutionSummary } from '../../../../../common/api/detection_engine/rule_monitoring';
 import { isMlRule } from '../../../../../common/machine_learning/helpers';
 import { getEmptyTagValue } from '../../../../common/components/empty_value';
 import { RuleSnoozeBadge } from '../../../rule_management/components/rule_snooze_badge';
@@ -32,7 +32,7 @@ import {
 } from '../../../../common/utils/privileges';
 import { IntegrationsPopover } from '../../../../detections/components/rules/related_integrations/integrations_popover';
 import { RuleStatusBadge } from '../../../../detections/components/rules/rule_execution_status';
-import { RuleSwitch } from '../../../../detections/components/rules/rule_switch';
+import { RuleSwitch } from '../../../common/components/rule_switch';
 import { SeverityBadge } from '../../../../common/components/severity_badge';
 import * as i18n from '../../../common/translations';
 import { RuleDetailTabs } from '../../../rule_details_ui/pages/rule_details/use_rule_details_tabs';

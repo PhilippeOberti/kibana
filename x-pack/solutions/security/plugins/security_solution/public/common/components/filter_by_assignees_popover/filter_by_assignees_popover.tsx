@@ -22,7 +22,8 @@ import { useLicense } from '../../hooks/use_license';
 import { useUpsellingMessage } from '../../hooks/use_upselling';
 import { ASSIGNEES_PANEL_WIDTH } from '../assignees/constants';
 import { AssigneesSelectable } from '../assignees/assignees_selectable';
-import { FILTER_BY_ASSIGNEES_BUTTON } from './test_ids';
+
+export const FILTER_BY_ASSIGNEES_BUTTON = 'filter-popover-button-assignees';
 
 export interface FilterByAssigneesPopoverProps {
   /**

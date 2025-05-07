@@ -7,9 +7,9 @@
 
 import { i18n } from '@kbn/i18n';
 
-export const PAGE_TITLE = i18n.translate(
-  'xpack.securitySolution.detectionEngine.detectionsPageTitle',
+export const GO_TO_DOCUMENTATION = i18n.translate(
+  'xpack.securitySolution.alertsPage.goToDocumentationButton',
   {
-    defaultMessage: 'Alerts',
+    defaultMessage: 'View documentation',
   }
 );
