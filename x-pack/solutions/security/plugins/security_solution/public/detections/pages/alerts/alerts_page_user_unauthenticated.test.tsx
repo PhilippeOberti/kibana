@@ -6,17 +6,18 @@
  */
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
+import {
+  AlertsPageUserUnauthenticated,
+  NO_INDEX_TEST_ID,
+} from './alerts_page_user_unauthenticated';
 
-import { DetectionEngineNoIndex } from './detection_engine_no_index';
 jest.mock('../../../common/lib/kibana');
 
-describe('DetectionEngineNoIndex', () => {
+describe('AlertsPageUserUnauthenticated', () => {
   it('renders correctly', () => {
-    const wrapper = shallow(
-      <DetectionEngineNoIndex needsSignalsIndex={true} needsListsIndex={false} />
-    );
+    const { getByTestId } = render(<AlertsPageUserUnauthenticated />);
 
-    expect(wrapper.find('EmptyPage')).toHaveLength(1);
+    expect(getByTestId(NO_INDEX_TEST_ID)).toBeInTheDocument();
   });
 });
