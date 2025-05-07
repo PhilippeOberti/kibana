@@ -10,7 +10,12 @@ import { EmptyPage } from '../../../common/components/empty_page';
 import * as i18n from './translations';
 import { useKibana } from '../../../common/lib/kibana';
 
-export const DetectionEngineUserUnauthenticated = React.memo(() => {
+export const USER_UNAUTHENTICATED_TEST_ID = 'alerts-page-user-unauthenticated';
+
+/**
+ *
+ */
+export const AlertsPageUserUnauthenticated = React.memo(() => {
   const docLinks = useKibana().services.docLinks;
   const actions = useMemo(
     () => ({
@@ -27,10 +32,10 @@ export const DetectionEngineUserUnauthenticated = React.memo(() => {
     <EmptyPage
       actions={actions}
       message={i18n.USER_UNAUTHENTICATED_MSG_BODY}
-      data-test-subj="no_index"
+      data-test-subj={USER_UNAUTHENTICATED_TEST_ID}
       title={i18n.USER_UNAUTHENTICATED_TITLE}
     />
   );
 });
 
-DetectionEngineUserUnauthenticated.displayName = 'DetectionEngineUserUnauthenticated';
+AlertsPageUserUnauthenticated.displayName = 'AlertsPageUserUnauthenticated';

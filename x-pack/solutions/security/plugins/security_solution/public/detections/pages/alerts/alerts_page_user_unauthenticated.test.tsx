@@ -6,15 +6,18 @@
  */
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
+import {
+  AlertsPageUserUnauthenticated,
+  NO_INDEX_TEST_ID,
+} from './alerts_page_user_unauthenticated';
 
-import { DetectionEngineUserUnauthenticated } from './detection_engine_user_unauthenticated';
 jest.mock('../../../common/lib/kibana');
 
-describe('DetectionEngineUserUnauthenticated', () => {
+describe('AlertsPageUserUnauthenticated', () => {
   it('renders correctly', () => {
-    const wrapper = shallow(<DetectionEngineUserUnauthenticated />);
+    const { getByTestId } = render(<AlertsPageUserUnauthenticated />);
 
-    expect(wrapper.find('EmptyPage')).toHaveLength(1);
+    expect(getByTestId(NO_INDEX_TEST_ID)).toBeInTheDocument();
   });
 });

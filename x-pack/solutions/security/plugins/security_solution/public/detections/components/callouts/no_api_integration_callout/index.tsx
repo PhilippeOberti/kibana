@@ -5,16 +5,24 @@
  * 2.0.
  */
 
-import { EuiCallOut, EuiButton, EuiSpacer } from '@elastic/eui';
-import React, { memo, useCallback, useState } from 'react';
+import { EuiButton, EuiCallOut, EuiSpacer } from '@elastic/eui';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
+import { useUserData } from '../../user_info';
 import * as i18n from './translations';
 
 const NoApiIntegrationKeyCallOutComponent = () => {
-  const [showCallOut, setShowCallOut] = useState(true);
-  const handleCallOut = useCallback(() => setShowCallOut(false), [setShowCallOut]);
+  const [isCalloutDismissed, setIsCalloutDismissed] = useState(false);
+  const dismissCallOut = useCallback(() => setIsCalloutDismissed(true), [setIsCalloutDismissed]);
 
-  return showCallOut ? (
+  const [{ hasEncryptionKey }] = useUserData();
+
+  const showCallout = useMemo(
+    () => hasEncryptionKey != null && !hasEncryptionKey && !isCalloutDismissed,
+    [hasEncryptionKey, isCalloutDismissed]
+  );
+
+  return showCallout ? (
     <>
       <EuiCallOut
         title={i18n.NO_API_INTEGRATION_KEY_CALLOUT_TITLE}
@@ -22,7 +30,7 @@ const NoApiIntegrationKeyCallOutComponent = () => {
         iconType="warning"
       >
         <p>{i18n.NO_API_INTEGRATION_KEY_CALLOUT_MSG}</p>
-        <EuiButton color="danger" onClick={handleCallOut}>
+        <EuiButton color="danger" onClick={dismissCallOut}>
           {i18n.DISMISS_CALLOUT}
         </EuiButton>
       </EuiCallOut>

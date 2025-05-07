@@ -5,10 +5,12 @@
  * 2.0.
  */
 
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { EmptyPage } from '../../../common/components/empty_page';
 import * as i18n from './translations';
 import { useKibana } from '../../../common/lib/kibana';
+
+export const NO_INDEX_TEST_ID = 'alerts-page-no-index';
 
 const buildMessage = (needsListsIndex: boolean, needsSignalsIndex: boolean): string => {
   if (needsSignalsIndex && needsListsIndex) {
@@ -22,32 +24,45 @@ const buildMessage = (needsListsIndex: boolean, needsSignalsIndex: boolean): str
   }
 };
 
-const DetectionEngineNoIndexComponent: React.FC<{
+export interface AlertsPageWrapperProps {
+  /**
+   *
+   */
   needsListsIndex: boolean;
+  /**
+   *
+   */
   needsSignalsIndex: boolean;
-}> = ({ needsListsIndex, needsSignalsIndex }) => {
-  const docLinks = useKibana().services.docLinks;
-  const actions = useMemo(
-    () => ({
-      detections: {
-        icon: 'documents',
-        label: i18n.GO_TO_DOCUMENTATION,
-        url: `${docLinks.links.siem.detectionsReq}`,
-        target: '_blank',
-      },
-    }),
-    [docLinks]
-  );
-  const message = buildMessage(needsListsIndex, needsSignalsIndex);
+}
 
-  return (
-    <EmptyPage
-      actions={actions}
-      data-test-subj="no_index"
-      message={message}
-      title={i18n.NO_INDEX_TITLE}
-    />
-  );
-};
+/**
+ *
+ */
+export const AlertsPageNoIndex = memo(
+  ({ needsListsIndex, needsSignalsIndex }: AlertsPageWrapperProps) => {
+    const docLinks = useKibana().services.docLinks;
+    const actions = useMemo(
+      () => ({
+        detections: {
+          icon: 'documents',
+          label: i18n.GO_TO_DOCUMENTATION,
+          url: `${docLinks.links.siem.detectionsReq}`,
+          target: '_blank',
+        },
+      }),
+      [docLinks]
+    );
+    const message = buildMessage(needsListsIndex, needsSignalsIndex);
 
-export const DetectionEngineNoIndex = React.memo(DetectionEngineNoIndexComponent);
+    return (
+      <EmptyPage
+        actions={actions}
+        data-test-subj={NO_INDEX_TEST_ID}
+        message={message}
+        title={i18n.NO_INDEX_TITLE}
+      />
+    );
+  }
+);
+
+AlertsPageNoIndex.displayName = 'AlertPageNoIndex';
