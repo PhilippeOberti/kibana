@@ -36,11 +36,6 @@ import { APP_ID, CASES_FEATURE_ID, VIEW_SELECTION } from '../../../../common/con
 import { DEFAULT_COLUMN_MIN_WIDTH } from '../../../timelines/components/timeline/body/constants';
 import { defaultRowRenderers } from '../../../timelines/components/timeline/body/renderers';
 import { eventsDefaultModel } from '../../../common/components/events_viewer/default_model';
-import { GraphOverlay } from '../../../timelines/components/graph_overlay';
-import {
-  useSessionView,
-  useSessionViewNavigation,
-} from '../../../timelines/components/timeline/tabs/session/use_session_view';
 import type { State } from '../../../common/store';
 import { inputsSelectors } from '../../../common/store';
 import { combineQueries } from '../../../common/lib/kuery';
@@ -87,10 +82,10 @@ interface GridContainerProps {
   hideLastPage: boolean;
 }
 
-export const FullWidthFlexGroupTable = styled(EuiFlexGroup)<{ $visible: boolean }>`
+export const FullWidthFlexGroupTable = styled(EuiFlexGroup)`
   overflow: hidden;
   margin: 0;
-  display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
+  display: 'flex';
 `;
 
 const EuiDataGridContainer = styled.div<GridContainerProps>`
@@ -206,8 +201,6 @@ const DetectionEngineAlertsTableComponent: FC<Omit<DetectionEngineAlertTableProp
 
   const {
     initialized: isDataTableInitialized,
-    graphEventId,
-    sessionViewConfig,
     viewMode: tableView = eventsDefaultModel.viewMode,
     columns,
     totalCount: count,
@@ -387,22 +380,6 @@ const DetectionEngineAlertsTableComponent: FC<Omit<DetectionEngineAlertTableProp
     );
   }, [dispatch, tableType, finalColumns, isDataTableInitialized]);
 
-  const { Navigation } = useSessionViewNavigation({
-    scopeId: tableType,
-  });
-
-  const { SessionView } = useSessionView({
-    scopeId: tableType,
-  });
-
-  const graphOverlay = useMemo(() => {
-    const shouldShowOverlay =
-      (graphEventId != null && graphEventId.length > 0) || sessionViewConfig != null;
-    return shouldShowOverlay ? (
-      <GraphOverlay scopeId={tableType} SessionView={SessionView} Navigation={Navigation} />
-    ) : null;
-  }, [graphEventId, tableType, sessionViewConfig, SessionView, Navigation]);
-
   const toolbarVisibility = useMemo(
     () => ({
       showColumnSelector: !isEventRenderedView,
@@ -450,8 +427,7 @@ const DetectionEngineAlertsTableComponent: FC<Omit<DetectionEngineAlertTableProp
 
   return (
     <div>
-      {graphOverlay}
-      <FullWidthFlexGroupTable $visible={!graphEventId && graphOverlay == null} gutterSize="none">
+      <FullWidthFlexGroupTable gutterSize="none">
         <StatefulEventContext.Provider value={activeStatefulEventContext}>
           <EuiDataGridContainer hideLastPage={false}>
             <AlertTableCellContextProvider
