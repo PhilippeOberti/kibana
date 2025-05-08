@@ -1192,21 +1192,6 @@
           },
           {
             "parentPluginId": "securitySolution",
-            "id": "def-public.TimelineModel.sessionViewConfig",
-            "type": "CompoundType",
-            "tags": [],
-            "label": "sessionViewConfig",
-            "description": [],
-            "signature": [
-              "SessionViewConfig",
-              " | null"
-            ],
-            "path": "x-pack/solutions/security/plugins/security_solution/public/timelines/store/model.ts",
-            "deprecated": false,
-            "trackAdoption": false
-          },
-          {
-            "parentPluginId": "securitySolution",
             "id": "def-public.TimelineModel.show",
             "type": "boolean",
             "tags": [],
