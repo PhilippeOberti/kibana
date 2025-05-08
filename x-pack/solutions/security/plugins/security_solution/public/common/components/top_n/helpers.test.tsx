@@ -12,13 +12,13 @@ import {
   alertEvents,
   allEvents,
   defaultOptions,
+  detectionAlertsTables,
   getOptions,
   getSourcererScopeName,
   isDetectionsAlertsTable,
   rawEvents,
   removeIgnoredAlertFilters,
   shouldIgnoreAlertFilters,
-  detectionAlertsTables,
 } from './helpers';
 import { SourcererScopeName } from '../../../sourcerer/store/model';
 import { TableId } from '@kbn/securitysolution-data-table';
@@ -31,7 +31,6 @@ const otherScopes = [
   TimelineId.active,
   TimelineId.test,
   TableId.alternateTest,
-  TableId.kubernetesPageSessions,
 ];
 
 const othersWithoutActive = otherScopes.filter((x) => x !== TimelineId.active);

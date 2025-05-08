@@ -7,22 +7,21 @@
 
 import type { Filter } from '@kbn/es-query';
 import type { SavedSearch } from '@kbn/saved-search-plugin/common';
-import type { SessionViewConfig } from '../../../common/types';
 import type { EqlOptions, TimelineNonEcsData } from '../../../common/search_strategy/timeline';
 import type {
-  TimelineTabs,
-  ScrollToTopEvent,
-  SortColumnTimeline,
   ColumnHeaderOptions,
   DataProvider,
+  ScrollToTopEvent,
   SerializedFilterQuery,
+  SortColumnTimeline,
   TimelineEventsType,
+  TimelineTabs,
 } from '../../../common/types/timeline';
 import type {
+  PinnedEvent,
   RowRendererId,
   TimelineStatus,
   TimelineType,
-  PinnedEvent,
 } from '../../../common/api/timeline';
 import type { ResolveTimelineConfig } from '../components/open_timeline/types';
 
@@ -31,7 +30,6 @@ export type KqlMode = 'filter' | 'search';
 export interface TimelineModel {
   /** The selected tab to displayed in the timeline */
   activeTab: TimelineTabs;
-  prevActiveTab: TimelineTabs;
 
   /** Used for scrolling to top when swiching tabs. It includes the timestamp of when the event happened */
   scrollToTop?: ScrollToTopEvent;
@@ -70,7 +68,6 @@ export interface TimelineModel {
   resolveTimelineConfig?: ResolveTimelineConfig;
   showSaveModal?: boolean;
   savedQueryId?: string | null;
-  sessionViewConfig: SessionViewConfig | null;
   /** When true, show the timeline flyover */
   show: boolean;
   /** status: active | draft */
@@ -101,9 +98,6 @@ export interface TimelineModel {
   footerText?: string | React.ReactNode;
   loadingText?: string | React.ReactNode;
   queryFields: string[];
-  /** This holds the view information for the flyout when viewing timeline in a consuming view (i.e. hosts page) or the side panel in the primary timeline view */
-  /** When non-empty, display a graph view for this event */
-  graphEventId?: string;
   indexNames: string[];
   /** The number of items to show in a single page of results */
   itemsPerPage: number;
@@ -146,7 +140,6 @@ export type SubsetTimelineModel = Readonly<
   Pick<
     TimelineModel,
     | 'activeTab'
-    | 'prevActiveTab'
     | 'columns'
     | 'defaultColumns'
     | 'dataProviders'
@@ -158,7 +151,6 @@ export type SubsetTimelineModel = Readonly<
     | 'eventIdToNoteIds'
     | 'excludedRowRendererIds'
     | 'footerText'
-    | 'graphEventId'
     | 'highlightedDropAndProviderId'
     | 'historyIds'
     | 'indexNames'
@@ -182,7 +174,6 @@ export type SubsetTimelineModel = Readonly<
     | 'dateRange'
     | 'selectAll'
     | 'selectedEventIds'
-    | 'sessionViewConfig'
     | 'show'
     | 'sort'
     | 'isSaving'
@@ -201,6 +192,5 @@ export interface TimelineUrl {
   activeTab?: TimelineTabs;
   id?: string;
   isOpen: boolean;
-  graphEventId?: string;
   savedSearchId?: string;
 }

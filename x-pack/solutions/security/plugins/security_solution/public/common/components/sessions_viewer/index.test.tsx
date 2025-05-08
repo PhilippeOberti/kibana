@@ -6,9 +6,9 @@
  */
 
 import React, { useEffect } from 'react';
-import { waitFor, render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { TestProviders } from '../../mock';
-import { TEST_ID, SessionsView, defaultSessionsFilter } from '.';
+import { defaultSessionsFilter, SessionsView, TEST_ID } from '.';
 import type { EntityType } from '@kbn/timelines-plugin/common';
 import type { SessionsComponentsProps } from './types';
 import { TableId } from '@kbn/securitysolution-data-table';
@@ -185,18 +185,6 @@ describe('SessionsView', () => {
     render(
       <TestProviders>
         <SessionsView {...testProps} />
-      </TestProviders>
-    );
-
-    await waitFor(() => {
-      expect(mockGetDefaultControlColumn).toHaveBeenCalledWith(6);
-    });
-  });
-
-  it('Action tab should have 6 columns when accessed via K8S dahsboard', async () => {
-    render(
-      <TestProviders>
-        <SessionsView {...testProps} tableId={TableId.kubernetesPageSessions} />
       </TestProviders>
     );
 

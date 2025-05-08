@@ -9,8 +9,6 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { InputsModelId } from '../../common/store/inputs/constants';
 import { timelineActions } from '../store';
-import { useTimelineFullScreen } from '../../common/containers/use_full_screen';
-import { TimelineId } from '../../../common/types/timeline';
 import { type TimelineType, TimelineTypeEnum } from '../../../common/api/timeline';
 import { useDeepEqualSelector } from '../../common/hooks/use_selector';
 import { inputsActions, inputsSelectors } from '../../common/store/inputs';
@@ -67,7 +65,6 @@ export const useCreateTimeline = ({
     ? experimentalSelectedPatterns
     : oldSelectedPatterns;
 
-  const { timelineFullScreen, setTimelineFullScreen } = useTimelineFullScreen();
   const globalTimeRange = useDeepEqualSelector(inputsSelectors.globalTimeRangeSelector);
 
   const { resetDiscoverAppState } = useDiscoverInTimelineContext();
@@ -85,10 +82,6 @@ export const useCreateTimeline = ({
       timeRange?: TimeRange;
     }) => {
       const timerange = timeRangeParam ?? globalTimeRange;
-
-      if (id === TimelineId.active && timelineFullScreen) {
-        setTimelineFullScreen(false);
-      }
 
       setSelectedDataView({
         id: dataViewId,
@@ -143,16 +136,7 @@ export const useCreateTimeline = ({
         );
       }
     },
-    [
-      globalTimeRange,
-      timelineFullScreen,
-      dispatch,
-      dataViewId,
-      selectedPatterns,
-      setSelectedDataView,
-      timelineType,
-      setTimelineFullScreen,
-    ]
+    [globalTimeRange, dispatch, dataViewId, selectedPatterns, setSelectedDataView, timelineType]
   );
 
   return useCallback(

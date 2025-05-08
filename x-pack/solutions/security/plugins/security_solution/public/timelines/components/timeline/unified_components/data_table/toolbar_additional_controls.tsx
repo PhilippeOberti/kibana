@@ -4,8 +4,8 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-import { EuiToolTip, EuiButtonIcon } from '@elastic/eui';
-import React, { useMemo, useCallback, useRef } from 'react';
+import { EuiButtonIcon, EuiToolTip } from '@elastic/eui';
+import React, { useCallback, useMemo, useRef } from 'react';
 
 import { isActiveTimeline } from '../../../../../helpers';
 import { TimelineId } from '../../../../../../common/types/timeline';
@@ -15,7 +15,6 @@ import {
 } from '../../../../../common/containers/use_full_screen';
 import { StatefulRowRenderersBrowser } from '../../../row_renderers_browser';
 import * as i18n from './translations';
-import { EXIT_FULL_SCREEN_CLASS_NAME } from '../../../../../common/components/exit_full_screen';
 import { LastUpdatedContainer } from '../../footer/last_updated';
 import { RowRendererSwitch } from '../../../row_renderer_switch';
 
@@ -79,7 +78,6 @@ export const ToolbarAdditionalControlsComponent: React.FC<Props> = ({ timelineId
         >
           <EuiButtonIcon
             aria-label={fullScreen ? i18n.EXIT_FULL_SCREEN : i18n.FULL_SCREEN}
-            className={`${fullScreen ? EXIT_FULL_SCREEN_CLASS_NAME : ''}`}
             color={fullScreen ? 'text' : 'primary'}
             data-test-subj={
               // a full screen button gets created for timeline and for the host page

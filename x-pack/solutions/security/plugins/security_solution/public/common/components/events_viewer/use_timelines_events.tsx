@@ -36,6 +36,7 @@ import type { ESQuery } from '../../../../common/typed_json';
 import type { AlertWorkflowStatus } from '../../types';
 import { getSearchTransactionName, useStartTransaction } from '../../lib/apm/use_start_transaction';
 import { useFetchNotes } from '../../../notes/hooks/use_fetch_notes';
+
 export type InspectResponse = Inspect & { response: string[] };
 
 export const detectionsTimelineIds = [TableId.alertsOnAlertsPage, TableId.alertsOnRuleDetailsPage];
@@ -262,9 +263,6 @@ export const useTimelineEventsHandler = ({
                     if (onNextHandler) onNextHandler(newTimelineResponse);
                     return newTimelineResponse;
                   });
-                  if (prevFilterStatus !== request.filterStatus) {
-                    dispatch(dataTableActions.updateGraphEventId({ id, graphEventId: '' }));
-                  }
                   setFilterStatus(request.filterStatus);
                   setLoading(false);
 

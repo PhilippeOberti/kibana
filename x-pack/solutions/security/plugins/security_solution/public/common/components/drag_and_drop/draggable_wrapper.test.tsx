@@ -47,7 +47,6 @@ const scopeIdsWithHoverActions = [
   TableId.alertsOnRuleDetailsPage,
   TableId.hostsPageEvents,
   TableId.hostsPageSessions,
-  TableId.kubernetesPageSessions,
   TableId.networkPageEvents,
   TimelineId.test,
   TableId.usersPageEvents,

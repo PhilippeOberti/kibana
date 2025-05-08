@@ -7,9 +7,9 @@
 
 import { TimelineTabs } from '../../../common/types/timeline';
 import {
-  TimelineTypeEnum,
-  TimelineStatusEnum,
   RowRendererIdEnum,
+  TimelineStatusEnum,
+  TimelineTypeEnum,
 } from '../../../common/api/timeline';
 
 import { normalizeTimeRange } from '../../common/utils/normalize_time_range';
@@ -22,7 +22,6 @@ const { from: start, to: end } = normalizeTimeRange({ from: '', to: '' }, false)
 export const timelineDefaults: SubsetTimelineModel &
   Pick<TimelineModel, 'eqlOptions' | 'resolveTimelineConfig' | 'sampleSize' | 'rowHeight'> = {
   activeTab: TimelineTabs.query,
-  prevActiveTab: TimelineTabs.query,
   columns: defaultUdtHeaders,
   documentType: '',
   defaultColumns: defaultUdtHeaders,
@@ -82,7 +81,6 @@ export const timelineDefaults: SubsetTimelineModel &
   pinnedEventsSaveObject: {},
   savedObjectId: null,
   selectAll: false,
-  sessionViewConfig: null,
   show: false,
   sort: [
     {
@@ -113,5 +111,4 @@ export const getTimelineManageDefaults = (id: string) => ({
   isLoading: false,
   queryFields: [],
   title: '',
-  graphEventId: '',
 });

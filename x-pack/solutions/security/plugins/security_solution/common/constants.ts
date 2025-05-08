@@ -19,7 +19,6 @@ export { SecurityPageName } from '@kbn/security-solution-navigation';
  */
 export const APP_ID = 'securitySolution' as const;
 export const APP_UI_ID = 'securitySolutionUI' as const;
-export const ASSET_INVENTORY_FEATURE_ID = 'securitySolutionAssetInventory' as const;
 export const ASSISTANT_FEATURE_ID = 'securitySolutionAssistant' as const;
 export const ATTACK_DISCOVERY_FEATURE_ID = 'securitySolutionAttackDiscovery' as const;
 export const CASES_FEATURE_ID = 'securitySolutionCasesV3' as const;
@@ -28,7 +27,6 @@ export const NOTES_FEATURE_ID = 'securitySolutionNotes' as const;
 export const SERVER_APP_ID = 'siem' as const;
 export const SECURITY_FEATURE_ID = 'siemV2' as const;
 export const APP_NAME = 'Security' as const;
-export const APP_ICON = 'securityAnalyticsApp' as const;
 export const APP_ICON_SOLUTION = 'logoSecurity' as const;
 export const APP_PATH = `/app/security` as const;
 export const APP_INTEGRATIONS_PATH = `/app/integrations` as const;
@@ -112,9 +110,6 @@ export const NETWORK_PATH = '/network' as const;
 export const MANAGEMENT_PATH = '/administration' as const;
 export const COVERAGE_OVERVIEW_PATH = '/rules_coverage_overview' as const;
 export const THREAT_INTELLIGENCE_PATH = '/threat_intelligence' as const;
-export const INVESTIGATIONS_PATH = '/investigations' as const;
-export const MACHINE_LEARNING_PATH = '/ml' as const;
-export const ASSETS_PATH = '/assets' as const;
 export const ENDPOINTS_PATH = `${MANAGEMENT_PATH}/endpoints` as const;
 export const POLICIES_PATH = `${MANAGEMENT_PATH}/policy` as const;
 export const TRUSTED_APPS_PATH = `${MANAGEMENT_PATH}/trusted_apps` as const;
@@ -213,10 +208,6 @@ export const EXTENDED_RULE_EXECUTION_LOGGING_MIN_LEVEL_SETTING =
 /** This Kibana Advanced Setting allows users to exclude selected data tiers from search during rule execution */
 export const EXCLUDED_DATA_TIERS_FOR_RULE_EXECUTION =
   'securitySolution:excludedDataTiersForRuleExecution' as const;
-
-/** This Kibana Advanced Setting allows users to enable/disable the Visualizations in Flyout feature */
-export const ENABLE_VISUALIZATIONS_IN_FLYOUT_SETTING =
-  'securitySolution:enableVisualizationsInFlyout' as const;
 
 /** This Kibana Advanced Setting allows users to enable/disable the Graph Visualizations for alerts and events */
 export const ENABLE_GRAPH_VISUALIZATION_SETTING =
@@ -357,18 +348,6 @@ export const NOTIFICATION_DEFAULT_FREQUENCY = {
   throttle: null,
   summary: true,
 };
-
-export const showAllOthersBucket: string[] = [
-  'destination.ip',
-  'event.action',
-  'event.category',
-  'event.dataset',
-  'event.module',
-  'signal.rule.threat.tactic.name',
-  'source.ip',
-  'destination.ip',
-  'user.name',
-];
 
 export const TRANSFORM_STATES = {
   ABORTING: 'aborting',

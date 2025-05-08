@@ -462,28 +462,6 @@ describe('Actions', () => {
       expect(wrapper.find('[data-test-subj="session-view-button"]').exists()).toEqual(false);
     });
 
-    test('it should show session view button on action tabs when user access the session viewer via K8S dashboard', () => {
-      const ecsData = {
-        ...mockTimelineData[0].ecs,
-        event: { kind: ['alert'] },
-        agent: { type: ['endpoint'] },
-        process: { entry_leader: { entity_id: ['test_id'], start: ['2022-05-08T13:44:00.13Z'] } },
-        _index: '.ds-logs-endpoint.events.process-default',
-      };
-
-      const wrapper = mount(
-        <TestProviders>
-          <Actions
-            {...defaultProps}
-            ecsData={ecsData}
-            timelineId={TableId.kubernetesPageSessions}
-          />
-        </TestProviders>
-      );
-
-      expect(wrapper.find('[data-test-subj="session-view-button"]').exists()).toEqual(true);
-    });
-
     test('it should show session view button on action tabs for enterprise users', () => {
       const licenseServiceMock = licenseService as jest.Mocked<typeof licenseService>;
 

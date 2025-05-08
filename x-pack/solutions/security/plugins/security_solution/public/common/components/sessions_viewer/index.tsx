@@ -5,12 +5,12 @@
  * 2.0.
  */
 
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { Filter } from '@kbn/es-query';
 import { ENTRY_SESSION_ENTITY_ID_PROPERTY } from '@kbn/session-view-plugin/public';
 import { useDispatch } from 'react-redux';
 import { EVENT_ACTION } from '@kbn/rule-data-utils';
-import { TableId, dataTableActions } from '@kbn/securitysolution-data-table';
+import { dataTableActions } from '@kbn/securitysolution-data-table';
 import { useAddBulkToTimelineAction } from '../../../detections/components/alerts_table/timeline_actions/use_add_bulk_to_timeline';
 import type { SessionsComponentsProps } from './types';
 import type { ESBoolQuery } from '../../../../common/typed_json';
@@ -124,7 +124,7 @@ const SessionsViewComponent: React.FC<SessionsComponentsProps> = ({
   const securitySolutionNotesDisabled = useIsExperimentalFeatureEnabled(
     'securitySolutionNotesDisabled'
   );
-  let ACTION_BUTTON_COUNT = isEnterprisePlus || tableId === TableId.kubernetesPageSessions ? 6 : 5;
+  let ACTION_BUTTON_COUNT = isEnterprisePlus ? 6 : 5;
   if (securitySolutionNotesDisabled) {
     ACTION_BUTTON_COUNT--;
   }

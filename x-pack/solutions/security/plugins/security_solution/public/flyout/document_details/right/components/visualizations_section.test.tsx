@@ -10,14 +10,14 @@ import { __IntlProvider as IntlProvider } from '@kbn/i18n-react';
 import { render } from '@testing-library/react';
 import { useFetchGraphData } from '@kbn/cloud-security-posture-graph/src/hooks';
 import {
-  uiMetricService,
   GRAPH_PREVIEW,
+  uiMetricService,
 } from '@kbn/cloud-security-posture-common/utils/ui_metrics';
 import { METRIC_TYPE } from '@kbn/analytics';
 import {
   ANALYZER_PREVIEW_TEST_ID,
-  SESSION_PREVIEW_TEST_ID,
   GRAPH_PREVIEW_TEST_ID,
+  SESSION_PREVIEW_TEST_ID,
   VISUALIZATIONS_SECTION_CONTENT_TEST_ID,
   VISUALIZATIONS_SECTION_HEADER_TEST_ID,
 } from './test_ids';
@@ -34,10 +34,7 @@ import { useIsInvestigateInResolverActionEnabled } from '../../../../detections/
 import { useGraphPreview } from '../../shared/hooks/use_graph_preview';
 import { useIsExperimentalFeatureEnabled } from '../../../../common/hooks/use_experimental_features';
 import { createUseUiSetting$Mock } from '../../../../common/lib/kibana/kibana_react.mock';
-import {
-  ENABLE_GRAPH_VISUALIZATION_SETTING,
-  ENABLE_VISUALIZATIONS_IN_FLYOUT_SETTING,
-} from '../../../../../common/constants';
+import { ENABLE_GRAPH_VISUALIZATION_SETTING } from '../../../../../common/constants';
 
 jest.mock('../hooks/use_expand_section');
 jest.mock('../../shared/hooks/use_alert_prevalence_from_process_tree', () => ({
@@ -163,8 +160,6 @@ describe('<VisualizationsSection />', () => {
 
       if (key === ENABLE_GRAPH_VISUALIZATION_SETTING) {
         return [false, jest.fn()];
-      } else if (key === ENABLE_VISUALIZATIONS_IN_FLYOUT_SETTING) {
-        return [false, jest.fn()];
       }
 
       return useUiSetting$Mock(key, defaultValue);
@@ -184,8 +179,6 @@ describe('<VisualizationsSection />', () => {
       const useUiSetting$Mock = createUseUiSetting$Mock();
 
       if (key === ENABLE_GRAPH_VISUALIZATION_SETTING) {
-        return [true, jest.fn()];
-      } else if (key === ENABLE_VISUALIZATIONS_IN_FLYOUT_SETTING) {
         return [true, jest.fn()];
       }
 
@@ -208,8 +201,6 @@ describe('<VisualizationsSection />', () => {
 
       if (key === ENABLE_GRAPH_VISUALIZATION_SETTING) {
         return [false, jest.fn()];
-      } else if (key === ENABLE_VISUALIZATIONS_IN_FLYOUT_SETTING) {
-        return [true, jest.fn()];
       }
 
       return useUiSetting$Mock(key, defaultValue);
@@ -227,8 +218,6 @@ describe('<VisualizationsSection />', () => {
 
       if (key === ENABLE_GRAPH_VISUALIZATION_SETTING) {
         return [true, jest.fn()];
-      } else if (key === ENABLE_VISUALIZATIONS_IN_FLYOUT_SETTING) {
-        return [false, jest.fn()];
       }
 
       return useUiSetting$Mock(key, defaultValue);

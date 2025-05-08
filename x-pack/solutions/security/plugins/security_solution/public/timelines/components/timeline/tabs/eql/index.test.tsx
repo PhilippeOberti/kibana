@@ -8,13 +8,11 @@
 import type { ComponentProps } from 'react';
 import React, { useEffect } from 'react';
 import useResizeObserver from 'use-resize-observer/polyfilled';
-
 import { createMockStore, mockGlobalState, mockTimelineData } from '../../../../../common/mock';
 import { TestProviders } from '../../../../../common/mock/test_providers';
-
 import type { Props as EqlTabContentComponentProps } from '.';
 import EqlTabContentComponent from '.';
-import { TimelineId } from '../../../../../../common/types/timeline';
+import { TimelineId, TimelineTabs } from '../../../../../../common/types/timeline';
 import { useTimelineEvents } from '../../../../containers';
 import { useTimelineEventsDetails } from '../../../../containers/details';
 import { useSourcererDataView } from '../../../../../sourcerer/containers';
@@ -28,7 +26,6 @@ import { timelineActions } from '../../../../store';
 import { DefaultCellRenderer } from '../../cell_rendering/default_cell_renderer';
 import { defaultRowRenderers } from '../../body/renderers';
 import { useDispatch } from 'react-redux';
-import { TimelineTabs } from '@kbn/securitysolution-data-table';
 import { useUserPrivileges } from '../../../../../common/components/user_privileges';
 import { initialUserPrivilegesState } from '../../../../../common/components/user_privileges/user_privileges_context';
 

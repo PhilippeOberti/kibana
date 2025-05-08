@@ -35,7 +35,6 @@ import { timelineDefaults } from '../../../../store/defaults';
 import { useSourcererDataView } from '../../../../../sourcerer/containers';
 import { useEqlEventsCountPortal } from '../../../../../common/hooks/use_timeline_events_count';
 import type { TimelineModel } from '../../../../store/model';
-import { useTimelineFullScreen } from '../../../../../common/containers/use_full_screen';
 import { EventsCountBadge, FullWidthFlexGroup } from '../shared/layout';
 import { isTimerangeSame, TIMELINE_NO_SORTING } from '../shared/utils';
 import type { TimelineTabCommonProps } from '../shared/types';
@@ -77,7 +76,6 @@ export const EqlTabContentComponent: React.FC<Props> = ({
   const { telemetry } = useKibana().services;
   const { query: eqlQuery = '', ...restEqlOption } = eqlOptions;
   const { portalNode: eqlEventsCountPortalNode } = useEqlEventsCountPortal();
-  const { setTimelineFullScreen, timelineFullScreen } = useTimelineFullScreen();
 
   const newDataViewPickerEnabled = useIsExperimentalFeatureEnabled('newDataViewPickerEnabled');
   const {
@@ -251,14 +249,12 @@ export const EqlTabContentComponent: React.FC<Props> = ({
       <EuiFlexGroup gutterSize="s" direction="column">
         <EqlTabHeader
           activeTab={activeTab}
-          setTimelineFullScreen={setTimelineFullScreen}
-          timelineFullScreen={timelineFullScreen}
           timelineId={timelineId}
           newDataViewPickerEnabled={newDataViewPickerEnabled}
         />
       </EuiFlexGroup>
     ),
-    [activeTab, newDataViewPickerEnabled, setTimelineFullScreen, timelineFullScreen, timelineId]
+    [activeTab, newDataViewPickerEnabled, timelineId]
   );
 
   const NotesFlyoutMemo = useMemo(() => {
