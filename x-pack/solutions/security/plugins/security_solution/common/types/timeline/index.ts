@@ -24,7 +24,6 @@ export interface ScrollToTopEvent {
 
 export enum TimelineTabs {
   query = 'query',
-  graph = 'graph',
   notes = 'notes',
   pinned = 'pinned',
   eql = 'eql',

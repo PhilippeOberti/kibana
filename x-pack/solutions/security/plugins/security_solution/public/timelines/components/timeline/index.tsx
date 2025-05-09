@@ -78,7 +78,6 @@ const StatefulTimelineComponent: React.FC<Props> = ({
   const {
     dataViewId: selectedDataViewIdTimeline,
     indexNames: selectedPatternsTimeline,
-    graphEventId,
     savedObjectId,
     timelineType,
     description,
@@ -88,7 +87,6 @@ const StatefulTimelineComponent: React.FC<Props> = ({
       [
         'indexNames',
         'dataViewId',
-        'graphEventId',
         'savedObjectId',
         'timelineType',
         'description',
@@ -227,7 +225,6 @@ const StatefulTimelineComponent: React.FC<Props> = ({
           </HideShowContainer>
 
           <TabsContent
-            graphEventId={graphEventId}
             renderCellValue={renderCellValue}
             rowRenderers={rowRenderers}
             timelineId={timelineId}

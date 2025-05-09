@@ -12,7 +12,6 @@ export enum FlowTargetSourceDest {
 
 export enum TimelineTabs {
   query = 'query',
-  graph = 'graph',
   notes = 'notes',
   pinned = 'pinned',
   eql = 'eql',

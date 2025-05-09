@@ -69,10 +69,6 @@ const EqlTab = tabWithSuspense(
   lazy(() => import('./eql')),
   <TimelineTabFallback />
 );
-const GraphTab = tabWithSuspense(
-  lazy(() => import('./graph')),
-  <TimelineTabFallback />
-);
 const NotesTab = tabWithSuspense(
   lazy(() => import('./notes')),
   <TimelineTabFallback />
@@ -92,7 +88,6 @@ interface BasicTimelineTab {
   timelineFullScreen?: boolean;
   timelineId: TimelineId;
   timelineType: TimelineType;
-  graphEventId?: string;
   timelineDescription: string;
 }
 
@@ -121,8 +116,6 @@ const ActiveTimelineTab = memo<ActiveTimelineTabProps>(
     const getTab = useCallback(
       (tab: TimelineTabs) => {
         switch (tab) {
-          case TimelineTabs.graph:
-            return <GraphTab timelineId={timelineId} />;
           case TimelineTabs.notes:
             return <NotesTab timelineId={timelineId} />;
           default:
@@ -132,8 +125,8 @@ const ActiveTimelineTab = memo<ActiveTimelineTabProps>(
       [timelineId]
     );
 
-    const isGraphOrNotesTabs = useMemo(
-      () => [TimelineTabs.graph, TimelineTabs.notes].includes(activeTimelineTab),
+    const isNotesTab = useMemo(
+      () => [TimelineTabs.notes].includes(activeTimelineTab),
       [activeTimelineTab]
     );
 
@@ -185,10 +178,10 @@ const ActiveTimelineTab = memo<ActiveTimelineTabProps>(
         )}
         <LazyTimelineTabRenderer
           timelineId={timelineId}
-          shouldShowTab={isGraphOrNotesTabs}
+          shouldShowTab={isNotesTab}
           dataTestSubj={`timeline-tab-content-${TimelineTabs.notes}`}
         >
-          {isGraphOrNotesTabs ? getTab(activeTimelineTab) : null}
+          {isNotesTab ? getTab(activeTimelineTab) : null}
         </LazyTimelineTabRenderer>
       </>
     );

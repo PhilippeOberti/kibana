@@ -47,7 +47,7 @@ export const LazyTimelineTabRenderer = React.memo(
         // The shouldShowTab check here is necessary for the flex container to accurately size to the modal window when it's opened
         css={css`
           display: ${shouldShowTab ? 'flex' : 'none'};
-          overflow: 'hidden';
+          overflow: hidden;
           flex: 1;
         `}
         data-test-subj={dataTestSubj}

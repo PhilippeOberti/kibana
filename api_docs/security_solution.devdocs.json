@@ -1500,22 +1500,6 @@
           },
           {
             "parentPluginId": "securitySolution",
-            "id": "def-public.TimelineModel.graphEventId",
-            "type": "string",
-            "tags": [],
-            "label": "graphEventId",
-            "description": [
-              "This holds the view information for the flyout when viewing timeline in a consuming view (i.e. hosts page) or the side panel in the primary timeline view\nWhen non-empty, display a graph view for this event"
-            ],
-            "signature": [
-              "string | undefined"
-            ],
-            "path": "x-pack/solutions/security/plugins/security_solution/public/timelines/store/model.ts",
-            "deprecated": false,
-            "trackAdoption": false
-          },
-          {
-            "parentPluginId": "securitySolution",
             "id": "def-public.TimelineModel.indexNames",
             "type": "Array",
             "tags": [],
