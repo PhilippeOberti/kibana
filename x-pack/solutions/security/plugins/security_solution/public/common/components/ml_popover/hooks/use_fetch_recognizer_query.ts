@@ -6,8 +6,7 @@
  */
 
 import type { UseQueryOptions } from '@tanstack/react-query';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { checkRecognizer } from '../api';
 import type { CheckRecognizerProps, RecognizerModule } from '../types';
 
@@ -28,12 +27,4 @@ export const useFetchRecognizerQuery = (
       ...options,
     }
   );
-};
-
-export const useInvalidateFetchRecognizerQuery = () => {
-  const queryClient = useQueryClient();
-
-  return useCallback(() => {
-    queryClient.invalidateQueries(GET_RECOGNIZER_QUERY_KEY, { refetchType: 'active' });
-  }, [queryClient]);
 };

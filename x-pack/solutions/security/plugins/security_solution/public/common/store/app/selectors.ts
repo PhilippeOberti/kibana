@@ -5,10 +5,8 @@
  * 2.0.
  */
 
-import { keys, values } from 'lodash/fp';
-import memoizeOne from 'memoize-one';
+import { values } from 'lodash/fp';
 import { createSelector } from 'reselect';
-import type { Note } from '../../lib/note';
 import type { ErrorModel, NotesById } from './model';
 import type { State } from '../types';
 import type { TimelineResultNote } from '../../../timelines/components/open_timeline/types';
@@ -16,16 +14,6 @@ import type { TimelineResultNote } from '../../../timelines/components/open_time
 export const selectNotesById = (state: State): NotesById => state.app.notesById;
 
 const getErrors = (state: State): ErrorModel => state.app.errors;
-
-export const getNotes = memoizeOne((notesById: NotesById, noteIds: string[]): Note[] =>
-  keys(notesById).reduce((acc: Note[], noteId: string) => {
-    if (noteIds.includes(noteId)) {
-      const note: Note = notesById[noteId];
-      return [...acc, note];
-    }
-    return acc;
-  }, [])
-);
 
 export const getNotesAsCommentsList = (notesById: NotesById): TimelineResultNote[] =>
   values(notesById).map((note) => ({
