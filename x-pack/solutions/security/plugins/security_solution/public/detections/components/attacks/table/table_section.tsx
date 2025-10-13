@@ -10,8 +10,8 @@ import { EuiSwitch } from '@elastic/eui';
 import type { Filter } from '@kbn/es-query';
 import { TableId } from '@kbn/securitysolution-data-table';
 import type { DataView } from '@kbn/data-views-plugin/common';
-import { isGroupingBucket } from '@kbn/grouping/src';
 import type { ParsedGroupingAggregation } from '@kbn/grouping/src';
+import { isGroupingBucket } from '@kbn/grouping/src';
 import { ALERT_ATTACK_IDS } from '../../../../../common/field_maps/field_names';
 import { PageScope } from '../../../../data_view_manager/constants';
 import { useGroupTakeActionsItems } from '../../../hooks/alerts_table/use_group_take_action_items';
@@ -165,17 +165,12 @@ export const TableSection = React.memo(
       []
     );
 
-    const dataViewSpec = useMemo(() => {
-      return dataView.toSpec(true);
-    }, [dataView]);
-
     return (
       <div data-test-subj={TABLE_SECTION_TEST_ID}>
         <GroupedAlertsTable
           accordionButtonContent={defaultGroupTitleRenderers}
           accordionExtraActionGroupStats={accordionExtraActionGroupStats}
           dataView={dataView}
-          dataViewSpec={dataViewSpec}
           defaultFilters={defaultFilters}
           defaultGroupingOptions={groupingOptions}
           from={from}
