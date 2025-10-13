@@ -184,8 +184,10 @@ export const allowedExperimentalValues = Object.freeze({
    */
   responseActionsMSDefenderEndpointEnabled: true,
 
-  /** Enables new Data View Picker */
-  newDataViewPickerEnabled: true,
+  /**
+   * Enables banner for informing users about changes in data collection.
+   */
+  eventCollectionDataReductionBannerEnabled: true,
 
   /**
    * Enables Microsoft Defender for Endpoint's RunScript command
