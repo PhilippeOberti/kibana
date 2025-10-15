@@ -207,11 +207,6 @@ export const allowedExperimentalValues = Object.freeze({
   endpointExceptionsMovedUnderManagement: false,
 
   /**
-   * Disables flyout history and new preview navigation
-   */
-  newExpandableFlyoutNavigationDisabled: false,
-
-  /**
    * Enables the ability to edit highlighted fields in the alertflyout
    */
   editHighlightedFields: true,
