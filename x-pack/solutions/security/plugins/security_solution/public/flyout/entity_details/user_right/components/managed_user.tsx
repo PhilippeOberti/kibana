@@ -14,7 +14,6 @@ import {
   EuiSpacer,
   EuiTitle,
 } from '@elastic/eui';
-
 import React, { useMemo } from 'react';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { css } from '@emotion/css';
@@ -23,10 +22,8 @@ import { UserAssetTableType } from '../../../../explore/users/store/model';
 import type { ManagedUserFields } from '../../../../../common/search_strategy/security_solution/users/managed_details';
 import { ManagedUserDatasetKey } from '../../../../../common/search_strategy/security_solution/users/managed_details';
 import * as i18n from '../translations';
-
 import { BasicTable } from '../../../../common/components/ml/tables/basic_table';
 import { getManagedUserTableColumns } from '../utils/columns';
-
 import type { ManagedUserData } from '../types';
 import { INSTALL_EA_INTEGRATIONS_HREF } from '../constants';
 import { MANAGED_USER_QUERY_ID } from '../../shared/constants';
@@ -44,13 +41,11 @@ export const ManagedUser = ({
   contextID,
   openDetailsPanel,
   isPreviewMode,
-  isLinkEnabled,
 }: {
   managedUser: ManagedUserData;
   contextID: string;
   openDetailsPanel: (path: EntityDetailsPath) => void;
-  isPreviewMode?: boolean;
-  isLinkEnabled: boolean;
+  isPreviewMode: boolean;
 }) => {
   const entraManagedUser = managedUser.data?.[ManagedUserDatasetKey.ENTRA];
   const oktaManagedUser = managedUser.data?.[ManagedUserDatasetKey.OKTA];
@@ -114,6 +109,7 @@ export const ManagedUser = ({
             <>
               {!entraManagedUser && !oktaManagedUser && !managedUser.isLoading ? (
                 <EuiCallOut
+                  announceOnMount
                   data-test-subj="managedUser-no-data"
                   title={i18n.NO_MANAGED_DATA_TITLE}
                   color="warning"
@@ -129,7 +125,6 @@ export const ManagedUser = ({
                       managedUser={entraManagedUser.fields}
                       tableType={UserAssetTableType.assetEntra}
                       openDetailsPanel={openDetailsPanel}
-                      isLinkEnabled={isLinkEnabled}
                       isPreviewMode={isPreviewMode}
                     >
                       <ManagedUserTable
@@ -148,7 +143,6 @@ export const ManagedUser = ({
                       managedUser={oktaManagedUser.fields}
                       tableType={UserAssetTableType.assetOkta}
                       openDetailsPanel={openDetailsPanel}
-                      isLinkEnabled={isLinkEnabled}
                       isPreviewMode={isPreviewMode}
                     >
                       <ManagedUserTable

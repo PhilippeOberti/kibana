@@ -44,7 +44,7 @@ export const Default = {
       userName={'test-user-name'}
       onAssetCriticalityChange={() => {}}
       recalculatingScore={false}
-      isLinkEnabled={true}
+      isPreviewMode={false}
     />
   ),
 
@@ -67,7 +67,7 @@ export const IntegrationDisabled = {
       userName={'test-user-name'}
       onAssetCriticalityChange={() => {}}
       recalculatingScore={false}
-      isLinkEnabled={true}
+      isPreviewMode={false}
     />
   ),
 
@@ -90,7 +90,7 @@ export const NoManagedData = {
       userName={'test-user-name'}
       onAssetCriticalityChange={() => {}}
       recalculatingScore={false}
-      isLinkEnabled={true}
+      isPreviewMode={false}
     />
   ),
 
@@ -133,7 +133,7 @@ export const NoObservedData = {
       userName={'test-user-name'}
       onAssetCriticalityChange={() => {}}
       recalculatingScore={false}
-      isLinkEnabled={true}
+      isPreviewMode={false}
     />
   ),
 
@@ -180,7 +180,7 @@ export const Loading = {
       userName={'test-user-name'}
       onAssetCriticalityChange={() => {}}
       recalculatingScore={false}
-      isLinkEnabled={true}
+      isPreviewMode={false}
     />
   ),
 

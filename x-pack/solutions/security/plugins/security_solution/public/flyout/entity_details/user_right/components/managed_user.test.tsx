@@ -19,7 +19,7 @@ describe('ManagedUser', () => {
     contextID: '',
     scopeId: '',
     openDetailsPanel: () => {},
-    isLinkEnabled: true,
+    isPreviewMode: false,
   };
 
   it('renders', () => {

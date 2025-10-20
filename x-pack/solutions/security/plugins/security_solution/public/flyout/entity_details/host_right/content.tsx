@@ -29,8 +29,7 @@ interface HostPanelContentProps {
   hostName: string;
   onAssetCriticalityChange: () => void;
   recalculatingScore: boolean;
-  isPreviewMode?: boolean;
-  isLinkEnabled: boolean;
+  isPreviewMode: boolean;
 }
 
 export const HostPanelContent = ({
@@ -43,7 +42,6 @@ export const HostPanelContent = ({
   openDetailsPanel,
   onAssetCriticalityChange,
   isPreviewMode,
-  isLinkEnabled,
 }: HostPanelContentProps) => {
   const observedFields = useObservedHostFields(observedHost);
 
@@ -58,7 +56,6 @@ export const HostPanelContent = ({
             queryId={HOST_PANEL_RISK_SCORE_QUERY_ID}
             openDetailsPanel={openDetailsPanel}
             isPreviewMode={isPreviewMode}
-            isLinkEnabled={isLinkEnabled}
           />
           <EuiHorizontalRule />
         </>
@@ -72,7 +69,6 @@ export const HostPanelContent = ({
         field={EntityIdentifierFields.hostName}
         isPreviewMode={isPreviewMode}
         openDetailsPanel={openDetailsPanel}
-        isLinkEnabled={isLinkEnabled}
       />
       <ObservedEntity
         observedData={observedHost}
