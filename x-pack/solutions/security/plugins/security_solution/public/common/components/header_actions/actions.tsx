@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { EuiButtonIcon, EuiToolTip } from '@elastic/eui';
 import styled from 'styled-components';
 import {
@@ -15,15 +15,10 @@ import {
 } from '../../../notes/store/notes.slice';
 import type { State } from '../../store';
 import { selectTimelineById } from '../../../timelines/store/selectors';
-import {
-  eventHasNotes,
-  getEventType,
-  getPinOnClick,
-} from '../../../timelines/components/timeline/body/helpers';
+import { getEventType } from '../../../timelines/components/timeline/body/helpers';
 import { isTimelineScope } from '../../../helpers';
 import { useIsInvestigateInResolverActionEnabled } from '../../../detections/components/alerts_table/timeline_actions/investigate_in_resolver';
-import { timelineActions } from '../../../timelines/store';
-import type { ActionProps, OnPinEvent } from '../../../../common/types';
+import type { ActionProps } from '../../../../common/types';
 import { TimelineId } from '../../../../common/types';
 import { AddEventNoteAction } from './add_note_icon_item';
 import { PinEventAction } from './pin_event_action';
@@ -55,7 +50,6 @@ const ActionsComponent: React.FC<ActionProps> = ({
   ecsData,
   eventId,
   eventIdToNoteIds,
-  isEventPinned = false,
   isEventViewer = false,
   onEventDetailsPanelOpened,
   onRuleChange,
@@ -66,35 +60,12 @@ const ActionsComponent: React.FC<ActionProps> = ({
   disablePinAction = true,
   disableTimelineAction = false,
 }) => {
-  const dispatch = useDispatch();
-
   const { timelineType, savedObjectId } = useShallowEqualSelector((state) =>
     isTimelineScope(timelineId) ? selectTimelineById(state, timelineId) : timelineDefaults
   );
 
   const { startTransaction } = useStartTransaction();
 
-  const onPinEvent: OnPinEvent = useCallback(
-    (evtId) => dispatch(timelineActions.pinEvent({ id: timelineId, eventId: evtId })),
-    [dispatch, timelineId]
-  );
-
-  const onUnPinEvent: OnPinEvent = useCallback(
-    (evtId) => dispatch(timelineActions.unPinEvent({ id: timelineId, eventId: evtId })),
-    [dispatch, timelineId]
-  );
-
-  const handlePinClicked = useCallback(
-    () =>
-      getPinOnClick({
-        allowUnpinning: eventIdToNoteIds ? !eventHasNotes(eventIdToNoteIds[eventId]) : true,
-        eventId,
-        onPinEvent,
-        onUnPinEvent,
-        isEventPinned,
-      }),
-    [eventIdToNoteIds, eventId, isEventPinned, onPinEvent, onUnPinEvent]
-  );
   const eventType = getEventType(ecsData);
 
   const { navigateToAnalyzer } = useNavigateToAnalyzer({
@@ -240,12 +211,14 @@ const ActionsComponent: React.FC<ActionProps> = ({
 
         {!isEventViewer && !disablePinAction && (
           <PinEventAction
-            ariaLabel={i18n.PIN_EVENT_FOR_ROW({ ariaRowindex, columnValues, isEventPinned })}
+            ariaRowindex={ariaRowindex}
+            columnValues={columnValues}
+            eventId={eventId}
+            eventIdToNoteIds={eventIdToNoteIds}
             isAlert={isAlert(eventType)}
             key="pin-event"
-            onPinClicked={handlePinClicked}
             noteIds={timelineNoteIds}
-            eventIsPinned={isEventPinned}
+            timelineId={timelineId}
             timelineType={timelineType}
           />
         )}

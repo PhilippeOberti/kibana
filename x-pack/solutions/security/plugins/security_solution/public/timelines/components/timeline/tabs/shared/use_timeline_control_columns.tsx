@@ -20,7 +20,6 @@ interface UseTimelineControlColumnArgs {
   timelineId: string;
   refetch: () => void;
   events: TimelineItem[];
-  pinnedEventIds: Record<string, boolean>;
   eventIdToNoteIds: Record<string, string[]>;
   onToggleShowNotes: (eventId?: string) => void;
 }
@@ -32,7 +31,6 @@ export const useTimelineControlColumn = ({
   timelineId,
   refetch,
   events,
-  pinnedEventIds,
   eventIdToNoteIds,
   onToggleShowNotes,
 }: UseTimelineControlColumnArgs) => {
@@ -86,7 +84,6 @@ export const useTimelineControlColumn = ({
             showCheckboxes={false}
             setEventsLoading={noOp}
             setEventsDeleted={noOp}
-            pinnedEventIds={pinnedEventIds}
             eventIdToNoteIds={eventIdToNoteIds}
             toggleShowNotes={onToggleShowNotes}
             showNotes={canReadNotes}
@@ -98,7 +95,6 @@ export const useTimelineControlColumn = ({
       events,
       timelineId,
       refetch,
-      pinnedEventIds,
       eventIdToNoteIds,
       onToggleShowNotes,
       canReadNotes,

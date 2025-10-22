@@ -5,26 +5,17 @@
  * 2.0.
  */
 
-import React, { memo, useMemo } from 'react';
-import { eventIsPinned } from '../../body/helpers';
+import React, { memo } from 'react';
 import { Actions } from '../../../../../common/components/header_actions';
-import type { TimelineModel } from '../../../../store/model';
 import type { ActionProps } from '../../../../../../common/types';
 
 const noOp = () => {};
-export interface UnifiedActionProps extends ActionProps {
-  pinnedEventIds: TimelineModel['pinnedEventIds'];
-}
 
 export const TimelineControlColumnCellRender = memo(function TimelineControlColumnCellRender(
-  props: UnifiedActionProps
+  props: ActionProps
 ) {
-  const { rowIndex, pinnedEventIds } = props;
+  const { rowIndex } = props;
 
-  const isPinned = useMemo(
-    () => eventIsPinned({ eventId: props.eventId, pinnedEventIds }),
-    [props.eventId, pinnedEventIds]
-  );
   return (
     <Actions
       action={props.action}
@@ -35,7 +26,6 @@ export const TimelineControlColumnCellRender = memo(function TimelineControlColu
       eventId={props.eventId}
       eventIdToNoteIds={props.eventIdToNoteIds}
       index={rowIndex}
-      isEventPinned={isPinned}
       isEventViewer={false}
       refetch={props.refetch}
       rowIndex={rowIndex}

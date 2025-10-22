@@ -54,6 +54,35 @@ import { NotesFlyout } from '../../properties/notes_flyout';
 import { useNotesInFlyout } from '../../properties/use_notes_in_flyout';
 import { DocumentEventTypes, NotesEventTypes } from '../../../../../common/lib/telemetry';
 
+function useWhatChanged(props: { [prop: string]: unknown }) {
+  // cache the last set of props
+  const prev = React.useRef(props);
+
+  React.useEffect(() => {
+    // check each prop to see if it has changed
+    const changed = Object.entries(props).reduce((a, [key, prop]: [string, unknown]) => {
+      if (prev.current[key] === prop) return a;
+      return {
+        ...a,
+        [key]: {
+          prev: prev.current[key],
+          next: prop,
+        },
+      };
+    }, {} as { [k: string]: any });
+
+    if (Object.keys(changed).length > 0) {
+      console.group('Props That Changed');
+      console.log(changed);
+      console.groupEnd();
+    } else {
+      console.log('no change');
+    }
+
+    prev.current = props;
+  }, [props]);
+}
+
 const compareQueryProps = (prevProps: Props, nextProps: Props) =>
   prevProps.kqlMode === nextProps.kqlMode &&
   prevProps.kqlQueryExpression === nextProps.kqlQueryExpression &&
@@ -61,28 +90,31 @@ const compareQueryProps = (prevProps: Props, nextProps: Props) =>
 
 export type Props = TimelineTabCommonProps & PropsFromRedux;
 
-export const QueryTabContentComponent: React.FC<Props> = ({
-  activeTab,
-  columns,
-  dataProviders,
-  end,
-  filters,
-  timelineId,
-  itemsPerPage,
-  itemsPerPageOptions,
-  kqlMode,
-  kqlQueryExpression,
-  kqlQueryLanguage,
-  rowRenderers,
-  show,
-  showCallOutUnauthorizedMsg,
-  start,
-  status,
-  sort,
-  timerangeKind,
-  pinnedEventIds,
-  eventIdToNoteIds,
-}) => {
+export const QueryTabContentComponent: React.FC<Props> = (props) => {
+  console.log('rendering QueryTabContentComponent');
+  useWhatChanged(props);
+  const {
+    activeTab,
+    columns,
+    dataProviders,
+    end,
+    filters,
+    timelineId,
+    itemsPerPage,
+    itemsPerPageOptions,
+    kqlMode,
+    kqlQueryExpression,
+    kqlQueryLanguage,
+    rowRenderers,
+    show,
+    showCallOutUnauthorizedMsg,
+    start,
+    status,
+    sort,
+    timerangeKind,
+    eventIdToNoteIds,
+  } = props;
+
   const dispatch = useDispatch();
   const newDataViewPickerEnabled = useIsExperimentalFeatureEnabled('newDataViewPickerEnabled');
 
@@ -327,7 +359,6 @@ export const QueryTabContentComponent: React.FC<Props> = ({
     timelineId,
     refetch,
     events,
-    pinnedEventIds,
     eventIdToNoteIds,
     onToggleShowNotes,
   });
@@ -443,7 +474,6 @@ const makeMapStateToProps = () => {
       activeTab,
       columns,
       dataProviders,
-      pinnedEventIds,
       eventIdToNoteIds,
       filters,
       itemsPerPage,
@@ -478,7 +508,6 @@ const makeMapStateToProps = () => {
       end: input.timerange.to,
       filters: timelineFilter,
       timelineId,
-      pinnedEventIds,
       eventIdToNoteIds,
       itemsPerPage,
       itemsPerPageOptions,
@@ -515,7 +544,6 @@ const QueryTabContent = connector(
       prevProps.timelineId === nextProps.timelineId &&
       deepEqual(prevProps.eventIdToNoteIds, nextProps.eventIdToNoteIds) &&
       deepEqual(prevProps.columns, nextProps.columns) &&
-      deepEqual(prevProps.pinnedEventIds, nextProps.pinnedEventIds) &&
       deepEqual(prevProps.dataProviders, nextProps.dataProviders) &&
       deepEqual(prevProps.itemsPerPageOptions, nextProps.itemsPerPageOptions) &&
       deepEqual(prevProps.sort, nextProps.sort)

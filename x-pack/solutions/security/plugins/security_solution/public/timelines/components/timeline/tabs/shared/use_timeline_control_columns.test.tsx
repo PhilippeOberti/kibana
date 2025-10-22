@@ -6,9 +6,9 @@
  */
 
 import React from 'react';
-import type { EuiDataGridControlColumn, EuiDataGridCellValueElementProps } from '@elastic/eui';
+import type { EuiDataGridCellValueElementProps, EuiDataGridControlColumn } from '@elastic/eui';
 import { render, renderHook, screen } from '@testing-library/react';
-import { TestProviders, mockTimelineData } from '../../../../../common/mock';
+import { mockTimelineData, TestProviders } from '../../../../../common/mock';
 import { useLicense } from '../../../../../common/hooks/use_license';
 import { useTimelineControlColumn } from './use_timeline_control_columns';
 import { TimelineId } from '@kbn/timelines-plugin/public/store/timeline';
@@ -105,7 +105,6 @@ describe('useTimelineControlColumns', () => {
       eventId: 'abc',
       eventIdToNoteIds: {},
       index: 2,
-      isEventPinned: false,
       loadingEventIds: [],
       onEventDetailsPanelOpened: () => {},
       onRowSelected: () => {},

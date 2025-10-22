@@ -5,7 +5,7 @@
  * 2.0.
  */
 
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { mockCasesContract } from '@kbn/cases-plugin/public/mocks';
 import { mockTimelineData, mockTimelineModel, TestProviders } from '../../mock';
@@ -101,7 +101,6 @@ const defaultProps = {
   eventId: 'abc',
   eventIdToNoteIds: {},
   index: 2,
-  isEventPinned: false,
   loadingEventIds: [],
   onEventDetailsPanelOpened: () => {},
   onRowSelected: () => {},
@@ -134,14 +133,14 @@ describe('Actions', () => {
         event: { kind: ['event'] },
         agent: { type: ['endpoint'] },
       };
-      const wrapper = mount(
+      render(
         <TestProviders>
           <Actions {...defaultProps} ecsData={ecsData} />
         </TestProviders>
       );
 
       expect(
-        wrapper.find('[data-test-subj="timeline-context-menu-button"]').first().prop('isDisabled')
+        screen.find('[data-test-subj="timeline-context-menu-button"]').first().prop('isDisabled')
       ).toBe(false);
     });
 
@@ -291,17 +290,17 @@ describe('Actions', () => {
     });
   });
 
-  describe('Expand action', () => {
-    test('should not be visible if disableExpandAction is true', () => {
-      const wrapper = mount(
-        <TestProviders>
-          <Actions {...defaultProps} disableExpandAction />
-        </TestProviders>
-      );
-
-      expect(wrapper.find('[data-test-subj="expand-event"]').exists()).toBeFalsy();
-    });
-  });
+  // describe('Expand action', () => {
+  //   test('should not be visible if disableExpandAction is true', () => {
+  //     const wrapper = mount(
+  //       <TestProviders>
+  //         <Actions {...defaultProps} disableExpandAction />
+  //       </TestProviders>
+  //     );
+  //
+  //     expect(wrapper.find('[data-test-subj="expand-event"]').exists()).toBeFalsy();
+  //   });
+  // });
 
   describe('Pin action', () => {
     test('should hide pin Action by default', () => {

@@ -93,7 +93,6 @@ export interface ActionProps {
   eventId: string;
   eventIdToNoteIds?: Readonly<Record<string, string[]>>;
   index: number;
-  isEventPinned?: boolean;
   isEventViewer?: boolean;
   loadingEventIds: Readonly<string[]>;
   onEventDetailsPanelOpened: () => void;
