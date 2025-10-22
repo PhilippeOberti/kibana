@@ -157,6 +157,7 @@ const RowActionComponent = ({
           data={timelineNonEcsData}
           data-test-subj="actions"
           disabled={disabled}
+          disableTimelineAction={!canReadTimelines}
           ecsData={ecsData}
           eventId={eventId}
           index={index}
@@ -165,17 +166,16 @@ const RowActionComponent = ({
           onEventDetailsPanelOpened={handleOnEventDetailPanelOpened}
           onRowSelected={onRowSelected}
           onRuleChange={onRuleChange}
+          refetch={refetch}
           rowIndex={rowIndex}
+          setEventsLoading={setEventsLoading}
+          setEventsDeleted={setEventsDeleted}
           showCheckboxes={showCheckboxes}
+          showNotes={showNotes}
           tabType={tabType}
           timelineId={tableId}
           toggleShowNotes={toggleShowNotes}
           width={width}
-          setEventsLoading={setEventsLoading}
-          setEventsDeleted={setEventsDeleted}
-          refetch={refetch}
-          showNotes={showNotes}
-          disableTimelineAction={!canReadTimelines}
         />
       )}
     </>

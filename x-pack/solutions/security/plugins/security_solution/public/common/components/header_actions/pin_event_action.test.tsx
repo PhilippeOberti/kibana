@@ -35,7 +35,6 @@ describe('PinEventAction', () => {
             isAlert={false}
             noteIds={[]}
             onPinClicked={jest.fn}
-            eventIsPinned={false}
             timelineType={TimelineTypeEnum.default}
           />
         </TestProviders>
@@ -56,7 +55,6 @@ describe('PinEventAction', () => {
             isAlert={false}
             noteIds={[]}
             onPinClicked={jest.fn}
-            eventIsPinned={false}
             timelineType={TimelineTypeEnum.default}
           />
         </TestProviders>

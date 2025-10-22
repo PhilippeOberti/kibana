@@ -88,13 +88,14 @@ export interface ActionProps {
   columnValues: string;
   data: TimelineNonEcsData[];
   disableExpandAction?: boolean;
+  disablePinAction?: boolean;
+  disableTimelineAction?: boolean;
   disabled?: boolean;
   ecsData: Ecs;
+  isEventViewer?: boolean;
+  index: number;
   eventId: string;
   eventIdToNoteIds?: Readonly<Record<string, string[]>>;
-  index: number;
-  isEventPinned?: boolean;
-  isEventViewer?: boolean;
   loadingEventIds: Readonly<string[]>;
   onEventDetailsPanelOpened: () => void;
   onRowSelected: OnRowSelected;
@@ -113,8 +114,6 @@ export interface ActionProps {
   timelineId: string;
   toggleShowNotes?: () => void;
   width?: number;
-  disablePinAction?: boolean;
-  disableTimelineAction?: boolean;
 }
 
 interface AdditionalControlColumnProps {

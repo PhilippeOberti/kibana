@@ -5,54 +5,32 @@
  * 2.0.
  */
 
-import React, { memo, useMemo } from 'react';
-import { eventIsPinned } from '../../body/helpers';
+import React, { memo } from 'react';
 import { Actions } from '../../../../../common/components/header_actions';
-import type { TimelineModel } from '../../../../store/model';
 import type { ActionProps } from '../../../../../../common/types';
 
 const noOp = () => {};
-export interface UnifiedActionProps extends ActionProps {
-  pinnedEventIds: TimelineModel['pinnedEventIds'];
-}
 
 export const TimelineControlColumnCellRender = memo(function TimelineControlColumnCellRender(
-  props: UnifiedActionProps
+  props: ActionProps
 ) {
-  const { rowIndex, pinnedEventIds } = props;
-
-  const isPinned = useMemo(
-    () => eventIsPinned({ eventId: props.eventId, pinnedEventIds }),
-    [props.eventId, pinnedEventIds]
-  );
   return (
     <Actions
-      action={props.action}
-      columnId={props.columnId}
+      ariaRowindex={props.rowIndex}
       columnValues="columnValues"
-      data={props.data}
+      disableExpandAction
+      disablePinAction={props.disablePinAction}
+      disableTimelineAction={false}
       ecsData={props.ecsData}
       eventId={props.eventId}
       eventIdToNoteIds={props.eventIdToNoteIds}
-      index={rowIndex}
-      isEventPinned={isPinned}
       isEventViewer={false}
-      refetch={props.refetch}
-      rowIndex={rowIndex}
-      setEventsDeleted={noOp}
-      setEventsLoading={noOp}
       onEventDetailsPanelOpened={noOp}
-      onRowSelected={noOp}
       onRuleChange={noOp}
-      showCheckboxes={false}
+      refetch={props.refetch}
       showNotes={props.showNotes}
       timelineId={props.timelineId}
-      ariaRowindex={rowIndex}
-      checked={false}
-      loadingEventIds={props.loadingEventIds}
       toggleShowNotes={props.toggleShowNotes}
-      disableExpandAction
-      disablePinAction={props.disablePinAction}
     />
   );
 });

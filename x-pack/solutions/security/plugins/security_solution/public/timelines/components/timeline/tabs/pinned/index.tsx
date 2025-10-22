@@ -247,7 +247,6 @@ export const PinnedTabContentComponent: React.FC<Props> = ({
     timelineId,
     refetch,
     events,
-    pinnedEventIds,
     eventIdToNoteIds,
     onToggleShowNotes,
   });
@@ -280,15 +279,13 @@ const makeMapStateToProps = () => {
   const getTimeline = timelineSelectors.getTimelineByIdSelector();
   const mapStateToProps = (state: State, { timelineId }: TimelineTabCommonProps) => {
     const timeline: TimelineModel = getTimeline(state, timelineId) ?? timelineDefaults;
-    const { columns, itemsPerPage, itemsPerPageOptions, pinnedEventIds, sort, eventIdToNoteIds } =
-      timeline;
+    const { columns, itemsPerPage, itemsPerPageOptions, sort, eventIdToNoteIds } = timeline;
 
     return {
       columns,
       timelineId,
       itemsPerPage,
       itemsPerPageOptions,
-      pinnedEventIds,
       sort,
       eventIdToNoteIds,
     };
@@ -309,7 +306,6 @@ const PinnedTabContent = connector(
       deepEqual(prevProps.columns, nextProps.columns) &&
       deepEqual(prevProps.eventIdToNoteIds, nextProps.eventIdToNoteIds) &&
       deepEqual(prevProps.itemsPerPageOptions, nextProps.itemsPerPageOptions) &&
-      deepEqual(prevProps.pinnedEventIds, nextProps.pinnedEventIds) &&
       deepEqual(prevProps.sort, nextProps.sort)
   )
 );

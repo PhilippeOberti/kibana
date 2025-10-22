@@ -20,7 +20,6 @@ interface UseTimelineControlColumnArgs {
   timelineId: string;
   refetch: () => void;
   events: TimelineItem[];
-  pinnedEventIds: Record<string, boolean>;
   eventIdToNoteIds: Record<string, string[]>;
   onToggleShowNotes: (eventId?: string) => void;
 }
@@ -32,7 +31,6 @@ export const useTimelineControlColumn = ({
   timelineId,
   refetch,
   events,
-  pinnedEventIds,
   eventIdToNoteIds,
   onToggleShowNotes,
 }: UseTimelineControlColumnArgs) => {
@@ -69,28 +67,27 @@ export const useTimelineControlColumn = ({
         if ('rowIndex' in props && props.rowIndex >= events.length) return <></>;
         return (
           <TimelineControlColumnCellRender
-            rowIndex={props.rowIndex}
-            columnId={props.columnId}
-            timelineId={timelineId}
             ariaRowindex={props.rowIndex}
             checked={false}
+            columnId={props.columnId}
             columnValues=""
             data={events[props.rowIndex].data}
+            disablePinAction={!canWriteTimelines}
             ecsData={events[props.rowIndex].ecs}
-            loadingEventIds={EMPTY_STRING_ARRAY}
             eventId={events[props.rowIndex]?._id}
+            eventIdToNoteIds={eventIdToNoteIds}
             index={props.rowIndex}
+            loadingEventIds={EMPTY_STRING_ARRAY}
             onEventDetailsPanelOpened={noOp}
             onRowSelected={noOp}
             refetch={refetch}
-            showCheckboxes={false}
+            rowIndex={props.rowIndex}
             setEventsLoading={noOp}
             setEventsDeleted={noOp}
-            pinnedEventIds={pinnedEventIds}
-            eventIdToNoteIds={eventIdToNoteIds}
-            toggleShowNotes={onToggleShowNotes}
+            showCheckboxes={false}
             showNotes={canReadNotes}
-            disablePinAction={!canWriteTimelines}
+            timelineId={timelineId}
+            toggleShowNotes={onToggleShowNotes}
           />
         );
       },
@@ -98,7 +95,6 @@ export const useTimelineControlColumn = ({
       events,
       timelineId,
       refetch,
-      pinnedEventIds,
       eventIdToNoteIds,
       onToggleShowNotes,
       canReadNotes,

@@ -78,7 +78,6 @@ export const QueryTabContentComponent: React.FC<Props> = ({
   status,
   sort,
   timerangeKind,
-  pinnedEventIds,
   eventIdToNoteIds,
 }) => {
   const dispatch = useDispatch();
@@ -296,7 +295,6 @@ export const QueryTabContentComponent: React.FC<Props> = ({
     timelineId,
     refetch,
     events,
-    pinnedEventIds,
     eventIdToNoteIds,
     onToggleShowNotes,
   });
@@ -396,7 +394,6 @@ const makeMapStateToProps = () => {
       activeTab,
       columns,
       dataProviders,
-      pinnedEventIds,
       eventIdToNoteIds,
       filters,
       itemsPerPage,
@@ -431,7 +428,6 @@ const makeMapStateToProps = () => {
       end: input.timerange.to,
       filters: timelineFilter,
       timelineId,
-      pinnedEventIds,
       eventIdToNoteIds,
       itemsPerPage,
       itemsPerPageOptions,
@@ -468,7 +464,6 @@ const QueryTabContent = connector(
       prevProps.timelineId === nextProps.timelineId &&
       deepEqual(prevProps.eventIdToNoteIds, nextProps.eventIdToNoteIds) &&
       deepEqual(prevProps.columns, nextProps.columns) &&
-      deepEqual(prevProps.pinnedEventIds, nextProps.pinnedEventIds) &&
       deepEqual(prevProps.dataProviders, nextProps.dataProviders) &&
       deepEqual(prevProps.itemsPerPageOptions, nextProps.itemsPerPageOptions) &&
       deepEqual(prevProps.sort, nextProps.sort)
