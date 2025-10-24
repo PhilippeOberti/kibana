@@ -66,11 +66,6 @@ export const allowedExperimentalValues = Object.freeze({
   riskScoringPersistence: true,
 
   /**
-   * Enables experimental Entity Analytics HTTP endpoints
-   */
-  riskScoringRoutesEnabled: true,
-
-  /**
    * Disables ESQL-based risk scoring
    */
   disableESQLRiskScoring: false,

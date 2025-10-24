@@ -109,7 +109,6 @@ export function createTestConfig(options: CreateTestConfigOptions, testFiles?: s
           `--xpack.securitySolution.enableExperimental=${JSON.stringify([
             'previewTelemetryUrlEnabled',
             'riskScoringPersistence',
-            'riskScoringRoutesEnabled',
             'bulkEditAlertSuppressionEnabled',
             'doesNotMatchForIndicatorMatchRuleEnabled',
             'endpointExceptionsMovedUnderManagement',
