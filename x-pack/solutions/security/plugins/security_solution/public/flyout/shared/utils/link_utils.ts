@@ -4,15 +4,15 @@
  * 2.0; you may not use this file except in compliance with the Elastic License
  * 2.0.
  */
-import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps } from '@kbn/flyout';
 import { TableId } from '@kbn/securitysolution-data-table';
 import { FlowTargetSourceDest } from '../../../../common/search_strategy/security_solution/network';
 import { getEcsField } from '../../document_details/right/components/table_field_name_cell';
 import {
   HOST_NAME_FIELD_NAME,
-  USER_NAME_FIELD_NAME,
-  SIGNAL_RULE_NAME_FIELD_NAME,
   IP_FIELD_TYPE,
+  SIGNAL_RULE_NAME_FIELD_NAME,
+  USER_NAME_FIELD_NAME,
 } from '../../../timelines/components/timeline/body/renderers/constants';
 import { HostPanelKey, UserPanelKey } from '../../entity_details/shared/constants';
 import { HostPreviewPanelKey } from '../../entity_details/host_right';
@@ -20,11 +20,11 @@ import { HOST_PREVIEW_BANNER } from '../../document_details/right/components/hos
 import { UserPreviewPanelKey } from '../../entity_details/user_right';
 import { USER_PREVIEW_BANNER } from '../../document_details/right/components/user_entity_overview';
 import {
+  NETWORK_PREVIEW_BANNER,
   NetworkPanelKey,
   NetworkPreviewPanelKey,
-  NETWORK_PREVIEW_BANNER,
 } from '../../network_details';
-import { RulePanelKey, RulePreviewPanelKey, RULE_PREVIEW_BANNER } from '../../rule_details/right';
+import { RULE_PREVIEW_BANNER, RulePanelKey, RulePreviewPanelKey } from '../../rule_details/right';
 import { DocumentDetailsPreviewPanelKey } from '../../document_details/shared/constants/panel_keys';
 import { EVENT_PREVIEW_BANNER } from '../../document_details/preview/constants';
 import { EVENT_SOURCE_FIELD_DESCRIPTOR } from '../../../common/components/event_details/translations';
@@ -116,7 +116,7 @@ export const getRightPanelParams = ({
   }
 };
 
-export const getPreviewPanelParams = ({
+export const getPanelParams = ({
   value,
   field,
   scopeId,

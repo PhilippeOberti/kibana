@@ -46,7 +46,6 @@ export const GraphPreviewContainer: React.FC = () => {
   const { navigateToGraphVisualization } = useNavigateToGraphVisualization({
     eventId,
     indexName,
-    isFlyoutOpen: true,
     scopeId,
   });
 

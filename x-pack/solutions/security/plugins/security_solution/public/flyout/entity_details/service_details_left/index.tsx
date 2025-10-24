@@ -6,8 +6,8 @@
  */
 
 import React, { useMemo } from 'react';
-import type { FlyoutPanelProps, PanelPath } from '@kbn/expandable-flyout';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps, PanelPath } from '@kbn/flyout';
+import { useFlyoutApi } from '@kbn/flyout';
 import { useTabs } from './tabs';
 import type {
   EntityDetailsLeftPanelTab,
@@ -65,7 +65,7 @@ const useSelectedTab = (
   tabs: LeftPanelTabsType,
   path: PanelPath | undefined
 ) => {
-  const { openLeftPanel } = useExpandableFlyoutApi();
+  const { openChildPanel } = useFlyoutApi();
 
   const selectedTabId = useMemo(() => {
     const defaultTab = tabs.length > 0 ? tabs[0].id : undefined;
@@ -75,7 +75,7 @@ const useSelectedTab = (
   }, [path, tabs]);
 
   const setSelectedTabId = (tabId: EntityDetailsLeftPanelTab) => {
-    openLeftPanel({
+    openChildPanel({
       id: ServiceDetailsPanelKey,
       params: {
         service,

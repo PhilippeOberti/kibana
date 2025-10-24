@@ -7,13 +7,10 @@
 import type { FC } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { EuiLink } from '@elastic/eui';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import { useKibana } from '../../../common/lib/kibana';
+import { useFlyoutApi, useFlyoutState } from '@kbn/flyout';
 import { FLYOUT_LINK_TEST_ID } from './test_ids';
-import { DocumentEventTypes } from '../../../common/lib/telemetry';
 import { PreviewLink } from './preview_link';
 import { getRightPanelParams } from '../utils/link_utils';
-import { useWhichFlyout } from '../../document_details/shared/hooks/use_which_flyout';
 
 interface FlyoutLinkProps {
   /**
@@ -28,10 +25,6 @@ interface FlyoutLinkProps {
    * Scope id to use for the preview panel
    */
   scopeId: string;
-  /**
-   * Optional override to determine if the flyout is open
-   */
-  isFlyoutOpen?: boolean;
   /**
    * Rule id to use for the preview panel
    */
@@ -59,17 +52,15 @@ export const FlyoutLink: FC<FlyoutLinkProps> = ({
   field,
   value,
   scopeId,
-  isFlyoutOpen = false,
   ruleId,
   children,
   'data-test-subj': dataTestSubj,
 }) => {
-  const { openFlyout } = useExpandableFlyoutApi();
-  const { telemetry } = useKibana().services;
-  const whichFlyout = useWhichFlyout();
-  const renderPreview = isFlyoutOpen || whichFlyout !== null;
+  const { openMainPanel, openChildPanel } = useFlyoutApi();
+  const panels = useFlyoutState();
+  const renderPreview = panels.main !== undefined;
 
-  const rightPanelParams = useMemo(
+  const panelParams = useMemo(
     () =>
       getRightPanelParams({
         value,
@@ -81,19 +72,26 @@ export const FlyoutLink: FC<FlyoutLinkProps> = ({
   );
 
   const onClick = useCallback(() => {
-    if (rightPanelParams) {
-      openFlyout({
-        right: {
-          id: rightPanelParams.id,
-          params: rightPanelParams.params,
-        },
-      });
-      telemetry.reportEvent(DocumentEventTypes.DetailsFlyoutOpened, {
-        location: scopeId,
-        panel: 'right',
-      });
+    if (panelParams) {
+      if (!panels.child) {
+        openMainPanel(
+          {
+            id: panelParams.id,
+            params: panelParams.params,
+          },
+          's'
+        );
+      } else {
+        openChildPanel(
+          {
+            id: panelParams.id,
+            params: panelParams.params,
+          },
+          's'
+        );
+      }
     }
-  }, [rightPanelParams, scopeId, telemetry, openFlyout]);
+  }, [panelParams, panels.child, openMainPanel, openChildPanel]);
 
   // If the flyout is open, render the preview link
   if (renderPreview) {
@@ -104,7 +102,7 @@ export const FlyoutLink: FC<FlyoutLinkProps> = ({
     );
   }
 
-  return rightPanelParams ? (
+  return panelParams ? (
     <EuiLink onClick={onClick} data-test-subj={dataTestSubj ?? FLYOUT_LINK_TEST_ID}>
       {children ?? value}
     </EuiLink>

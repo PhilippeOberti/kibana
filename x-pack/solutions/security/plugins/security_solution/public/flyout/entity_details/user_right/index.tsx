@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useMemo } from 'react';
-import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps } from '@kbn/flyout';
 import { useHasMisconfigurations } from '@kbn/cloud-security-posture/src/hooks/use_has_misconfigurations';
 import { TableId } from '@kbn/securitysolution-data-table';
 import { useNonClosedAlerts } from '../../../cloud_security_posture/hooks/use_non_closed_alerts';
@@ -41,7 +41,7 @@ export interface UserPanelProps extends Record<string, unknown> {
   contextID: string;
   scopeId: string;
   userName: string;
-  isPreviewMode: boolean;
+  isPreviewMode?: boolean;
 }
 
 export interface UserPanelExpandableFlyoutProps extends FlyoutPanelProps {
@@ -56,12 +56,7 @@ const FIRST_RECORD_PAGINATION = {
   querySize: 1,
 };
 
-export const UserPanel = ({
-  contextID,
-  scopeId,
-  userName,
-  isPreviewMode = false,
-}: UserPanelProps) => {
+export const UserPanel = ({ contextID, scopeId, userName, isPreviewMode }: UserPanelProps) => {
   const { uiSettings } = useKibana().services;
   const assetInventoryEnabled = uiSettings.get(ENABLE_ASSET_INVENTORY_SETTING, true);
 
@@ -145,7 +140,7 @@ export const UserPanel = ({
     !!managedUser.data?.[ManagedUserDatasetKey.OKTA] ||
     !!managedUser.data?.[ManagedUserDatasetKey.ENTRA];
 
-  if (observedUser.isLoading) {
+  if (observedUser.isLoading || managedUser.isLoading) {
     return <FlyoutLoading />;
   }
 

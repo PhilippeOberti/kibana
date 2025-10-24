@@ -20,7 +20,7 @@ import {
   EuiToolTip,
 } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
-import type { FlyoutPanelHistory } from '@kbn/expandable-flyout';
+import type { FlyoutPanelHistory } from '@kbn/flyout';
 import { FlyoutHistoryRow } from './flyout_history_row';
 import {
   FLYOUT_HISTORY_BUTTON_TEST_ID,

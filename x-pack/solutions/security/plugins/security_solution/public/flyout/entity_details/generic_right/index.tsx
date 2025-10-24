@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps } from '@kbn/flyout';
 import { METRIC_TYPE } from '@kbn/analytics';
 import {
   GENERIC_ENTITY_FLYOUT_OPENED,
@@ -68,6 +68,8 @@ export interface GenericEntityPanelExpandableFlyoutProps extends FlyoutPanelProp
   key: 'generic-entity-panel';
   params: GenericEntityPanelProps;
 }
+
+export const GENERIC_PANEL_RISK_SCORE_QUERY_ID = 'genericPanelRiskScoreQuery';
 
 export const GenericEntityPanel = (params: GenericEntityPanelProps) => {
   const { isPreviewMode, scopeId, isEngineMetadataExist } = params;

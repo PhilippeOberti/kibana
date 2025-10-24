@@ -6,21 +6,21 @@
  */
 
 import type { FC } from 'react';
-import React, { memo, useEffect } from 'react';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import React, { memo, useCallback, useEffect } from 'react';
+import { useFlyoutApi } from '@kbn/flyout';
+import { HeaderActions } from './components/header_actions';
 import { DocumentDetailsRightPanelKey } from '../shared/constants/panel_keys';
 import { useTabs } from './hooks/use_tabs';
 import { FLYOUT_STORAGE_KEYS } from '../shared/constants/local_storage';
 import { useKibana } from '../../../common/lib/kibana';
 import { useDocumentDetailsContext } from '../shared/context';
 import type { DocumentDetailsProps } from '../shared/types';
-import { PanelNavigation } from './navigation';
 import { PanelHeader } from './header';
 import { PanelContent } from './content';
 import type { RightPanelTabType } from './tabs';
 import { PanelFooter } from './footer';
 import { useFlyoutIsExpandable } from './hooks/use_flyout_is_expandable';
-import { DocumentEventTypes } from '../../../common/lib/telemetry';
+import { FlyoutNavigation } from '../../shared/components/flyout_navigation';
 
 export type RightPanelPaths = 'overview' | 'table' | 'json';
 
@@ -28,8 +28,8 @@ export type RightPanelPaths = 'overview' | 'table' | 'json';
  * Panel to be displayed in the document details expandable flyout right section
  */
 export const RightPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) => {
-  const { storage, telemetry } = useKibana().services;
-  const { openRightPanel, closeFlyout } = useExpandableFlyoutApi();
+  const { storage } = useKibana().services;
+  const { openMainPanel, closeFlyout } = useFlyoutApi();
   const { eventId, indexName, scopeId, isRulePreview, dataAsNestedObject, getFieldsData } =
     useDocumentDetailsContext();
 
@@ -38,28 +38,26 @@ export const RightPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) => 
   const flyoutIsExpandable = useFlyoutIsExpandable({ getFieldsData, dataAsNestedObject });
   const { tabsDisplayed, selectedTabId } = useTabs({ flyoutIsExpandable, path });
 
-  const setSelectedTabId = (tabId: RightPanelTabType['id']) => {
-    openRightPanel({
-      id: DocumentDetailsRightPanelKey,
-      path: {
-        tab: tabId,
-      },
-      params: {
-        id: eventId,
-        indexName,
-        scopeId,
-      },
-    });
+  const setSelectedTabId = useCallback(
+    (tabId: RightPanelTabType['id']) => {
+      openMainPanel(
+        {
+          id: DocumentDetailsRightPanelKey,
+          path: tabId,
+          params: {
+            id: eventId,
+            indexName,
+            scopeId,
+          },
+        },
+        's'
+      );
 
-    // saving which tab is currently selected in the right panel in local storage
-    storage.set(FLYOUT_STORAGE_KEYS.RIGHT_PANEL_SELECTED_TABS, tabId);
-
-    telemetry.reportEvent(DocumentEventTypes.DetailsFlyoutTabClicked, {
-      location: scopeId,
-      panel: 'right',
-      tabId,
-    });
-  };
+      // saving which tab is currently selected in the right panel in local storage
+      storage.set(FLYOUT_STORAGE_KEYS.RIGHT_PANEL_SELECTED_TABS, tabId);
+    },
+    [eventId, indexName, openMainPanel, scopeId, storage]
+  );
 
   // If flyout is open in rule preview, do not reload with stale information
   useEffect(() => {
@@ -76,7 +74,7 @@ export const RightPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) => 
 
   return (
     <>
-      <PanelNavigation flyoutIsExpandable={flyoutIsExpandable} />
+      <FlyoutNavigation actions={<HeaderActions />} isPreviewMode={false} />
       <PanelHeader
         tabs={tabsDisplayed}
         selectedTabId={selectedTabId}

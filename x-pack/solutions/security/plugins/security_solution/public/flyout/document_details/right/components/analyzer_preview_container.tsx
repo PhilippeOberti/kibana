@@ -28,9 +28,7 @@ export const AnalyzerPreviewContainer: React.FC = () => {
   const { navigateToAnalyzer } = useNavigateToAnalyzer({
     eventId,
     indexName,
-    isFlyoutOpen: true,
     scopeId,
-    isPreviewMode,
   });
 
   const iconType = useMemo(() => (!isPreviewMode ? 'arrowStart' : undefined), [isPreviewMode]);

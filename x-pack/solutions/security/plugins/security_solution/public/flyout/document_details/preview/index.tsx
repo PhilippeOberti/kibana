@@ -7,7 +7,7 @@
 
 import type { FC } from 'react';
 import React, { memo } from 'react';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import { useFlyoutApi } from '@kbn/flyout';
 import { DocumentDetailsPreviewPanelKey } from '../shared/constants/panel_keys';
 import { useTabs } from '../right/hooks/use_tabs';
 import { useFlyoutIsExpandable } from '../right/hooks/use_flyout_is_expandable';
@@ -24,7 +24,7 @@ import { useBasicDataFromDetailsData } from '../shared/hooks/use_basic_data_from
  * Panel to be displayed in the document details expandable flyout on top of right section
  */
 export const PreviewPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) => {
-  const { openPreviewPanel } = useExpandableFlyoutApi();
+  const { openChildPanel } = useFlyoutApi();
   const {
     eventId,
     indexName,
@@ -39,7 +39,7 @@ export const PreviewPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) =
   const { tabsDisplayed, selectedTabId } = useTabs({ flyoutIsExpandable, path });
 
   const setSelectedTabId = (tabId: RightPanelTabType['id']) => {
-    openPreviewPanel({
+    openChildPanel({
       id: DocumentDetailsPreviewPanelKey,
       path: {
         tab: tabId,

@@ -9,7 +9,7 @@ import type { FC } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiFlyoutFooter, EuiLink, EuiPanel } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import { useFlyoutApi } from '@kbn/flyout';
 import { PREVIEW_FOOTER_LINK_TEST_ID, PREVIEW_FOOTER_TEST_ID } from './test_ids';
 import type { FlowTargetSourceDest } from '../../../common/search_strategy';
 import { NetworkPanelKey } from '.';
@@ -33,11 +33,11 @@ export interface PreviewPanelFooterProps {
  * Footer at the bottom of preview panel with a link to open network details flyout
  */
 export const PreviewPanelFooter: FC<PreviewPanelFooterProps> = ({ ip, flowTarget, scopeId }) => {
-  const { openFlyout } = useExpandableFlyoutApi();
+  const { openFlyout } = useFlyoutApi();
 
   const openNetworkFlyout = useCallback(() => {
     openFlyout({
-      right: {
+      main: {
         id: NetworkPanelKey,
         params: {
           ip,
@@ -46,7 +46,7 @@ export const PreviewPanelFooter: FC<PreviewPanelFooterProps> = ({ ip, flowTarget
         },
       },
     });
-  }, [openFlyout, flowTarget, ip, scopeId]);
+  }, [ip, flowTarget, scopeId, openFlyout]);
 
   const fullDetailsLink = useMemo(
     () => (

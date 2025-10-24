@@ -16,9 +16,8 @@ import {
   EuiSkeletonText,
   useEuiTheme,
 } from '@elastic/eui';
-import type { FlyoutPanelHistory } from '@kbn/expandable-flyout';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import { IOCRightPanelKey } from '../../ioc_details/constants/panel_keys';
+import type { FlyoutPanelHistory } from '@kbn/flyout';
+import { useFlyoutApi } from '@kbn/flyout';
 import { EasePanelKey } from '../../ease/constants/panel_keys';
 import { FormattedRelativePreferenceDate } from '../../../common/components/formatted_date';
 import { DocumentDetailsRightPanelKey } from '../../document_details/shared/constants/panel_keys';
@@ -33,7 +32,6 @@ import {
   GENERIC_HISTORY_ROW_TEST_ID,
   HISTORY_ROW_LOADING_TEST_ID,
   HOST_HISTORY_ROW_TEST_ID,
-  IOC_HISTORY_ROW_TEST_ID,
   MISCONFIGURATION_HISTORY_ROW_TEST_ID,
   NETWORK_HISTORY_ROW_TEST_ID,
   RULE_HISTORY_ROW_TEST_ID,
@@ -115,17 +113,6 @@ export const FlyoutHistoryRow: FC<FlyoutHistoryRowProps> = memo(({ item, index }
           icon={'document'}
           name={'Resource Id'}
           dataTestSubj={TEST_ID}
-        />
-      );
-    case IOCRightPanelKey:
-      return (
-        <GenericHistoryRow
-          item={item}
-          index={index}
-          title={'Indicator'}
-          icon={'document'}
-          name={'Document'}
-          dataTestSubj={IOC_HISTORY_ROW_TEST_ID}
         />
       );
     default:
@@ -258,10 +245,8 @@ interface GenericHistoryRowProps extends FlyoutHistoryRowProps {
 export const GenericHistoryRow: FC<GenericHistoryRowProps> = memo(
   ({ item, index, title, icon, name, isLoading, dataTestSubj }) => {
     const { euiTheme } = useEuiTheme();
-    const { openFlyout } = useExpandableFlyoutApi();
-    const onClick = useCallback(() => {
-      openFlyout({ right: item.panel });
-    }, [openFlyout, item.panel]);
+    const { openFlyout } = useFlyoutApi();
+    const onClick = useCallback(() => openFlyout({ main: item.panel }), [item.panel, openFlyout]);
 
     if (isLoading) {
       return (

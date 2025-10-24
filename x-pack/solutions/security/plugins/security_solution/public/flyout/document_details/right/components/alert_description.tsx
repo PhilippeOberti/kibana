@@ -7,13 +7,12 @@
 
 import { EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiTitle } from '@elastic/eui';
 import type { FC } from 'react';
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { isEmpty } from 'lodash';
 import { css } from '@emotion/react';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { i18n } from '@kbn/i18n';
-import { useKibana } from '../../../../common/lib/kibana';
+import { useFlyoutApi } from '@kbn/flyout';
 import { useDocumentDetailsContext } from '../../shared/context';
 import { useBasicDataFromDetailsData } from '../../shared/hooks/use_basic_data_from_details_data';
 import {
@@ -22,32 +21,31 @@ import {
   RULE_SUMMARY_BUTTON_TEST_ID,
 } from './test_ids';
 import { RULE_PREVIEW_BANNER, RulePreviewPanelKey } from '../../../rule_details/right';
-import { DocumentEventTypes } from '../../../../common/lib/telemetry';
 
 /**
  * Displays the rule description of a signal document.
  */
 export const AlertDescription: FC = () => {
-  const { telemetry } = useKibana().services;
   const { dataFormattedForFieldBrowser, scopeId, isRulePreview } = useDocumentDetailsContext();
   const { isAlert, ruleDescription, ruleName, ruleId } = useBasicDataFromDetailsData(
     dataFormattedForFieldBrowser
   );
-  const { openPreviewPanel } = useExpandableFlyoutApi();
+  const { openChildPanel } = useFlyoutApi();
+
   const openRulePreview = useCallback(() => {
-    openPreviewPanel({
-      id: RulePreviewPanelKey,
-      params: {
-        ruleId,
-        banner: RULE_PREVIEW_BANNER,
-        isPreviewMode: true,
+    openChildPanel(
+      {
+        id: RulePreviewPanelKey,
+        params: {
+          ruleId,
+          banner: RULE_PREVIEW_BANNER,
+          isPreviewMode: true,
+        },
       },
-    });
-    telemetry.reportEvent(DocumentEventTypes.DetailsFlyoutOpened, {
-      location: scopeId,
-      panel: 'preview',
-    });
-  }, [openPreviewPanel, scopeId, ruleId, telemetry]);
+      's',
+      true
+    );
+  }, [openChildPanel, ruleId]);
 
   const viewRule = useMemo(
     () => (

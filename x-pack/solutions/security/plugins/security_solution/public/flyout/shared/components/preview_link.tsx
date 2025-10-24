@@ -7,11 +7,9 @@
 import type { FC } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { EuiLink } from '@elastic/eui';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import { useKibana } from '../../../common/lib/kibana';
+import { useFlyoutApi, useFlyoutState } from '@kbn/flyout';
 import { FLYOUT_PREVIEW_LINK_TEST_ID } from './test_ids';
-import { DocumentEventTypes } from '../../../common/lib/telemetry';
-import { getPreviewPanelParams } from '../utils/link_utils';
+import { getPanelParams } from '../utils/link_utils';
 
 interface PreviewLinkProps {
   /**
@@ -58,12 +56,12 @@ export const PreviewLink: FC<PreviewLinkProps> = ({
   ancestorsIndexName,
   'data-test-subj': dataTestSubj = FLYOUT_PREVIEW_LINK_TEST_ID,
 }) => {
-  const { openPreviewPanel } = useExpandableFlyoutApi();
-  const { telemetry } = useKibana().services;
+  const { openChildPanel, openMainPanel } = useFlyoutApi();
+  const panels = useFlyoutState();
 
-  const previewParams = useMemo(
+  const panelParams = useMemo(
     () =>
-      getPreviewPanelParams({
+      getPanelParams({
         value,
         field,
         scopeId,
@@ -74,19 +72,29 @@ export const PreviewLink: FC<PreviewLinkProps> = ({
   );
 
   const onClick = useCallback(() => {
-    if (previewParams) {
-      openPreviewPanel({
-        id: previewParams.id,
-        params: previewParams.params,
-      });
-      telemetry.reportEvent(DocumentEventTypes.DetailsFlyoutOpened, {
-        location: scopeId,
-        panel: 'preview',
-      });
+    if (panelParams) {
+      if (!panels.child) {
+        openMainPanel(
+          {
+            id: panelParams.id,
+            params: panelParams.params,
+          },
+          's'
+        );
+      } else {
+        // TODO this is not correct, we need to check if the content is rendered in the main or child
+        openChildPanel(
+          {
+            id: panelParams.id,
+            params: panelParams.params,
+          },
+          's'
+        );
+      }
     }
-  }, [scopeId, telemetry, openPreviewPanel, previewParams]);
+  }, [openChildPanel, openMainPanel, panelParams, panels.child]);
 
-  return previewParams ? (
+  return panelParams ? (
     <EuiLink onClick={onClick} data-test-subj={dataTestSubj}>
       {children ?? value}
     </EuiLink>

@@ -8,7 +8,7 @@
 import { EuiFlexGroup, EuiFlexItem, EuiLink } from '@elastic/eui';
 import React, { useCallback } from 'react';
 import { i18n } from '@kbn/i18n';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import { useFlyoutApi } from '@kbn/flyout';
 import { FlyoutFooter } from '../../shared/components/flyout_footer';
 import { HostPanelKey } from '../shared/constants';
 
@@ -23,11 +23,11 @@ export const HostPreviewPanelFooter = ({
   scopeId,
   hostName,
 }: HostPreviewPanelFooterProps) => {
-  const { openFlyout } = useExpandableFlyoutApi();
+  const { openFlyout } = useFlyoutApi();
 
   const openHostFlyout = useCallback(() => {
     openFlyout({
-      right: {
+      main: {
         id: HostPanelKey,
         params: {
           contextID,
@@ -36,7 +36,7 @@ export const HostPreviewPanelFooter = ({
         },
       },
     });
-  }, [openFlyout, hostName, contextID, scopeId]);
+  }, [contextID, hostName, scopeId, openFlyout]);
 
   return (
     <FlyoutFooter data-test-subj={'host-preview-footer'}>

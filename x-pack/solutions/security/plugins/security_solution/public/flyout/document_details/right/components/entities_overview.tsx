@@ -5,35 +5,61 @@
  * 2.0.
  */
 
-import React, { useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
+import { useFlyoutApi } from '@kbn/flyout';
+import { InsightsPanelEntitiesTab } from '../../insights';
 import { INSIGHTS_ENTITIES_TEST_ID } from './test_ids';
 import { ExpandablePanel } from '../../../shared/components/expandable_panel';
 import { useDocumentDetailsContext } from '../../shared/context';
 import { getField } from '../../shared/utils';
 import { HostEntityOverview } from './host_entity_overview';
 import { UserEntityOverview } from './user_entity_overview';
-import { LeftPanelInsightsTab } from '../../left';
-import { ENTITIES_TAB_ID } from '../../left/components/entities_details';
-import { useNavigateToLeftPanel } from '../../shared/hooks/use_navigate_to_left_panel';
+import {
+  DocumentDetailsInsightsPanelKey,
+  DocumentDetailsRightPanelKey,
+} from '../../shared/constants/panel_keys';
 
 /**
  * Entities section under Insights section, overview tab. It contains a preview of host and user information.
  */
-export const EntitiesOverview: React.FC = () => {
-  const { getFieldsData, isPreviewMode } = useDocumentDetailsContext();
+export const EntitiesOverview: React.FC = memo(() => {
+  const { eventId, indexName, scopeId, getFieldsData, isPreviewMode } = useDocumentDetailsContext();
   const hostName = getField(getFieldsData('host.name'));
   const userName = getField(getFieldsData('user.name'));
 
-  const navigateToLeftPanel = useNavigateToLeftPanel({
-    tab: LeftPanelInsightsTab,
-    subTab: ENTITIES_TAB_ID,
-  });
+  const { openFlyout } = useFlyoutApi();
+  const openEntitiesFlyout = useCallback(
+    () =>
+      openFlyout(
+        {
+          main: {
+            id: DocumentDetailsInsightsPanelKey,
+            path: InsightsPanelEntitiesTab,
+            params: {
+              id: eventId,
+              indexName,
+              scopeId,
+            },
+          },
+          child: {
+            id: DocumentDetailsRightPanelKey,
+            params: {
+              id: eventId,
+              indexName,
+              scopeId,
+            },
+          },
+        },
+        { mainSize: 'm' }
+      ),
+    [eventId, indexName, openFlyout, scopeId]
+  );
 
   const link = useMemo(
     () => ({
-      callback: navigateToLeftPanel,
+      callback: openEntitiesFlyout,
       tooltip: (
         <FormattedMessage
           id="xpack.securitySolution.flyout.right.insights.entities.entitiesTooltip"
@@ -41,7 +67,7 @@ export const EntitiesOverview: React.FC = () => {
         />
       ),
     }),
-    [navigateToLeftPanel]
+    [openEntitiesFlyout]
   );
 
   return (
@@ -84,6 +110,6 @@ export const EntitiesOverview: React.FC = () => {
       </ExpandablePanel>
     </>
   );
-};
+});
 
 EntitiesOverview.displayName = 'EntitiesOverview';

@@ -5,7 +5,7 @@
  * 2.0.
  */
 
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import {
   EuiFlexGroup,
   EuiFlexItem,
@@ -84,7 +84,7 @@ export const USER_PREVIEW_BANNER = {
 /**
  * User preview content for the entities preview in right flyout. It contains ip addresses and risk level
  */
-export const UserEntityOverview: React.FC<UserEntityOverviewProps> = ({ userName }) => {
+export const UserEntityOverview: React.FC<UserEntityOverviewProps> = memo(({ userName }) => {
   const { scopeId } = useDocumentDetailsContext();
   const { from, to } = useGlobalTime();
   const { selectedPatterns: oldSelectedPatterns } = useSourcererDataView();
@@ -293,4 +293,6 @@ export const UserEntityOverview: React.FC<UserEntityOverviewProps> = ({ userName
       />
     </EuiFlexGroup>
   );
-};
+});
+
+UserEntityOverview.displayName = 'UserEntityOverview';

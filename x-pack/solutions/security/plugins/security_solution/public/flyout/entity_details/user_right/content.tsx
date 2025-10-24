@@ -6,11 +6,11 @@
  */
 
 import { EuiHorizontalRule } from '@elastic/eui';
+
 import React from 'react';
-import { useIsExperimentalFeatureEnabled } from '../../../common/hooks/use_experimental_features';
-import { EntityHighlightsAccordion } from '../../../entity_analytics/components/entity_details_flyout/components/entity_highlights';
 import type { UserItem } from '../../../../common/search_strategy';
 import { AssetCriticalityAccordion } from '../../../entity_analytics/components/asset_criticality/asset_criticality_selector';
+
 import { OBSERVED_USER_QUERY_ID } from '../../../explore/users/containers/users/observed_details';
 import { FlyoutRiskSummary } from '../../../entity_analytics/components/risk_summary_flyout/risk_summary';
 import type { RiskScoreState } from '../../../entity_analytics/api/hooks/use_risk_score';
@@ -48,15 +48,8 @@ export const UserPanelContent = ({
 }: UserPanelContentProps) => {
   const observedFields = useObservedUserItems(observedUser);
 
-  const isEntityDetailsHighlightsAIEnabled = useIsExperimentalFeatureEnabled(
-    'entityDetailsHighlightsEnabled'
-  );
-
   return (
     <FlyoutBody>
-      {isEntityDetailsHighlightsAIEnabled && (
-        <EntityHighlightsAccordion entityIdentifier={userName} entityType={EntityType.user} />
-      )}
       {riskScoreState.hasEngineBeenInstalled && riskScoreState.data?.length !== 0 && (
         <>
           <FlyoutRiskSummary

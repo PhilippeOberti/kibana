@@ -7,25 +7,22 @@
 
 import type { FC } from 'react';
 import React, { useCallback, useMemo } from 'react';
-import { EuiLink, EuiFlyoutFooter, EuiPanel, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiFlyoutFooter, EuiLink, EuiPanel } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
-import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import { useFlyoutApi } from '@kbn/flyout';
 import { TakeActionButton } from '../shared/components/take_action_button';
 import { getField } from '../shared/utils';
 import { EventKind } from '../shared/constants/event_kinds';
 import { DocumentDetailsRightPanelKey } from '../shared/constants/panel_keys';
 import { useDocumentDetailsContext } from '../shared/context';
-import { PREVIEW_FOOTER_TEST_ID, PREVIEW_FOOTER_LINK_TEST_ID } from './test_ids';
-import { useKibana } from '../../../common/lib/kibana';
-import { DocumentEventTypes } from '../../../common/lib/telemetry';
+import { PREVIEW_FOOTER_LINK_TEST_ID, PREVIEW_FOOTER_TEST_ID } from './test_ids';
 
 /**
  * Footer at the bottom of preview panel with a link to open document details flyout
  */
 export const PreviewPanelFooter: FC = () => {
   const { eventId, indexName, scopeId, getFieldsData, isRulePreview } = useDocumentDetailsContext();
-  const { openFlyout } = useExpandableFlyoutApi();
-  const { telemetry } = useKibana().services;
+  const { openFlyout } = useFlyoutApi();
 
   const isAlert = useMemo(
     () => getField(getFieldsData('event.kind')) === EventKind.signal,
@@ -34,7 +31,7 @@ export const PreviewPanelFooter: FC = () => {
 
   const openDocumentFlyout = useCallback(() => {
     openFlyout({
-      right: {
+      main: {
         id: DocumentDetailsRightPanelKey,
         params: {
           id: eventId,
@@ -43,11 +40,7 @@ export const PreviewPanelFooter: FC = () => {
         },
       },
     });
-    telemetry.reportEvent(DocumentEventTypes.DetailsFlyoutOpened, {
-      location: scopeId,
-      panel: 'right',
-    });
-  }, [openFlyout, eventId, indexName, scopeId, telemetry]);
+  }, [scopeId, eventId, indexName, openFlyout]);
 
   const fullDetailsLink = useMemo(
     () => (

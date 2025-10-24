@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useMemo } from 'react';
-import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps } from '@kbn/flyout';
 import { TableId } from '@kbn/securitysolution-data-table';
 import { noop } from 'lodash/fp';
 import { buildEntityNameFilter } from '../../../../common/search_strategy';
@@ -87,6 +87,7 @@ export const ServicePanel = ({ contextID, scopeId, serviceName }: ServicePanelPr
   const openDetailsPanel = useNavigateToServiceDetails({
     serviceName,
     scopeId,
+    contextID,
     isRiskScoreExist,
   });
 

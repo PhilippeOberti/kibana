@@ -7,7 +7,7 @@
 
 import type { FC } from 'react';
 import React, { memo } from 'react';
-import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps } from '@kbn/flyout';
 import { i18n } from '@kbn/i18n';
 import { TableId } from '@kbn/securitysolution-data-table';
 import { PreviewPanelFooter } from './footer';

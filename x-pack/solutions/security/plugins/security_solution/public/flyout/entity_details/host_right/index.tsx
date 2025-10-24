@@ -6,7 +6,8 @@
  */
 
 import React, { useCallback, useMemo } from 'react';
-import type { FlyoutPanelProps } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps } from '@kbn/flyout';
+
 import { useHasMisconfigurations } from '@kbn/cloud-security-posture/src/hooks/use_has_misconfigurations';
 import { useHasVulnerabilities } from '@kbn/cloud-security-posture/src/hooks/use_has_vulnerabilities';
 import { TableId } from '@kbn/securitysolution-data-table';
@@ -41,7 +42,7 @@ export interface HostPanelProps extends Record<string, unknown> {
   contextID: string;
   scopeId: string;
   hostName: string;
-  isPreviewMode: boolean;
+  isPreviewMode?: boolean;
 }
 
 export interface HostPanelExpandableFlyoutProps extends FlyoutPanelProps {
@@ -58,12 +59,7 @@ const FIRST_RECORD_PAGINATION = {
   querySize: 1,
 };
 
-export const HostPanel = ({
-  contextID,
-  scopeId,
-  hostName,
-  isPreviewMode = false,
-}: HostPanelProps) => {
+export const HostPanel = ({ contextID, scopeId, hostName, isPreviewMode }: HostPanelProps) => {
   const { uiSettings } = useKibana().services;
   const assetInventoryEnabled = uiSettings.get(ENABLE_ASSET_INVENTORY_SETTING, true);
 
@@ -182,6 +178,7 @@ export const HostPanel = ({
               contextID={contextID}
               scopeId={scopeId}
               openDetailsPanel={openDetailsPanel}
+              isLinkEnabled={true}
               recalculatingScore={recalculatingScore}
               onAssetCriticalityChange={calculateEntityRiskScore}
               isPreviewMode={isPreviewMode}

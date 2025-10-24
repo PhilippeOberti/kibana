@@ -6,12 +6,12 @@
  */
 
 import { useMemo } from 'react';
-import type { PanelPath } from '@kbn/expandable-flyout';
+import type { PanelPath } from '@kbn/flyout';
 import type { RightPanelPaths } from '..';
 import { useKibana } from '../../../../common/lib/kibana';
 import { FLYOUT_STORAGE_KEYS } from '../../shared/constants/local_storage';
-import * as tabs from '../tabs';
 import type { RightPanelTabType } from '../tabs';
+import * as tabs from '../tabs';
 
 export const allThreeTabs = [tabs.overviewTab, tabs.tableTab, tabs.jsonTab];
 export const twoTabs = [tabs.tableTab, tabs.jsonTab];

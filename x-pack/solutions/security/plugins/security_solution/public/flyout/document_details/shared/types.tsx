@@ -5,7 +5,7 @@
  * 2.0.
  */
 
-import type { FlyoutPanelProps, PanelPath } from '@kbn/expandable-flyout';
+import type { FlyoutPanelProps, PanelPath } from '@kbn/flyout';
 import type {
   DocumentDetailsLeftPanelKey,
   DocumentDetailsRightPanelKey,
