@@ -8,6 +8,7 @@
 import { euiDarkVars as darkTheme, euiLightVars as lightTheme } from '@kbn/ui-theme';
 import React from 'react';
 import { useKibanaIsDarkMode } from '@kbn/react-kibana-context-theme';
+import { useIsExperimentalFeatureEnabled } from '../../../../common/hooks/use_experimental_features';
 import type { DescriptionList } from '../../../../../common/utility_types';
 import type {
   FlowTargetSourceDest,
@@ -77,6 +78,7 @@ export const IpOverview = React.memo<IpOverviewProps>(
     jobNameById,
     isFlyoutOpen = false,
   }) => {
+    const newFlyoutEnabled = useIsExperimentalFeatureEnabled('newFlyout');
     const capabilities = useMlCapabilities();
     const userPermissions = hasMlUserPermissions(capabilities);
     const darkMode = useKibanaIsDarkMode();
@@ -154,6 +156,7 @@ export const IpOverview = React.memo<IpOverviewProps>(
                   contextID,
                   scopeId,
                   isFlyoutOpen,
+                  newFlyoutEnabled,
                 })
               : getEmptyTagValue(),
         },
@@ -167,6 +170,7 @@ export const IpOverview = React.memo<IpOverviewProps>(
                   ipFilter: ip,
                   contextID,
                   isFlyoutOpen,
+                  newFlyoutEnabled,
                 })
               : getEmptyTagValue(),
         },
