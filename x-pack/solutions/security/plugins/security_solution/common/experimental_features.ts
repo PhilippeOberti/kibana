@@ -216,6 +216,10 @@ export const allowedExperimentalValues = Object.freeze({
    * Protects all the work related to the attacks and alert alignment effort
    */
   attacksAlertAlignment: false,
+  /**
+   * Protects all the work related to the transition to the new flyout system
+   */
+  newFlyout: true,
 });
 
 type ExperimentalConfigKeys = Array<keyof ExperimentalFeatures>;

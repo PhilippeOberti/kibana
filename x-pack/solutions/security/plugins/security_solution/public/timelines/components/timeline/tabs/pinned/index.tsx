@@ -13,6 +13,11 @@ import deepEqual from 'fast-deep-equal';
 import type { EuiDataGridControlColumn } from '@elastic/eui';
 import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
 import type { RunTimeMappings } from '@kbn/timelines-plugin/common/search_strategy';
+import { useFlyoutApi } from '@kbn/flyout';
+import {
+  DocumentDetailsLeftPanelKeyV2,
+  DocumentDetailsRightPanelKeyV2,
+} from '../../../../../flyoutV2/document_details/shared/constants/panel_keys';
 import { useSourcererDataView } from '../../../../../sourcerer/containers';
 import { useDataView } from '../../../../../data_view_manager/hooks/use_data_view';
 import { useSelectedPatterns } from '../../../../../data_view_manager/hooks/use_selected_patterns';
@@ -205,6 +210,8 @@ export const PinnedTabContentComponent: React.FC<Props> = ({
   const onUpdatePageIndex = useCallback((newPageIndex: number) => setPageIndex(newPageIndex), []);
 
   const { openFlyout } = useExpandableFlyoutApi();
+  const { openFlyout: openFlyoutV2 } = useFlyoutApi();
+  const newFlyoutEnabled = useIsExperimentalFeatureEnabled('newFlyout');
   const securitySolutionNotesDisabled = useIsExperimentalFeatureEnabled(
     'securitySolutionNotesDisabled'
   );
@@ -228,27 +235,51 @@ export const PinnedTabContentComponent: React.FC<Props> = ({
     (eventId?: string) => {
       const indexName = selectedPatterns.join(',');
       if (eventId && !securitySolutionNotesDisabled) {
-        openFlyout({
-          right: {
-            id: DocumentDetailsRightPanelKey,
-            params: {
-              id: eventId,
-              indexName,
-              scopeId: timelineId,
+        if (newFlyoutEnabled) {
+          openFlyoutV2({
+            main: {
+              id: DocumentDetailsRightPanelKeyV2,
+              params: {
+                id: eventId,
+                indexName,
+                scopeId: timelineId,
+              },
             },
-          },
-          left: {
-            id: DocumentDetailsLeftPanelKey,
-            path: {
-              tab: LeftPanelNotesTab,
+            child: {
+              id: DocumentDetailsLeftPanelKeyV2,
+              path: {
+                tab: LeftPanelNotesTab,
+              },
+              params: {
+                id: eventId,
+                indexName,
+                scopeId: timelineId,
+              },
             },
-            params: {
-              id: eventId,
-              indexName,
-              scopeId: timelineId,
+          });
+        } else {
+          openFlyout({
+            right: {
+              id: DocumentDetailsRightPanelKey,
+              params: {
+                id: eventId,
+                indexName,
+                scopeId: timelineId,
+              },
             },
-          },
-        });
+            left: {
+              id: DocumentDetailsLeftPanelKey,
+              path: {
+                tab: LeftPanelNotesTab,
+              },
+              params: {
+                id: eventId,
+                indexName,
+                scopeId: timelineId,
+              },
+            },
+          });
+        }
         telemetry.reportEvent(NotesEventTypes.OpenNoteInExpandableFlyoutClicked, {
           location: timelineId,
         });
@@ -264,11 +295,13 @@ export const PinnedTabContentComponent: React.FC<Props> = ({
       }
     },
     [
-      openFlyout,
-      securitySolutionNotesDisabled,
       selectedPatterns,
+      securitySolutionNotesDisabled,
+      newFlyoutEnabled,
       telemetry,
       timelineId,
+      openFlyoutV2,
+      openFlyout,
       setNotesEventId,
       showNotesFlyout,
     ]

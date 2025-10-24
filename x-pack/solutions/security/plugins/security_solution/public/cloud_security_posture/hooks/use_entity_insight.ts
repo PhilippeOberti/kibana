@@ -9,6 +9,8 @@ import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
 import { useCallback } from 'react';
 import { useHasVulnerabilities } from '@kbn/cloud-security-posture/src/hooks/use_has_vulnerabilities';
 import { useHasMisconfigurations } from '@kbn/cloud-security-posture/src/hooks/use_has_misconfigurations';
+import { useFlyoutApi } from '@kbn/flyout';
+import { UserDetailsPanelKeyV2 } from '../../flyoutV2/entity_details/user_details_left';
 import { UserDetailsPanelKey } from '../../flyout/entity_details/user_details_left';
 import { HostDetailsPanelKey } from '../../flyout/entity_details/host_details_left';
 import { EntityDetailsLeftPanelTab } from '../../flyout/entity_details/shared/components/left_panel/left_panel_header';
@@ -17,6 +19,8 @@ import { DETECTION_RESPONSE_ALERTS_BY_STATUS_ID } from '../../overview/component
 import { useNonClosedAlerts } from './use_non_closed_alerts';
 import { useHasRiskScore } from './use_risk_score_data';
 import type { CloudPostureEntityIdentifier } from '../components/entity_insight';
+import { useIsExperimentalFeatureEnabled } from '../../common/hooks/use_experimental_features';
+import { HostDetailsPanelKeyV2 } from '../../flyoutV2/entity_details/host_details_left';
 
 export const useNavigateEntityInsight = ({
   field,
@@ -48,35 +52,66 @@ export const useNavigateEntityInsight = ({
   });
   const { hasMisconfigurationFindings } = useHasMisconfigurations(field, value);
   const { openLeftPanel } = useExpandableFlyoutApi();
+  const { openChildPanel } = useFlyoutApi();
+  const newFlyoutEnabled = useIsExperimentalFeatureEnabled('newFlyout');
 
   const goToEntityInsightTab = useCallback(() => {
-    openLeftPanel({
-      id: isHostNameField ? HostDetailsPanelKey : UserDetailsPanelKey,
-      params: isHostNameField
-        ? {
-            name: value,
-            isRiskScoreExist: hasRiskScore,
-            hasMisconfigurationFindings,
-            hasVulnerabilitiesFindings,
-            hasNonClosedAlerts,
-            path: {
-              tab: EntityDetailsLeftPanelTab.CSP_INSIGHTS,
-              subTab,
+    if (newFlyoutEnabled) {
+      openChildPanel({
+        id: isHostNameField ? HostDetailsPanelKeyV2 : UserDetailsPanelKeyV2,
+        params: isHostNameField
+          ? {
+              name: value,
+              isRiskScoreExist: hasRiskScore,
+              hasMisconfigurationFindings,
+              hasVulnerabilitiesFindings,
+              hasNonClosedAlerts,
+              path: {
+                tab: EntityDetailsLeftPanelTab.CSP_INSIGHTS,
+                subTab,
+              },
+            }
+          : {
+              user: { name: value },
+              isRiskScoreExist: hasRiskScore,
+              hasMisconfigurationFindings,
+              hasNonClosedAlerts,
+              path: {
+                tab: EntityDetailsLeftPanelTab.CSP_INSIGHTS,
+                subTab,
+              },
             },
-          }
-        : {
-            user: { name: value },
-            isRiskScoreExist: hasRiskScore,
-            hasMisconfigurationFindings,
-            hasNonClosedAlerts,
-            path: {
-              tab: EntityDetailsLeftPanelTab.CSP_INSIGHTS,
-              subTab,
+      });
+    } else {
+      openLeftPanel({
+        id: isHostNameField ? HostDetailsPanelKey : UserDetailsPanelKey,
+        params: isHostNameField
+          ? {
+              name: value,
+              isRiskScoreExist: hasRiskScore,
+              hasMisconfigurationFindings,
+              hasVulnerabilitiesFindings,
+              hasNonClosedAlerts,
+              path: {
+                tab: EntityDetailsLeftPanelTab.CSP_INSIGHTS,
+                subTab,
+              },
+            }
+          : {
+              user: { name: value },
+              isRiskScoreExist: hasRiskScore,
+              hasMisconfigurationFindings,
+              hasNonClosedAlerts,
+              path: {
+                tab: EntityDetailsLeftPanelTab.CSP_INSIGHTS,
+                subTab,
+              },
             },
-          },
-    });
+      });
+    }
   }, [
-    openLeftPanel,
+    newFlyoutEnabled,
+    openChildPanel,
     isHostNameField,
     value,
     hasRiskScore,
@@ -84,6 +119,7 @@ export const useNavigateEntityInsight = ({
     hasVulnerabilitiesFindings,
     hasNonClosedAlerts,
     subTab,
+    openLeftPanel,
   ]);
 
   return { goToEntityInsightTab };

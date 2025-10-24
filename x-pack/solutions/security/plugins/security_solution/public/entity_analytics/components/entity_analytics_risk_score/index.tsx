@@ -8,6 +8,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiPanel } from '@elastic/eui';
 
 import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
+import { useFlyoutApi } from '@kbn/flyout';
 import type { RiskSeverity } from '../../../../common/search_strategy';
 import { useQueryInspector } from '../../../common/components/page/manage_query';
 import {
@@ -43,6 +44,7 @@ import { useMissingRiskEnginePrivileges } from '../../hooks/use_missing_risk_eng
 import { EntityEventTypes } from '../../../common/lib/telemetry';
 import { RiskScoresNoDataDetected } from '../risk_score_no_data_detected';
 import { RiskScoreHeaderTitle } from '../risk_score_header_title';
+import { useIsExperimentalFeatureEnabled } from '../../../common/hooks/use_experimental_features';
 
 export const ENTITY_RISK_SCORE_TABLE_ID = 'entity-risk-score-table';
 
@@ -57,6 +59,8 @@ const EntityAnalyticsRiskScoresComponent = <T extends EntityType>({
   const openAlertsPageWithFilters = useNavigateToAlertsPageWithFilters();
   const { telemetry } = useKibana().services;
   const { openRightPanel } = useExpandableFlyoutApi();
+  const { openMainPanel } = useFlyoutApi();
+  const newFlyoutEnabled = useIsExperimentalFeatureEnabled('newFlyout');
   const entityNameField = EntityTypeToIdentifierField[riskEntity];
 
   const openEntityOnAlertsPage = useCallback(
@@ -78,17 +82,28 @@ const EntityAnalyticsRiskScoresComponent = <T extends EntityType>({
       const panelKey = EntityPanelKeyByType[riskEntity];
       const panelParam = EntityPanelParamByType[riskEntity];
       if (panelKey && panelParam) {
-        openRightPanel({
-          id: panelKey,
-          params: {
-            [panelParam]: entityName,
-            contextID: ENTITY_RISK_SCORE_TABLE_ID,
-            scopeId: ENTITY_RISK_SCORE_TABLE_ID,
-          },
-        });
+        if (newFlyoutEnabled) {
+          openMainPanel({
+            id: panelKey,
+            params: {
+              [panelParam]: entityName,
+              contextID: ENTITY_RISK_SCORE_TABLE_ID,
+              scopeId: ENTITY_RISK_SCORE_TABLE_ID,
+            },
+          });
+        } else {
+          openRightPanel({
+            id: panelKey,
+            params: {
+              [panelParam]: entityName,
+              contextID: ENTITY_RISK_SCORE_TABLE_ID,
+              scopeId: ENTITY_RISK_SCORE_TABLE_ID,
+            },
+          });
+        }
       }
     },
-    [openRightPanel, riskEntity]
+    [newFlyoutEnabled, openMainPanel, openRightPanel, riskEntity]
   );
 
   const { toggleStatus, setToggleStatus } = useQueryToggle(entity.tableQueryId);
