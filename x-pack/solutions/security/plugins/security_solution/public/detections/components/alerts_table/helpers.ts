@@ -31,7 +31,7 @@ interface FindValueToChangeInQuery {
  * This is used for the alerts detection engine feature when you save a timeline template
  * and are the fields you can replace when creating a template.
  */
-const templateFields = [
+export const templateFields = [
   'host.name',
   'host.hostname',
   'host.domain',

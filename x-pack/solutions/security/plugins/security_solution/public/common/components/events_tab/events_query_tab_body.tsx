@@ -69,7 +69,7 @@ const EXTERNAL_ALERTS_URL_PARAM = 'onlyExternalAlerts';
 // - add new note
 // - session view
 // - analyzer graph
-const MAX_ACTION_BUTTON_COUNT = 6;
+const MAX_ACTION_BUTTON_COUNT = 8;
 
 const EventsQueryTabBodyComponent: React.FC<EventsQueryTabBodyComponentProps> = ({
   additionalFilters,

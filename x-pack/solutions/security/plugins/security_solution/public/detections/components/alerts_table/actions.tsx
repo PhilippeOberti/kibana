@@ -18,14 +18,14 @@ import { FilterStateStore } from '@kbn/es-query';
 import { i18n } from '@kbn/i18n';
 
 import {
+  ALERT_RULE_CREATED_BY,
   ALERT_RULE_FROM,
-  ALERT_RULE_TYPE,
   ALERT_RULE_NOTE,
   ALERT_RULE_PARAMETERS,
-  ALERT_RULE_CREATED_BY,
-  ALERT_SUPPRESSION_START,
-  ALERT_SUPPRESSION_END,
+  ALERT_RULE_TYPE,
   ALERT_SUPPRESSION_DOCS_COUNT,
+  ALERT_SUPPRESSION_END,
+  ALERT_SUPPRESSION_START,
   ALERT_SUPPRESSION_TERMS,
   TIMESTAMP,
 } from '@kbn/rule-data-utils';
@@ -36,12 +36,12 @@ import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
 import type { DataTableModel } from '@kbn/securitysolution-data-table';
 import type { TimelineEventsDetailsRequestOptionsInput } from '@kbn/timelines-plugin/common';
 import {
-  ALERT_ORIGINAL_TIME,
   ALERT_GROUP_ID,
+  ALERT_NEW_TERMS,
+  ALERT_ORIGINAL_TIME,
+  ALERT_RULE_INDICES,
   ALERT_RULE_TIMELINE_ID,
   ALERT_THRESHOLD_RESULT,
-  ALERT_NEW_TERMS,
-  ALERT_RULE_INDICES,
 } from '../../../../common/field_maps/field_names';
 import {
   isEqlRule,
@@ -53,12 +53,12 @@ import {
 import { TimelineId } from '../../../../common/types/timeline';
 import { TimelineStatusEnum, TimelineTypeEnum } from '../../../../common/api/timeline';
 import type {
+  CreateTimeline,
+  CreateTimelineProps,
+  GetExceptionFilter,
   SendAlertToTimelineActionProps,
   ThresholdAggregationData,
   UpdateAlertStatusActionProps,
-  CreateTimelineProps,
-  GetExceptionFilter,
-  CreateTimeline,
 } from './types';
 import type {
   TimelineEventsDetailsItem,
@@ -70,9 +70,9 @@ import { formatTimelineResponseToModel } from '../../../timelines/components/ope
 import { convertKueryToElasticSearchQuery } from '../../../common/lib/kuery';
 import { getField, getFieldKey } from '../../../helpers';
 import {
-  replaceTemplateFieldFromQuery,
-  replaceTemplateFieldFromMatchFilters,
   replaceTemplateFieldFromDataProviders,
+  replaceTemplateFieldFromMatchFilters,
+  replaceTemplateFieldFromQuery,
 } from './helpers';
 import type {
   DataProvider,
@@ -161,7 +161,7 @@ export const determineToAndFrom = ({ ecs }: { ecs: Ecs[] | Ecs }) => {
   return { to, from };
 };
 
-const calculateFromTimeFallback = (thresholdData: Ecs, originalTime: moment.Moment) => {
+export const calculateFromTimeFallback = (thresholdData: Ecs, originalTime: moment.Moment) => {
   // relative time that the rule's time range starts at (e.g. now-1h)
 
   const ruleFromValue = getField(thresholdData, ALERT_RULE_FROM);
@@ -274,13 +274,13 @@ const getRuleType = (ecsData: Ecs): RuleType | undefined => {
   return Array.isArray(ruleType) ? ruleType[0] : ruleType;
 };
 
-const isNewTermsAlert = (ecsData: Ecs): boolean => isNewTermsRule(getRuleType(ecsData));
-const isEsqlAlert = (ecsData: Ecs): boolean => isEsqlRule(getRuleType(ecsData));
-const isEqlAlert = (ecsData: Ecs): boolean => isEqlRule(getRuleType(ecsData));
-const isThresholdAlert = (ecsData: Ecs): boolean => isThresholdRule(getRuleType(ecsData));
-const isMlAlert = (ecsData: Ecs): boolean => isMlRule(getRuleType(ecsData));
+export const isNewTermsAlert = (ecsData: Ecs): boolean => isNewTermsRule(getRuleType(ecsData));
+export const isEsqlAlert = (ecsData: Ecs): boolean => isEsqlRule(getRuleType(ecsData));
+export const isEqlAlert = (ecsData: Ecs): boolean => isEqlRule(getRuleType(ecsData));
+export const isThresholdAlert = (ecsData: Ecs): boolean => isThresholdRule(getRuleType(ecsData));
+export const isMlAlert = (ecsData: Ecs): boolean => isMlRule(getRuleType(ecsData));
 
-const isSuppressedAlert = (ecsData: Ecs): boolean => {
+export const isSuppressedAlert = (ecsData: Ecs): boolean => {
   return getField(ecsData, ALERT_SUPPRESSION_DOCS_COUNT) != null;
 };
 
@@ -955,6 +955,7 @@ export const sendAlertToTimelineAction = async ({
     : '';
   const { to, from } = determineToAndFrom({ ecs });
   // For now we do not want to populate the template timeline if we have alertIds
+  debugger;
   if (!isEmpty(timelineId)) {
     try {
       const [responseTimeline, eventDataResp] = await Promise.all([

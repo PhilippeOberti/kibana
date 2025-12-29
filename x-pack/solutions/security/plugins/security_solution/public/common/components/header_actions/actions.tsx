@@ -9,6 +9,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { EuiButtonIcon, EuiToolTip } from '@elastic/eui';
 import styled from 'styled-components';
+import { InvestigateInDiscoverAction } from '../../../detections/components/alerts_table/timeline_actions/investigate_in_discover_action';
 import {
   makeSelectDocumentNotesBySavedObjectId,
   makeSelectNotesByDocumentId,
@@ -196,6 +197,12 @@ const ActionsComponent: React.FC<ActionsComponentProps> = ({
             ecsRowData={ecsData}
           />
         )}
+        <InvestigateInDiscoverAction
+          key="investigate-in-discover-esql"
+          ecsData={ecsData}
+          esql={true}
+        />
+        <InvestigateInDiscoverAction key="investigate-in-discover" ecsData={ecsData} esql={false} />
         {!isEventViewer && showNotes && (
           <AddEventNoteAction
             ariaLabel={i18n.ADD_NOTES_FOR_ROW({ ariaRowindex, columnValues })}

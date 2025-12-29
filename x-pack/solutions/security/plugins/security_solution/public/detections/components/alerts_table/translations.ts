@@ -168,6 +168,20 @@ export const ACTION_INVESTIGATE_IN_TIMELINE = i18n.translate(
   }
 );
 
+export const ACTION_INVESTIGATE_IN_DISCOVER = i18n.translate(
+  'xpack.securitySolution.detectionEngine.alerts.actions.investigateInDiscoverTitle',
+  {
+    defaultMessage: 'Investigate in Discover',
+  }
+);
+
+export const ACTION_INVESTIGATE_IN_DISCOVER_WITH_ESQL = i18n.translate(
+  'xpack.securitySolution.detectionEngine.alerts.actions.investigateInDiscoverWithESQLTitle',
+  {
+    defaultMessage: 'Investigate in Discover with ESQL',
+  }
+);
+
 export const ACTION_CANNOT_INVESTIGATE_IN_TIMELINE = i18n.translate(
   'xpack.securitySolution.detectionEngine.alerts.actions.cannotInvestigateInTimelineTitle',
   {
@@ -179,6 +193,13 @@ export const ACTION_INVESTIGATE_IN_TIMELINE_ARIA_LABEL = i18n.translate(
   'xpack.securitySolution.detectionEngine.alerts.actions.investigateInTimelineAriaLabel',
   {
     defaultMessage: 'Send alert to timeline',
+  }
+);
+
+export const ACTION_INVESTIGATE_IN_DISCOVER_ARIA_LABEL = i18n.translate(
+  'xpack.securitySolution.detectionEngine.alerts.actions.investigateInDiscoverAriaLabel',
+  {
+    defaultMessage: 'Send alert to Discover',
   }
 );
 

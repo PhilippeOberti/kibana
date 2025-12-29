@@ -74,7 +74,7 @@ const { updateIsLoading, updateTotalCount } = dataTableActions;
 // - add new note
 // - session view
 // - analyzer graph
-const MAX_ACTION_BUTTON_COUNT = 6;
+const MAX_ACTION_BUTTON_COUNT = 8;
 const DEFAULT_DATA_GRID_HEIGHT = 600;
 
 const ALERT_TABLE_CONSUMERS: ResponseOpsAlertsTableProps['consumers'] = [AlertConsumers.SIEM];
