@@ -5,6 +5,4 @@
  * 2.0.
  */
 
-export { getCellRendererForGivenRecord } from './cell_renderers';
-export { createSecuritySolutionDiscoverAppWrapperGetter } from './app_wrapper';
-export { getTestComponent } from './test_component';
+export { ExpandableSection } from './src/shared/components/expandable_section';

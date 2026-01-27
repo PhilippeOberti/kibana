@@ -99,6 +99,11 @@ export const DocumentDetailsProvider = memo(
     isPreviewMode,
     children,
   }: DocumentDetailsProviderProps) => {
+    console.group('DocumentDetailsProvider');
+    console.log('id', id);
+    console.log('indexName', indexName);
+    console.log('scopeId', scopeId);
+    console.groupEnd();
     const {
       browserFields,
       dataAsNestedObject,

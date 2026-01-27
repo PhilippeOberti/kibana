@@ -8,19 +8,17 @@
  */
 
 import type { DataTableRecord } from '@kbn/discover-utils';
-import type { FunctionComponent, PropsWithChildren } from 'react';
+import type React, { FunctionComponent, PropsWithChildren } from 'react';
 import type { DataGridCellValueElementProps } from '@kbn/unified-data-table';
 import type { Query, TimeRange } from '@kbn/es-query';
 import type {
-  SpanLinks,
   ErrorsByTraceId,
+  SpanLinks,
   TraceRootSpan,
   UnifiedSpanDocument,
 } from '@kbn/apm-types';
-import type { ProcessorEvent } from '@kbn/apm-types-shared';
-import type { HistogramItem } from '@kbn/apm-types-shared';
+import type { HistogramItem, ProcessorEvent } from '@kbn/apm-types-shared';
 import type { DataView } from '@kbn/data-views-plugin/common';
-import type React from 'react';
 import type { FeaturesRegistry } from '../../../common';
 
 /**
@@ -111,6 +109,13 @@ export interface SecuritySolutionCellRendererFeature {
   >;
 }
 
+export interface SecuritySolutionTestFeature {
+  id: 'security-solution-test';
+  // getComponent: () => Promise<() => FunctionComponent<PropsWithChildren<{}>>>;
+  // render: () => JSX.Element;
+  render: (props: { id: string; indexName: string; scopeId: string }) => Promise<() => Element>;
+}
+
 export interface SecuritySolutionAppWrapperFeature {
   id: 'security-solution-app-wrapper';
   getWrapper: () => Promise<() => FunctionComponent<PropsWithChildren<{}>>>;
@@ -118,6 +123,7 @@ export interface SecuritySolutionAppWrapperFeature {
 
 export type SecuritySolutionFeature =
   | SecuritySolutionCellRendererFeature
+  | SecuritySolutionTestFeature
   | SecuritySolutionAppWrapperFeature;
 
 /** ****************************************************************************************/

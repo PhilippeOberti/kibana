@@ -5,6 +5,8 @@
  * 2.0.
  */
 
-export { getCellRendererForGivenRecord } from './cell_renderers';
-export { createSecuritySolutionDiscoverAppWrapperGetter } from './app_wrapper';
-export { getTestComponent } from './test_component';
+module.exports = {
+  preset: '@kbn/test/jest_node',
+  rootDir: '../../../../..',
+  roots: ['<rootDir>/x-pack/solutions/security/packages/kbn-security-solution-flyout'],
+};

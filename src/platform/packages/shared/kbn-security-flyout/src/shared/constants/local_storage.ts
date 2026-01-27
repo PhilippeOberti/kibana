@@ -5,6 +5,7 @@
  * 2.0.
  */
 
-export { getCellRendererForGivenRecord } from './cell_renderers';
-export { createSecuritySolutionDiscoverAppWrapperGetter } from './app_wrapper';
-export { getTestComponent } from './test_component';
+export const FLYOUT_STORAGE_KEYS = {
+  OVERVIEW_TAB_EXPANDED_SECTIONS:
+    'securitySolution.documentDetailsFlyout.overviewSectionExpanded.v8.14',
+};

@@ -8442,6 +8442,10 @@
   version "0.0.0"
   uid ""
 
+"@kbn/security-flyout@link:src/platform/packages/shared/kbn-security-flyout":
+  version "0.0.0"
+  uid ""
+
 "@kbn/security-form-components@link:x-pack/platform/packages/shared/security/form_components":
   version "0.0.0"
   uid ""
@@ -8491,6 +8495,10 @@
   uid ""
 
 "@kbn/security-solution-fixtures-plugin@link:x-pack/platform/test/cases_api_integration/common/plugins/security_solution":
+  version "0.0.0"
+  uid ""
+
+"@kbn/security-solution-flyout@link:x-pack/solutions/security/packages/kbn-security-solution-flyout":
   version "0.0.0"
   uid ""
 
