@@ -8,19 +8,39 @@
 import React, { useMemo } from 'react';
 import { EuiLink, EuiMark } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { useIsInvestigateInResolverActionEnabled } from '../../../../detections/components/alerts_table/timeline_actions/investigate_in_resolver';
 import { AnalyzerPreview } from './analyzer_preview';
 import { ANALYZER_PREVIEW_TEST_ID } from './test_ids';
 import { useNavigateToAnalyzer } from '../../shared/hooks/use_navigate_to_analyzer';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
+import { ExpandablePanel } from '@kbn/flyout-ui';
+
+export interface AnalyzerPreviewContainerProps {
+  eventId: string;
+  dataAsNestedObject: Ecs;
+  isRulePreview: boolean;
+  indexName: string;
+  scopeId: string;
+  isPreviewMode: boolean;
+  getFieldsData: GetFieldsData;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+}
 
 /**
  * Analyzer preview under Overview, Visualizations. It shows a tree representation of analyzer.
  */
-export const AnalyzerPreviewContainer: React.FC = () => {
-  const { dataAsNestedObject, isRulePreview, eventId, indexName, scopeId, isPreviewMode } =
-    useDocumentDetailsContext();
+export const AnalyzerPreviewContainer: React.FC<AnalyzerPreviewContainerProps> = ({
+  eventId,
+  dataAsNestedObject,
+  isRulePreview,
+  indexName,
+  scopeId,
+  isPreviewMode,
+  getFieldsData,
+  dataFormattedForFieldBrowser,
+}) => {
 
   // decide whether to show the analyzer preview or not
   const isEnabled = useIsInvestigateInResolverActionEnabled(dataAsNestedObject);
@@ -65,7 +85,18 @@ export const AnalyzerPreviewContainer: React.FC = () => {
       }}
       data-test-subj={ANALYZER_PREVIEW_TEST_ID}
     >
-      {isEnabled ? <AnalyzerPreview /> : <AnalyzerPreviewNoDataMessage />}
+      {isEnabled ? (
+        <AnalyzerPreview
+          eventId={eventId}
+          dataAsNestedObject={dataAsNestedObject}
+          scopeId={scopeId}
+          isRulePreview={isRulePreview}
+          getFieldsData={getFieldsData}
+          dataFormattedForFieldBrowser={dataFormattedForFieldBrowser}
+        />
+      ) : (
+        <AnalyzerPreviewNoDataMessage />
+      )}
     </ExpandablePanel>
   );
 };

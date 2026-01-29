@@ -8,16 +8,15 @@
 import React, { memo, useMemo } from 'react';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { find } from 'lodash/fp';
+import { AlertHeaderBlock } from '@kbn/flyout-ui';
 import { useSpaceId } from '../../../common/hooks/use_space_id';
 import { SIGNAL_STATUS_FIELD_NAME } from '../../../timelines/components/timeline/body/renderers/constants';
-import { getEnrichedFieldInfo } from '../../document_details/right/utils/enriched_field_info';
-
-import { AlertHeaderBlock } from '../../shared/components/alert_header_block';
-import { getEmptyTagValue } from '../../../common/components/empty_value';
 import type {
   EnrichedFieldInfo,
   EnrichedFieldInfoWithValues,
 } from '../../document_details/right/utils/enriched_field_info';
+import { getEnrichedFieldInfo } from '../../document_details/right/utils/enriched_field_info';
+import { getEmptyTagValue } from '../../../common/components/empty_value';
 import { StatusPopoverButton } from './status_popover_button';
 import { useAttackDetailsContext } from '../context';
 import { HEADER_STATUS_BLOCK_TEST_ID } from '../constants/test_ids';

@@ -11,8 +11,8 @@ import { EuiCallOut } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { useExpandSection } from '../../../shared/hooks/use_expand_section';
 import { ResponseButton } from './response_button';
-import { ExpandableSection } from '../../../shared/components/expandable_section';
-import { useDocumentDetailsContext } from '../../shared/context';
+import { ExpandableSection } from '@kbn/flyout-ui';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
 import { getField } from '../../shared/utils';
 import { EventKind } from '../../shared/constants/event_kinds';
 import { RESPONSE_SECTION_TEST_ID } from './test_ids';
@@ -20,11 +20,16 @@ import { FLYOUT_STORAGE_KEYS } from '../../shared/constants/local_storage';
 
 const KEY = 'response';
 
+export interface ResponseSectionProps {
+  isRulePreview: boolean;
+  getFieldsData: GetFieldsData;
+}
+
 /**
  * Most bottom section of the overview tab. It contains a summary of the response tab.
  */
-export const ResponseSection = memo(() => {
-  const { isRulePreview, getFieldsData } = useDocumentDetailsContext();
+export const ResponseSection = memo<ResponseSectionProps>(
+  ({ isRulePreview, getFieldsData }) => {
 
   const expanded = useExpandSection({
     storageKey: FLYOUT_STORAGE_KEYS.OVERVIEW_TAB_EXPANDED_SECTIONS,
@@ -82,6 +87,7 @@ export const ResponseSection = memo(() => {
       {content}
     </ExpandableSection>
   );
-});
+  }
+);
 
 ResponseSection.displayName = 'ResponseSection';

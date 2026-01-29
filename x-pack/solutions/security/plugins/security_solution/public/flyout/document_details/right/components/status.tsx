@@ -9,11 +9,11 @@ import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import { find } from 'lodash/fp';
 import { FormattedMessage } from '@kbn/i18n-react';
-import { AlertHeaderBlock } from '../../../shared/components/alert_header_block';
+import { AlertHeaderBlock } from '@kbn/flyout-ui';
 import { getEmptyTagValue } from '../../../../common/components/empty_value';
 import { SIGNAL_STATUS_FIELD_NAME } from '../../../../timelines/components/timeline/body/renderers/constants';
 import { StatusPopoverButton } from './status_popover_button';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { BrowserFields, TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import type { EnrichedFieldInfo, EnrichedFieldInfoWithValues } from '../utils/enriched_field_info';
 import { getEnrichedFieldInfo } from '../utils/enriched_field_info';
 import { CellActions } from '../../shared/components/cell_actions';
@@ -26,12 +26,24 @@ function hasData(fieldInfo?: EnrichedFieldInfo): fieldInfo is EnrichedFieldInfoW
   return !!fieldInfo && Array.isArray(fieldInfo.values);
 }
 
+export interface DocumentStatusProps {
+  eventId: string;
+  browserFields: BrowserFields;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  scopeId: string;
+  isRulePreview: boolean;
+}
+
 /**
  * Document details status displayed in flyout right section header
  */
-export const DocumentStatus: FC = () => {
-  const { eventId, browserFields, dataFormattedForFieldBrowser, scopeId, isRulePreview } =
-    useDocumentDetailsContext();
+export const DocumentStatus: FC<DocumentStatusProps> = ({
+  eventId,
+  browserFields,
+  dataFormattedForFieldBrowser,
+  scopeId,
+  isRulePreview,
+}) => {
 
   const statusData = useMemo(() => {
     const item = find(

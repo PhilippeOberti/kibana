@@ -9,7 +9,7 @@ import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import type { SessionViewPanelPaths } from '.';
 import type { SessionViewPanelTabType } from './tabs';
-import { FlyoutBody } from '../../shared/components/flyout_body';
+import { FlyoutBody } from '@kbn/flyout-ui';
 
 export interface PanelContentProps {
   /**

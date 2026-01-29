@@ -6,10 +6,9 @@
  */
 import React, { createContext, memo, useContext, useMemo } from 'react';
 import type { BrowserFields, TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
+import { FlyoutError, FlyoutLoading } from '@kbn/flyout-ui';
 import type { SearchHit } from '../../../common/search_strategy';
 import type { AttackDetailsProps } from './types';
-import { FlyoutLoading } from '../shared/components/flyout_loading';
-import { FlyoutError } from '../shared/components/flyout_error';
 import { useAttackDetails } from './hooks/use_attack_details';
 import type { GetFieldsData } from '../document_details/shared/hooks/use_get_fields_data';
 

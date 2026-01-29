@@ -11,15 +11,21 @@ import { EuiButtonIcon, EuiCopy, EuiFlexGroup, EuiFlexItem, EuiToolTip } from '@
 import { i18n } from '@kbn/i18n';
 import { useGetFlyoutLink } from '../hooks/use_get_flyout_link';
 import { useBasicDataFromDetailsData } from '../../shared/hooks/use_basic_data_from_details_data';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { SHARE_BUTTON_TEST_ID } from './test_ids';
+
+export interface HeaderActionsProps {
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  eventId: string;
+  indexName: string;
+}
 
 /**
  * Actions displayed in the header menu in the right section of alerts flyout
  */
-export const HeaderActions: VFC = memo(() => {
-  const { dataFormattedForFieldBrowser, eventId, indexName } = useDocumentDetailsContext();
-  const { isAlert, timestamp } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
+export const HeaderActions: VFC<HeaderActionsProps> = memo(
+  ({ dataFormattedForFieldBrowser, eventId, indexName }) => {
+    const { isAlert, timestamp } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
 
   const alertDetailsLink = useGetFlyoutLink({
     eventId,
@@ -65,6 +71,7 @@ export const HeaderActions: VFC = memo(() => {
       )}
     </EuiFlexGroup>
   );
-});
+  }
+);
 
 HeaderActions.displayName = 'HeaderActions';

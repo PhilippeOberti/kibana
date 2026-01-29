@@ -6,16 +6,19 @@
  */
 
 import React, { memo } from 'react';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { SearchHit } from '../../../../../common/search_strategy';
 import { JsonTab as SharedJsonTab } from '../../../shared/components/json_tab';
 import { PREFIX } from '../../../shared/test_ids';
+
+export interface JsonTabProps {
+  searchHit: SearchHit;
+  isRulePreview: boolean;
+}
 
 /**
  * Json view displayed in the document details expandable flyout right section
  */
-export const JsonTab = memo(() => {
-  const { searchHit, isRulePreview } = useDocumentDetailsContext();
-
+export const JsonTab = memo<JsonTabProps>(({ searchHit, isRulePreview }) => {
   return (
     <SharedJsonTab
       value={searchHit as unknown as Record<string, unknown>}

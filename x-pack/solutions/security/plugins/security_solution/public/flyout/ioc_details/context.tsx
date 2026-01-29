@@ -6,12 +6,11 @@
  */
 
 import React, { createContext, memo, useContext, useMemo } from 'react';
+import { FlyoutError, FlyoutLoading } from '@kbn/flyout-ui';
 import { FieldTypesProvider } from '../../threat_intelligence/containers/field_types_provider';
 import { useIndicatorById } from '../../threat_intelligence/modules/cases/hooks/use_indicator_by_id';
-import { FlyoutLoading } from '../shared/components/flyout_loading';
 import type { Indicator } from '../../../common/threat_intelligence/types/indicator';
 import type { IOCDetailsProps } from './types';
-import { FlyoutError } from '../shared/components/flyout_error';
 
 export interface IOCDetailsContext {
   /**

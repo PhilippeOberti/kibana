@@ -8,7 +8,6 @@
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DocumentDetailsContext } from '../../shared/context';
 import { TABLE_TAB_CONTENT_TEST_ID, TABLE_TAB_SEARCH_INPUT_TEST_ID } from './test_ids';
 import { TableTab } from './table_tab';
 import { TestProviders } from '../../../../common/mock';
@@ -56,18 +55,16 @@ describe('<TableTab />', () => {
   });
 
   it('should render table component', () => {
-    const contextValue = {
-      eventId: 'some_Id',
-      browserFields: {},
-      dataFormattedForFieldBrowser: [],
-      investigationFields: [],
-    } as unknown as DocumentDetailsContext;
-
     const { getByTestId } = render(
       <TestProviders>
-        <DocumentDetailsContext.Provider value={contextValue}>
-          <TableTab />
-        </DocumentDetailsContext.Provider>
+        <TableTab
+          browserFields={{}}
+          dataFormattedForFieldBrowser={[]}
+          scopeId="scopeId"
+          isRulePreview={false}
+          eventId="some_Id"
+          investigationFields={[]}
+        />
       </TestProviders>
     );
 
@@ -78,9 +75,14 @@ describe('<TableTab />', () => {
   it('should renders the column headers and a field/value pair', () => {
     const { getAllByTestId, getByText } = render(
       <TestProviders>
-        <DocumentDetailsContext.Provider value={mockContextValue}>
-          <TableTab />
-        </DocumentDetailsContext.Provider>
+        <TableTab
+          browserFields={mockContextValue.browserFields}
+          dataFormattedForFieldBrowser={mockContextValue.dataFormattedForFieldBrowser}
+          scopeId={mockContextValue.scopeId}
+          isRulePreview={mockContextValue.isRulePreview}
+          eventId={mockContextValue.eventId}
+          investigationFields={mockContextValue.investigationFields}
+        />
       </TestProviders>
     );
 
@@ -94,9 +96,14 @@ describe('<TableTab />', () => {
   it('should filter the table correctly', async () => {
     const { getByTestId, queryByTestId, queryByText } = render(
       <TestProviders>
-        <DocumentDetailsContext.Provider value={mockContextValue}>
-          <TableTab />
-        </DocumentDetailsContext.Provider>
+        <TableTab
+          browserFields={mockContextValue.browserFields}
+          dataFormattedForFieldBrowser={mockContextValue.dataFormattedForFieldBrowser}
+          scopeId={mockContextValue.scopeId}
+          isRulePreview={mockContextValue.isRulePreview}
+          eventId={mockContextValue.eventId}
+          investigationFields={mockContextValue.investigationFields}
+        />
       </TestProviders>
     );
 
@@ -118,9 +125,14 @@ describe('<TableTab />', () => {
 
     const { getByTestId } = render(
       <TestProviders>
-        <DocumentDetailsContext.Provider value={mockContextValue}>
-          <TableTab />
-        </DocumentDetailsContext.Provider>
+        <TableTab
+          browserFields={mockContextValue.browserFields}
+          dataFormattedForFieldBrowser={mockContextValue.dataFormattedForFieldBrowser}
+          scopeId={mockContextValue.scopeId}
+          isRulePreview={mockContextValue.isRulePreview}
+          eventId={mockContextValue.eventId}
+          investigationFields={mockContextValue.investigationFields}
+        />
       </TestProviders>
     );
 

@@ -8,16 +8,21 @@
 import React, { useMemo } from 'react';
 import { EuiFlexItem, EuiTitle, EuiSpacer, EuiText } from '@elastic/eui';
 import { startCase } from 'lodash';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
 import { getEcsAllowedValueDescription } from '../utils/event_utils';
 import { getFieldArray } from '../../shared/utils';
 import { EVENT_CATEGORY_DESCRIPTION_TEST_ID } from './test_ids';
 
+export interface EventCategoryDescriptionProps {
+  getFieldsData: GetFieldsData;
+}
+
 /**
  * Displays the category description of an event document.
  */
-export const EventCategoryDescription: React.FC = () => {
-  const { getFieldsData } = useDocumentDetailsContext();
+export const EventCategoryDescription: React.FC<EventCategoryDescriptionProps> = ({
+  getFieldsData,
+}) => {
   const eventCategories = useMemo(
     () => getFieldArray(getFieldsData('event.category')),
     [getFieldsData]

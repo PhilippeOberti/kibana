@@ -18,7 +18,7 @@ import {
   CORRELATIONS_DETAILS_CASES_SECTION_TEST_ID,
 } from './test_ids';
 import { useFetchRelatedCases } from '../../shared/hooks/use_fetch_related_cases';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
+import { ExpandablePanel } from '@kbn/flyout-ui';
 
 const ICON = 'warning';
 const EXPAND_PROPERTIES = {

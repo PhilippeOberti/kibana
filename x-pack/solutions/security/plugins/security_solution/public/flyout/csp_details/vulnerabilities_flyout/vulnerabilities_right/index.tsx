@@ -7,20 +7,18 @@
 
 import React from 'react';
 import {
-  SeverityStatusBadge,
-  getNormalizedSeverity,
-  type FindingVulnerabilityFullFlyoutContentProps,
   type FindingsVulnerabilityPanelExpandableFlyoutProps,
+  type FindingVulnerabilityFullFlyoutContentProps,
+  getNormalizedSeverity,
+  SeverityStatusBadge,
 } from '@kbn/cloud-security-posture';
 import { EuiFlexGroup, EuiFlexItem, EuiFlyoutFooter, EuiSpacer, EuiText } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import moment from 'moment';
+import { FlyoutBody, FlyoutHeader, FlyoutTitle } from '@kbn/flyout-ui';
 import { PreferenceFormattedDate } from '../../../../common/components/formatted_date';
 import { FlyoutNavigation } from '../../../shared/components/flyout_navigation';
 import { useKibana } from '../../../../common/lib/kibana';
-import { FlyoutHeader } from '../../../shared/components/flyout_header';
-import { FlyoutBody } from '../../../shared/components/flyout_body';
-import { FlyoutTitle } from '../../../shared/components/flyout_title';
 
 export const FindingsVulnerabilityPanel = ({
   vulnerabilityId,

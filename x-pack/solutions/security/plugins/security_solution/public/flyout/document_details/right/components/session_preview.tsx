@@ -11,7 +11,7 @@ import { css } from '@emotion/react';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { useRuleDetailsLink } from '../../shared/hooks/use_rule_details_link';
 import { SESSION_PREVIEW_RULE_DETAILS_LINK_TEST_ID, SESSION_PREVIEW_TEST_ID } from './test_ids';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
 import { PreferenceFormattedDate } from '../../../../common/components/formatted_date';
 import { useProcessData } from '../hooks/use_process_data';
 
@@ -31,13 +31,17 @@ const ValueContainer: FC<PropsWithChildren<{ text?: ReactElement }>> = ({ text, 
   </>
 );
 
+export interface SessionPreviewProps {
+  isRulePreview: boolean;
+  getFieldsData: GetFieldsData;
+}
+
 /**
  * Renders session preview under Visualizations section in the flyout right EuiPanel
  */
-export const SessionPreview: FC = () => {
-  const { isRulePreview } = useDocumentDetailsContext();
-
-  const { processName, userName, startAt, ruleName, ruleId, workdir, command } = useProcessData();
+export const SessionPreview: FC<SessionPreviewProps> = ({ isRulePreview, getFieldsData }) => {
+  const { processName, userName, startAt, ruleName, ruleId, workdir, command } =
+    useProcessData(getFieldsData);
   const { euiTheme } = useEuiTheme();
 
   const emphasisStyles = useMemo(

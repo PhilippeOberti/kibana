@@ -11,10 +11,8 @@ import { renderWithI18n as render } from '@kbn/test-jest-helpers';
 import { PanelHeader } from './header';
 import { allThreeTabs } from './hooks/use_tabs';
 import { useBasicDataFromDetailsData } from '../shared/hooks/use_basic_data_from_details_data';
+import { mockContextValue } from '../shared/mocks/mock_context';
 
-jest.mock('../shared/context', () => ({
-  useDocumentDetailsContext: jest.fn().mockReturnValue({ dataFormattedForFieldBrowser: [] }),
-}));
 jest.mock('../shared/hooks/use_basic_data_from_details_data', () => ({
   useBasicDataFromDetailsData: jest.fn(),
 }));
@@ -34,10 +32,24 @@ describe('PanelHeader', () => {
     jest.clearAllMocks();
   });
 
+  const mockProps = {
+    dataFormattedForFieldBrowser: mockContextValue.dataFormattedForFieldBrowser,
+    getFieldsData: mockContextValue.getFieldsData,
+    scopeId: mockContextValue.scopeId,
+    isRulePreview: mockContextValue.isRulePreview,
+    eventId: mockContextValue.eventId,
+    indexName: mockContextValue.indexName,
+    refetchFlyoutData: mockContextValue.refetchFlyoutData,
+    browserFields: mockContextValue.browserFields,
+    selectedTabId: 'overview' as const,
+    setSelectedTabId: jest.fn(),
+    tabs: allThreeTabs,
+  };
+
   it('should render tab name', () => {
     mockUseBasicDataFromDetailsData.mockReturnValue({ isAlert: false });
     const { getByText } = render(
-      <PanelHeader selectedTabId={'overview'} setSelectedTabId={jest.fn()} tabs={allThreeTabs} />
+      <PanelHeader {...mockProps} selectedTabId="overview" />
     );
     expect(getByText('Overview')).toBeInTheDocument();
   });
@@ -45,7 +57,7 @@ describe('PanelHeader', () => {
   it('should render event header title when isAlert equals false', () => {
     mockUseBasicDataFromDetailsData.mockReturnValue({ isAlert: false });
     const { queryByTestId } = render(
-      <PanelHeader selectedTabId={'overview'} setSelectedTabId={jest.fn()} tabs={allThreeTabs} />
+      <PanelHeader {...mockProps} selectedTabId="overview" />
     );
     expect(queryByTestId('alert-header')).not.toBeInTheDocument();
     expect(queryByTestId('event-header')).toBeInTheDocument();
@@ -54,7 +66,7 @@ describe('PanelHeader', () => {
   it('should render alert header title when isAlert equals true', () => {
     mockUseBasicDataFromDetailsData.mockReturnValue({ isAlert: true });
     const { queryByTestId } = render(
-      <PanelHeader selectedTabId={'overview'} setSelectedTabId={jest.fn()} tabs={allThreeTabs} />
+      <PanelHeader {...mockProps} selectedTabId="overview" />
     );
     expect(queryByTestId('alert-header')).toBeInTheDocument();
     expect(queryByTestId('event-header')).not.toBeInTheDocument();

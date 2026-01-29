@@ -14,7 +14,8 @@ import { useSourcererDataView } from '../../../../sourcerer/containers';
 import { ANALYZER_PREVIEW_LOADING_TEST_ID, ANALYZER_PREVIEW_TEST_ID } from './test_ids';
 import { getTreeNodes } from '../utils/analyzer_helpers';
 import { ANCESTOR_ID, RULE_INDICES } from '../../shared/constants/field_names';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import type { StatsNode } from '../../shared/hooks/use_alert_prevalence_from_process_tree';
 import { useAlertPrevalenceFromProcessTree } from '../../shared/hooks/use_alert_prevalence_from_process_tree';
 import { isActiveTimeline } from '../../../../helpers';
@@ -48,18 +49,25 @@ interface Cache {
   statsNodes: StatsNode[];
 }
 
+export interface AnalyzerPreviewProps {
+  eventId: string;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  getFieldsData: GetFieldsData;
+  scopeId: string;
+  isRulePreview: boolean;
+}
+
 /**
  * Analyzer preview under Overview, Visualizations. It shows a tree representation of analyzer.
  */
-export const AnalyzerPreview: React.FC = () => {
+export const AnalyzerPreview: React.FC<AnalyzerPreviewProps> = ({
+  eventId,
+  dataFormattedForFieldBrowser: data,
+  getFieldsData,
+  scopeId,
+  isRulePreview,
+}) => {
   const [cache, setCache] = useState<Partial<Cache>>({});
-  const {
-    dataFormattedForFieldBrowser: data,
-    getFieldsData,
-    scopeId,
-    eventId,
-    isRulePreview,
-  } = useDocumentDetailsContext();
   const ancestorId = getField(getFieldsData(ANCESTOR_ID)) ?? '';
   const documentId = isRulePreview ? ancestorId : eventId; // use ancestor as fallback for alert preview
 

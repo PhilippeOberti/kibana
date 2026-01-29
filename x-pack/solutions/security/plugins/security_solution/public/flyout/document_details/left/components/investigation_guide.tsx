@@ -11,7 +11,7 @@ import { useInvestigationGuide } from '../../shared/hooks/use_investigation_guid
 import { useDocumentDetailsContext } from '../../shared/context';
 import { INVESTIGATION_GUIDE_TEST_ID, INVESTIGATION_GUIDE_LOADING_TEST_ID } from './test_ids';
 import { InvestigationGuideView } from './investigation_guide_view';
-import { FlyoutLoading } from '../../../shared/components/flyout_loading';
+import { FlyoutLoading } from '@kbn/flyout-ui';
 
 /**
  * Investigation guide displayed in the left panel.

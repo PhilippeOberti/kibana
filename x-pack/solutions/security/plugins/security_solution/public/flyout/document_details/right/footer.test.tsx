@@ -9,7 +9,6 @@ import { render } from '@testing-library/react';
 import { PanelFooter } from './footer';
 import { TestProviders } from '../../../common/mock';
 import { mockContextValue } from '../shared/mocks/mock_context';
-import { DocumentDetailsContext } from '../shared/context';
 import { FLYOUT_FOOTER_TEST_ID } from './test_ids';
 import { AGENT_ATTACHMENT_BUTTON_TEST_ID, CHAT_BUTTON_TEST_ID } from './components/test_ids';
 import { FLYOUT_FOOTER_DROPDOWN_BUTTON_TEST_ID } from '../shared/components/test_ids';
@@ -39,9 +38,10 @@ jest.mock('./hooks/use_assistant');
 const renderPanelFooter = (isPreview: boolean) =>
   render(
     <TestProviders>
-      <DocumentDetailsContext.Provider value={mockContextValue}>
-        <PanelFooter isRulePreview={isPreview} />
-      </DocumentDetailsContext.Provider>
+      <PanelFooter
+        dataFormattedForFieldBrowser={mockContextValue.dataFormattedForFieldBrowser}
+        isRulePreview={isPreview}
+      />
     </TestProviders>
   );
 

@@ -29,7 +29,6 @@ import { useNonClosedAlerts } from '../../../../cloud_security_posture/hooks/use
 import { buildHostNamesFilter } from '../../../../../common/search_strategy';
 import { HOST_NAME_FIELD_NAME } from '../../../../timelines/components/timeline/body/renderers/constants';
 import { useRiskScore } from '../../../../entity_analytics/api/hooks/use_risk_score';
-import { useDocumentDetailsContext } from '../../shared/context';
 import type { DescriptionList } from '../../../../../common/utility_types';
 import {
   FirstLastSeen,
@@ -73,6 +72,7 @@ const HOST_ICON = 'storage';
 const HOST_ENTITY_OVERVIEW_ID = 'host-entity-overview';
 
 export interface HostEntityOverviewProps {
+  scopeId: string;
   /**
    * Host name for looking up host related ip addresses and risk level
    */
@@ -90,8 +90,10 @@ export const HOST_PREVIEW_BANNER = {
 /**
  * Host preview content for the entities preview in right flyout. It contains ip addresses and risk level
  */
-export const HostEntityOverview: React.FC<HostEntityOverviewProps> = ({ hostName }) => {
-  const { scopeId } = useDocumentDetailsContext();
+export const HostEntityOverview: React.FC<HostEntityOverviewProps> = ({
+  scopeId,
+  hostName,
+}) => {
   const { from, to } = useGlobalTime();
   const { selectedPatterns: oldSelectedPatterns } = useSourcererDataView();
 

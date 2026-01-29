@@ -9,7 +9,7 @@ import { EuiTab, EuiTabs, useEuiTheme } from '@elastic/eui';
 import type { ReactElement, VFC } from 'react';
 import React, { memo } from 'react';
 import { css } from '@emotion/react';
-import { FlyoutHeader } from '../../../../shared/components/flyout_header';
+import { FlyoutHeader } from '@kbn/flyout-ui';
 
 export type LeftPanelTabsType = Array<{
   id: EntityDetailsLeftPanelTab;

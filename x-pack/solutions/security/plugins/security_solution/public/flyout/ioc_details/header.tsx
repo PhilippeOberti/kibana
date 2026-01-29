@@ -14,8 +14,7 @@ import { useIOCDetailsContext } from './context';
 import { unwrapValue } from '../../threat_intelligence/modules/indicators/utils/unwrap_value';
 import { RawIndicatorFieldId } from '../../../common/threat_intelligence/types/indicator';
 import { DateFormatter } from '../../threat_intelligence/components/date_formatter';
-import { FlyoutHeaderTabs } from '../shared/components/flyout_header_tabs';
-import { FlyoutHeader } from '../shared/components/flyout_header';
+import { FlyoutHeader, FlyoutHeaderTabs } from '@kbn/flyout-ui';
 import type { RightPanelTabType } from './tabs';
 import type { RightPanelPaths } from '.';
 

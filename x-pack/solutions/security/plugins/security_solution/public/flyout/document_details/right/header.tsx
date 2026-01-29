@@ -11,14 +11,22 @@ import type { FC } from 'react';
 import React, { memo } from 'react';
 import type { RightPanelPaths } from '.';
 import type { RightPanelTabType } from './tabs';
-import { FlyoutHeader } from '../../shared/components/flyout_header';
-import { FlyoutHeaderTabs } from '../../shared/components/flyout_header_tabs';
+import { FlyoutHeader, FlyoutHeaderTabs } from '@kbn/flyout-ui';
 import { AlertHeaderTitle } from './components/alert_header_title';
 import { EventHeaderTitle } from './components/event_header_title';
-import { useDocumentDetailsContext } from '../shared/context';
+import type { GetFieldsData } from '../shared/hooks/use_get_fields_data';
+import type { BrowserFields, TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { useBasicDataFromDetailsData } from '../shared/hooks/use_basic_data_from_details_data';
 
 export interface PanelHeaderProps extends React.ComponentProps<typeof EuiFlyoutHeader> {
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  getFieldsData: GetFieldsData;
+  scopeId: string;
+  isRulePreview: boolean;
+  eventId: string;
+  indexName: string;
+  refetchFlyoutData: () => Promise<void>;
+  browserFields: BrowserFields;
   /**
    * Id of the tab selected in the parent component to display its content
    */
@@ -35,8 +43,20 @@ export interface PanelHeaderProps extends React.ComponentProps<typeof EuiFlyoutH
 }
 
 export const PanelHeader: FC<PanelHeaderProps> = memo(
-  ({ selectedTabId, setSelectedTabId, tabs, ...flyoutHeaderProps }) => {
-    const { dataFormattedForFieldBrowser } = useDocumentDetailsContext();
+  ({
+    dataFormattedForFieldBrowser,
+    getFieldsData,
+    scopeId,
+    isRulePreview,
+    eventId,
+    indexName,
+    refetchFlyoutData,
+    browserFields,
+    selectedTabId,
+    setSelectedTabId,
+    tabs,
+    ...flyoutHeaderProps
+  }) => {
     const { isAlert } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
     const onSelectedTabChanged = (id: RightPanelPaths) => setSelectedTabId(id);
 
@@ -64,7 +84,22 @@ export const PanelHeader: FC<PanelHeaderProps> = memo(
 
     return (
       <FlyoutHeader {...flyoutHeaderProps}>
-        {isAlert ? <AlertHeaderTitle /> : <EventHeaderTitle />}
+        {isAlert ? (
+          <AlertHeaderTitle
+            eventId={eventId}
+            dataFormattedForFieldBrowser={dataFormattedForFieldBrowser}
+            scopeId={scopeId}
+            isRulePreview={isRulePreview}
+            refetchFlyoutData={refetchFlyoutData}
+            getFieldsData={getFieldsData}
+            browserFields={browserFields}
+          />
+        ) : (
+          <EventHeaderTitle
+            dataFormattedForFieldBrowser={dataFormattedForFieldBrowser}
+            getFieldsData={getFieldsData}
+          />
+        )}
         <EuiSpacer size="m" />
         <FlyoutHeaderTabs>{renderTabs}</FlyoutHeaderTabs>
       </FlyoutHeader>

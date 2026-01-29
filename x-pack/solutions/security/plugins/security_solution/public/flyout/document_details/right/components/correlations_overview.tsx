@@ -12,7 +12,7 @@ import { FormattedMessage } from '@kbn/i18n-react';
 import { ALERT_RULE_TYPE } from '@kbn/rule-data-utils';
 import type { Type } from '@kbn/securitysolution-io-ts-alerting-types';
 import { useSelector } from 'react-redux';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
+import { ExpandablePanel } from '@kbn/flyout-ui';
 import { useShowRelatedAlertsBySession } from '../../shared/hooks/use_show_related_alerts_by_session';
 import { RelatedAlertsBySession } from './related_alerts_by_session';
 import { useShowRelatedAlertsBySameSourceEvent } from '../../shared/hooks/use_show_related_alerts_by_same_source_event';
@@ -24,7 +24,9 @@ import { useShowSuppressedAlerts } from '../../shared/hooks/use_show_suppressed_
 import { RelatedCases } from './related_cases';
 import { useShowRelatedCases } from '../../shared/hooks/use_show_related_cases';
 import { CORRELATIONS_TEST_ID } from './test_ids';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
+import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
 import { LeftPanelInsightsTab } from '../../left';
 import { CORRELATIONS_TAB_ID } from '../../left/components/correlations_details';
 import { useIsExperimentalFeatureEnabled } from '../../../../common/hooks/use_experimental_features';
@@ -32,14 +34,30 @@ import { useSecurityDefaultPatterns } from '../../../../data_view_manager/hooks/
 import { sourcererSelectors } from '../../../../sourcerer/store';
 import { useNavigateToLeftPanel } from '../../shared/hooks/use_navigate_to_left_panel';
 
+export interface CorrelationsOverviewProps {
+  eventId: string;
+  scopeId: string;
+  getFieldsData: GetFieldsData;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  dataAsNestedObject: Ecs;
+  isRulePreview: boolean;
+  isPreviewMode: boolean;
+}
+
 /**
  * Correlations section under Insights section, overview tab.
  * The component fetches the necessary data, then pass it down to the InsightsSubSection component for loading and error state,
  * and the SummaryPanel component for data rendering.
  */
-export const CorrelationsOverview: React.FC = () => {
-  const { dataAsNestedObject, eventId, getFieldsData, scopeId, isRulePreview, isPreviewMode } =
-    useDocumentDetailsContext();
+export const CorrelationsOverview: React.FC<CorrelationsOverviewProps> = ({
+  eventId,
+  scopeId,
+  getFieldsData,
+  dataFormattedForFieldBrowser,
+  dataAsNestedObject,
+  isRulePreview,
+  isPreviewMode,
+}) => {
 
   const newDataViewPickerEnabled = useIsExperimentalFeatureEnabled('newDataViewPickerEnabled');
   const oldSecurityDefaultPatterns =

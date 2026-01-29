@@ -18,7 +18,7 @@ import {
   THREAT_INTELLIGENCE_ENRICHMENTS_TEST_ID,
   THREAT_INTELLIGENCE_MATCHES_TEST_ID,
 } from './test_ids';
-import { FlyoutLoading } from '../../../shared/components/flyout_loading';
+import { FlyoutLoading } from '@kbn/flyout-ui';
 
 export const THREAT_INTELLIGENCE_TAB_ID = 'threatIntelligence';
 

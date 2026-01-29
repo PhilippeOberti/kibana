@@ -10,7 +10,7 @@ import React, { useMemo } from 'react';
 import { PREFIX } from '../shared/test_ids';
 import type { RightPanelPaths } from '.';
 import type { RightPanelTabType } from './tabs';
-import { FlyoutBody } from '../shared/components/flyout_body';
+import { FlyoutBody } from '@kbn/flyout-ui';
 
 export const FLYOUT_BODY_TEST_ID = `${PREFIX}Body` as const;
 

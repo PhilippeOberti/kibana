@@ -8,7 +8,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { __IntlProvider as IntlProvider } from '@kbn/i18n-react';
-import { DocumentDetailsContext } from '../../shared/context';
 import { JsonTab } from './json_tab';
 import {
   JSON_TAB_CONTENT_TEST_ID,
@@ -24,16 +23,11 @@ jest.mock('@elastic/eui', () => ({
 const searchHit = {
   some_field: 'some_value',
 };
-const contextValue = {
-  searchHit,
-} as unknown as DocumentDetailsContext;
 
 const renderJsonTab = () =>
   render(
     <IntlProvider locale="en">
-      <DocumentDetailsContext.Provider value={contextValue}>
-        <JsonTab />
-      </DocumentDetailsContext.Provider>
+      <JsonTab searchHit={searchHit as never} isRulePreview={false} />
     </IntlProvider>
   );
 

@@ -17,8 +17,15 @@ jest.mock('../hooks/use_header_data', () => ({
   useHeaderData: jest.fn(),
 }));
 
-jest.mock('../../shared/components/flyout_title', () => ({
+jest.mock('@kbn/flyout-ui', () => ({
   FlyoutTitle: ({ title }: { title: string }) => <div data-test-subj="flyout-title">{title}</div>,
+  AlertHeaderBlock: ({
+    children,
+    'data-test-subj': dataTestSubj,
+  }: {
+    children: React.ReactNode;
+    'data-test-subj': string;
+  }) => <div data-test-subj={dataTestSubj}>{children}</div>,
 }));
 
 jest.mock('../../../common/components/formatted_date', () => ({
@@ -31,15 +38,6 @@ jest.mock('./status', () => ({
   Status: () => <div data-test-subj="status" />,
 }));
 
-jest.mock('../../shared/components/alert_header_block', () => ({
-  AlertHeaderBlock: ({
-    children,
-    'data-test-subj': dataTestSubj,
-  }: {
-    children: React.ReactNode;
-    'data-test-subj': string;
-  }) => <div data-test-subj={dataTestSubj}>{children}</div>,
-}));
 
 const mockedUseHeaderData = useHeaderData as jest.Mock;
 

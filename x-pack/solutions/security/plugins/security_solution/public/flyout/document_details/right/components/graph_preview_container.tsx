@@ -15,28 +15,40 @@ import {
   uiMetricService,
 } from '@kbn/cloud-security-posture-common/utils/ui_metrics';
 import { METRIC_TYPE } from '@kbn/analytics';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { GRAPH_PREVIEW_TEST_ID } from './test_ids';
 import { GraphPreview } from './graph_preview';
 import { useGraphPreview } from '../../shared/hooks/use_graph_preview';
 import { useNavigateToGraphVisualization } from '../../shared/hooks/use_navigate_to_graph_visualization';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
+import { ExpandablePanel } from '@kbn/flyout-ui';
+
+export interface GraphPreviewContainerProps {
+  eventId: string;
+  dataAsNestedObject: Ecs;
+  getFieldsData: GetFieldsData;
+  indexName: string;
+  scopeId: string;
+  isRulePreview: boolean;
+  isPreviewMode: boolean;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+}
 
 /**
  * Graph preview under Overview, Visualizations. It shows a graph representation of entities.
  */
-export const GraphPreviewContainer: React.FC = () => {
+export const GraphPreviewContainer: React.FC<GraphPreviewContainerProps> = ({
+  eventId,
+  dataAsNestedObject,
+  getFieldsData,
+  indexName,
+  scopeId,
+  isRulePreview,
+  isPreviewMode,
+  dataFormattedForFieldBrowser,
+}) => {
   const renderingId = useGeneratedHtmlId();
-  const {
-    dataAsNestedObject,
-    getFieldsData,
-    eventId,
-    indexName,
-    scopeId,
-    isRulePreview,
-    isPreviewMode,
-    dataFormattedForFieldBrowser,
-  } = useDocumentDetailsContext();
 
   const allowFlyoutExpansion = useMemo(
     () => !isPreviewMode && !isRulePreview,

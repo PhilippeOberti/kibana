@@ -11,15 +11,19 @@ import { EuiFlexItem, EuiTitle, useEuiTheme } from '@elastic/eui';
 import { css } from '@emotion/react';
 import { getRowRenderer } from '../../../../timelines/components/timeline/body/renderers/get_row_renderer';
 import { defaultRowRenderers } from '../../../../timelines/components/timeline/body/renderers';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { EcsSecurityExtension as Ecs } from '@kbn/securitysolution-ecs';
 import { EVENT_RENDERER_TEST_ID } from './test_ids';
+
+export interface EventRendererProps {
+  dataAsNestedObject: Ecs;
+  scopeId: string;
+}
 
 /**
  * Event renderer of an event document
  */
-export const EventRenderer: FC = () => {
+export const EventRenderer: FC<EventRendererProps> = ({ dataAsNestedObject, scopeId }) => {
   const { euiTheme } = useEuiTheme();
-  const { dataAsNestedObject, scopeId } = useDocumentDetailsContext();
 
   const renderer = useMemo(
     () => getRowRenderer({ data: dataAsNestedObject, rowRenderers: defaultRowRenderers }),

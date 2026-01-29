@@ -8,7 +8,8 @@
 import type { RenderHookResult } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import type { UseTabsParams, UseTabsResult } from './use_tabs';
-import { allThreeTabs, twoTabs, useTabs } from './use_tabs';
+import { useTabs } from './use_tabs';
+import { mockContextValue } from '../../shared/mocks/mock_context';
 
 const mockStorageGet = jest.fn();
 jest.mock('../../../../common/lib/kibana', () => {
@@ -28,32 +29,43 @@ jest.mock('../../../../common/lib/kibana', () => {
 describe('useTabs', () => {
   let hookResult: RenderHookResult<UseTabsResult, UseTabsParams>;
 
+  const defaultDocumentDetails = mockContextValue;
+
   it('should return 3 tabs to render and the one from path as selected', () => {
     const initialProps: UseTabsParams = {
+      documentDetails: defaultDocumentDetails,
       flyoutIsExpandable: true,
       path: { tab: 'table' },
     };
 
     hookResult = renderHook((props: UseTabsParams) => useTabs(props), { initialProps });
 
-    expect(hookResult.result.current.tabsDisplayed).toEqual(allThreeTabs);
+    expect(hookResult.result.current.tabsDisplayed).toHaveLength(3);
+    expect(hookResult.result.current.tabsDisplayed.map((t) => t.id)).toEqual([
+      'overview',
+      'table',
+      'json',
+    ]);
     expect(hookResult.result.current.selectedTabId).toEqual('table');
   });
 
   it('should return 2 tabs to render and the one from path as selected', () => {
     const initialProps: UseTabsParams = {
+      documentDetails: defaultDocumentDetails,
       flyoutIsExpandable: false,
       path: { tab: 'json' },
     };
 
     hookResult = renderHook((props: UseTabsParams) => useTabs(props), { initialProps });
 
-    expect(hookResult.result.current.tabsDisplayed).toEqual(twoTabs);
+    expect(hookResult.result.current.tabsDisplayed).toHaveLength(2);
+    expect(hookResult.result.current.tabsDisplayed.map((t) => t.id)).toEqual(['table', 'json']);
     expect(hookResult.result.current.selectedTabId).toEqual('json');
   });
 
   it('should ignore the value from path if it is not in the list of tabs to display', () => {
     const initialProps: UseTabsParams = {
+      documentDetails: defaultDocumentDetails,
       flyoutIsExpandable: true,
       path: { tab: 'wrong' },
     };
@@ -65,6 +77,7 @@ describe('useTabs', () => {
 
   it('should return selected tab from local storage if it is in the list of tabs to display', () => {
     const initialProps: UseTabsParams = {
+      documentDetails: defaultDocumentDetails,
       flyoutIsExpandable: true,
       path: undefined,
     };
@@ -72,12 +85,13 @@ describe('useTabs', () => {
 
     hookResult = renderHook((props: UseTabsParams) => useTabs(props), { initialProps });
 
-    expect(hookResult.result.current.tabsDisplayed).toEqual(allThreeTabs);
+    expect(hookResult.result.current.tabsDisplayed).toHaveLength(3);
     expect(hookResult.result.current.selectedTabId).toEqual('overview');
   });
 
   it('should ignore the local storage value  if it is not in the list of tabs to display', () => {
     const initialProps: UseTabsParams = {
+      documentDetails: defaultDocumentDetails,
       flyoutIsExpandable: true,
       path: undefined,
     };
@@ -90,6 +104,7 @@ describe('useTabs', () => {
 
   it('should return 3 tabs to render and and the first from the list as selected tab', () => {
     const initialProps: UseTabsParams = {
+      documentDetails: defaultDocumentDetails,
       flyoutIsExpandable: true,
       path: undefined,
     };
@@ -97,12 +112,13 @@ describe('useTabs', () => {
 
     hookResult = renderHook((props: UseTabsParams) => useTabs(props), { initialProps });
 
-    expect(hookResult.result.current.tabsDisplayed).toEqual(allThreeTabs);
+    expect(hookResult.result.current.tabsDisplayed).toHaveLength(3);
     expect(hookResult.result.current.selectedTabId).toEqual('overview');
   });
 
   it('should return 2 tabs to render and and the first from the list as selected tab', () => {
     const initialProps: UseTabsParams = {
+      documentDetails: defaultDocumentDetails,
       flyoutIsExpandable: false,
       path: undefined,
     };
@@ -110,7 +126,7 @@ describe('useTabs', () => {
 
     hookResult = renderHook((props: UseTabsParams) => useTabs(props), { initialProps });
 
-    expect(hookResult.result.current.tabsDisplayed).toEqual(twoTabs);
+    expect(hookResult.result.current.tabsDisplayed).toHaveLength(2);
     expect(hookResult.result.current.selectedTabId).toEqual('table');
   });
 });

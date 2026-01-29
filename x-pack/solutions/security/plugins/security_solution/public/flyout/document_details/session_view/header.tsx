@@ -11,8 +11,7 @@ import type { FC } from 'react';
 import React, { memo } from 'react';
 import type { SessionViewPanelTabType } from './tabs';
 import type { SessionViewPanelPaths } from '.';
-import { FlyoutHeader } from '../../shared/components/flyout_header';
-import { FlyoutHeaderTabs } from '../../shared/components/flyout_header_tabs';
+import { FlyoutHeader, FlyoutHeaderTabs } from '@kbn/flyout-ui';
 
 export interface PanelHeaderProps extends React.ComponentProps<typeof EuiFlyoutHeader> {
   /**

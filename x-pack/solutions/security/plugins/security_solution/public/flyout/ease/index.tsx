@@ -13,11 +13,11 @@ import { AttackDiscoverySection } from './components/attack_discovery_section';
 import { AlertSummarySection } from './components/alert_summary_section';
 import { HighlightedFields } from '../document_details/right/components/highlighted_fields';
 import { useEaseDetailsContext } from './context';
-import { FlyoutBody } from '../shared/components/flyout_body';
+import { FlyoutBody } from '@kbn/flyout-ui';
 import { FlyoutNavigation } from '../shared/components/flyout_navigation';
 import type { EaseDetailsProps } from './types';
 import { PanelFooter } from './footer';
-import { FlyoutHeader } from '../shared/components/flyout_header';
+import { FlyoutHeader } from '@kbn/flyout-ui';
 import { HeaderTitle } from './components/header_title';
 
 export const FLYOUT_BODY_TEST_ID = 'ease-alert-flyout-body';

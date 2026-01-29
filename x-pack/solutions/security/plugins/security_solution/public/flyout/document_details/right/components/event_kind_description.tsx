@@ -9,7 +9,7 @@ import React, { useMemo } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiTitle, EuiSpacer, EuiText, EuiToolTip } from '@elastic/eui';
 import { startCase } from 'lodash';
 import { FormattedMessage } from '@kbn/i18n-react';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
 import { getEcsAllowedValueDescription } from '../utils/event_utils';
 import { getFieldArray } from '../../shared/utils';
 import {
@@ -23,14 +23,17 @@ export interface EventKindDescriptionProps {
    * Event kind field from ecs
    */
   eventKind: string;
+  getFieldsData: GetFieldsData;
 }
 
 /**
  * Display description of a document at the event kind level
  * Shows the ecs description of the event kind, and a list of event categories
  */
-export const EventKindDescription: React.FC<EventKindDescriptionProps> = ({ eventKind }) => {
-  const { getFieldsData } = useDocumentDetailsContext();
+export const EventKindDescription: React.FC<EventKindDescriptionProps> = ({
+  eventKind,
+  getFieldsData,
+}) => {
   const eventCategories = useMemo(
     () => getFieldArray(getFieldsData('event.category')),
     [getFieldsData]

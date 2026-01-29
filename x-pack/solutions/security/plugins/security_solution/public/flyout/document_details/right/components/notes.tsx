@@ -21,7 +21,6 @@ import { css } from '@emotion/react';
 import { useUserPrivileges } from '../../../../common/components/user_privileges';
 import { getEmptyTagValue } from '../../../../common/components/empty_value';
 import { FormattedCount } from '../../../../common/components/formatted_number';
-import { useDocumentDetailsContext } from '../../shared/context';
 import {
   NOTES_ADD_NOTE_BUTTON_TEST_ID,
   NOTES_ADD_NOTE_ICON_BUTTON_TEST_ID,
@@ -40,7 +39,7 @@ import {
   selectNotesByDocumentId,
 } from '../../../../notes/store/notes.slice';
 import { useAppToasts } from '../../../../common/hooks/use_app_toasts';
-import { AlertHeaderBlock } from '../../../shared/components/alert_header_block';
+import { AlertHeaderBlock } from '@kbn/flyout-ui';
 import { LeftPanelNotesTab } from '../../left';
 import { useNavigateToLeftPanel } from '../../shared/hooks/use_navigate_to_left_panel';
 
@@ -63,13 +62,17 @@ export const VIEW_NOTES_BUTTON_ARIA_LABEL = i18n.translate(
   }
 );
 
+export interface NotesProps {
+  eventId: string;
+  isRulePreview: boolean;
+}
+
 /**
  * Renders a block with the number of notes for the event
  */
-export const Notes = memo(() => {
+export const Notes = memo<NotesProps>(({ eventId, isRulePreview }) => {
   const { euiTheme } = useEuiTheme();
   const dispatch = useDispatch();
-  const { eventId, isRulePreview } = useDocumentDetailsContext();
   const { addError: addErrorToast } = useAppToasts();
   const { notesPrivileges } = useUserPrivileges();
 

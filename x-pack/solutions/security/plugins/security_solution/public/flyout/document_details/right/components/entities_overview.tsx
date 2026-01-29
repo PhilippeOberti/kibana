@@ -9,8 +9,8 @@ import React, { useMemo } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { INSIGHTS_ENTITIES_TEST_ID } from './test_ids';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
-import { useDocumentDetailsContext } from '../../shared/context';
+import { ExpandablePanel } from '@kbn/flyout-ui';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
 import { getField } from '../../shared/utils';
 import { HostEntityOverview } from './host_entity_overview';
 import { UserEntityOverview } from './user_entity_overview';
@@ -18,11 +18,22 @@ import { LeftPanelInsightsTab } from '../../left';
 import { ENTITIES_TAB_ID } from '../../left/components/entities_details';
 import { useNavigateToLeftPanel } from '../../shared/hooks/use_navigate_to_left_panel';
 
+export interface EntitiesOverviewProps {
+  getFieldsData: GetFieldsData;
+  isPreviewMode: boolean;
+  scopeId: string;
+  browserFields: import('@kbn/timelines-plugin/common').BrowserFields;
+}
+
 /**
  * Entities section under Insights section, overview tab. It contains a preview of host and user information.
  */
-export const EntitiesOverview: React.FC = () => {
-  const { getFieldsData, isPreviewMode } = useDocumentDetailsContext();
+export const EntitiesOverview: React.FC<EntitiesOverviewProps> = ({
+  getFieldsData,
+  isPreviewMode,
+  scopeId,
+  browserFields: _browserFields,
+}) => {
   const hostName = getField(getFieldsData('host.name'));
   const userName = getField(getFieldsData('user.name'));
 
@@ -64,14 +75,14 @@ export const EntitiesOverview: React.FC = () => {
             {userName && (
               <>
                 <EuiFlexItem>
-                  <UserEntityOverview userName={userName} />
+                  <UserEntityOverview scopeId={scopeId} userName={userName} />
                 </EuiFlexItem>
                 <EuiSpacer size="s" />
               </>
             )}
             {hostName && (
               <EuiFlexItem>
-                <HostEntityOverview hostName={hostName} />
+                <HostEntityOverview scopeId={scopeId} hostName={hostName} />
               </EuiFlexItem>
             )}
           </EuiFlexGroup>

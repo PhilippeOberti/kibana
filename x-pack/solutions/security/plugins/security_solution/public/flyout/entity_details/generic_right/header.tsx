@@ -8,16 +8,15 @@
 import React, { useMemo } from 'react';
 import { css } from '@emotion/react';
 import type { IconType } from '@elastic/eui';
-import { EuiSpacer, EuiText, EuiFlexItem, EuiFlexGroup, useEuiTheme } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, useEuiTheme } from '@elastic/eui';
 import type { EntityEcs } from '@kbn/securitysolution-ecs/src/entity';
+import { FlyoutHeader, FlyoutTitle } from '@kbn/flyout-ui';
 import { HeaderDataCards } from './header_data_cards';
 import type { GenericEntityRecord } from '../../../asset_inventory/types/generic_entity_record';
 import type { EntityType } from '../../../../common/entity_analytics/types';
 import { ExpandableBadgeGroup } from './components/expandable_badge_group';
 import { EntityIconByType } from '../../../entity_analytics/components/entity_store/helpers';
 import { PreferenceFormattedDate } from '../../../common/components/formatted_date';
-import { FlyoutHeader } from '../../shared/components/flyout_header';
-import { FlyoutTitle } from '../../shared/components/flyout_title';
 
 const initialBadgeLimit = 3;
 const maxBadgeContainerHeight = 200;

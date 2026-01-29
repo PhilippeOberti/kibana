@@ -8,7 +8,7 @@
 import type { FC } from 'react';
 import React, { memo, useMemo } from 'react';
 import type { AttackDetailsPanelTabType } from './tabs';
-import { FlyoutBody } from '../shared/components/flyout_body';
+import { FlyoutBody } from '@kbn/flyout-ui';
 
 import type { AttackDetailsPanelPaths } from '.';
 import { FLYOUT_BODY_TEST_ID } from './constants/test_ids';

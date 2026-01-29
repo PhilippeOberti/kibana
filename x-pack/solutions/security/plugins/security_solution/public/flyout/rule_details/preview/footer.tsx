@@ -10,7 +10,7 @@ import { EuiFlexGroup, EuiFlexItem, EuiLink } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { RULE_PREVIEW_FOOTER_TEST_ID, RULE_PREVIEW_OPEN_RULE_FLYOUT_TEST_ID } from './test_ids';
 import { useRuleDetailsLink } from '../../document_details/shared/hooks/use_rule_details_link';
-import { FlyoutFooter } from '../../shared/components/flyout_footer';
+import { FlyoutFooter } from '@kbn/flyout-ui';
 
 /**
  * Footer in rule preview panel

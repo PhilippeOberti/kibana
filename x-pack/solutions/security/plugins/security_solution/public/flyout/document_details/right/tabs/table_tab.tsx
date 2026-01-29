@@ -5,7 +5,7 @@
  * 2.0.
  */
 
-import React, { memo, useCallback, useMemo, useState, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getOr } from 'lodash/fp';
 import memoizeOne from 'memoize-one';
 import { css } from '@emotion/react';
@@ -20,7 +20,6 @@ import { getAllFieldsByName } from '../../../../common/containers/source';
 import { useDeepEqualSelector } from '../../../../common/hooks/use_selector';
 import { timelineDefaults } from '../../../../timelines/store/defaults';
 import { timelineSelectors } from '../../../../timelines/store';
-import { useDocumentDetailsContext } from '../../shared/context';
 import { isInTableScope, isTimelineScope } from '../../../../helpers';
 import { useBasicDataFromDetailsData } from '../../shared/hooks/use_basic_data_from_details_data';
 import { getTableItems } from '../utils/table_tab_utils';
@@ -101,192 +100,202 @@ export const getFieldFromBrowserField = memoizeOne(
   (newArgs, lastArgs) => newArgs[0] === lastArgs[0]
 );
 
+export interface TableTabProps {
+  browserFields: BrowserFields;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  scopeId: string;
+  isRulePreview: boolean;
+  eventId: string;
+  investigationFields: string[];
+}
+
 /**
  * Table view displayed in the document details expandable flyout right section Table tab
  */
-export const TableTab = memo(() => {
-  const smallFontSize = useEuiFontSize('xs').fontSize;
-  const { euiTheme } = useEuiTheme();
-  const {
-    services: { storage },
-  } = useKibana();
-
-  const {
+export const TableTab = memo<TableTabProps>(
+  ({
     browserFields,
     dataFormattedForFieldBrowser,
     scopeId,
     isRulePreview,
     eventId,
     investigationFields,
-  } = useDocumentDetailsContext();
-  const { ruleId, isAlert } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
+  }) => {
+    const smallFontSize = useEuiFontSize('xs').fontSize;
+    const { euiTheme } = useEuiTheme();
+    const {
+      services: { storage },
+    } = useKibana();
 
-  const highlightedFieldsResult = useHighlightedFields({
-    dataFormattedForFieldBrowser,
-    investigationFields,
-  });
-  const highlightedFields = useMemo(
-    () => Object.keys(highlightedFieldsResult),
-    [highlightedFieldsResult]
-  );
+    const { ruleId, isAlert } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
 
-  const [tableTabState, setTableTabState] = useState<TableTabState>(() => {
-    const restoredTableTabState = storage.get(FLYOUT_STORAGE_KEYS.TABLE_TAB_STATE);
-    if (restoredTableTabState != null) {
-      return restoredTableTabState;
-    }
-    return DEFAULT_TABLE_TAB_STATE;
-  });
+    const highlightedFieldsResult = useHighlightedFields({
+      dataFormattedForFieldBrowser,
+      investigationFields,
+    });
+    const highlightedFields = useMemo(
+      () => Object.keys(highlightedFieldsResult),
+      [highlightedFieldsResult]
+    );
 
-  useEffect(() => {
-    storage.set(FLYOUT_STORAGE_KEYS.TABLE_TAB_STATE, tableTabState);
-  }, [tableTabState, storage]);
-
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-
-  const renderToolsRight = useCallback(
-    () => [
-      <TableTabSettingButton
-        tableTabState={tableTabState}
-        setTableTabState={setTableTabState}
-        isPopoverOpen={isPopoverOpen}
-        setIsPopoverOpen={setIsPopoverOpen}
-        isAlert={isAlert}
-      />,
-    ],
-    [tableTabState, setTableTabState, isPopoverOpen, setIsPopoverOpen, isAlert]
-  );
-
-  const [pagination, setPagination] = useState<{ pageIndex: number }>({
-    pageIndex: 0,
-  });
-  const onTableChange = useCallback(({ page: { index } }: { page: { index: number } }) => {
-    setPagination({ pageIndex: index });
-  }, []);
-
-  const paginationSettings = useMemo(
-    () => ({
-      ...pagination,
-      pageSizeOptions: COUNT_PER_PAGE_OPTIONS,
-    }),
-    [pagination]
-  );
-
-  const getScope = useMemo(() => {
-    if (isTimelineScope(scopeId)) {
-      return timelineSelectors.getTimelineByIdSelector();
-    } else if (isInTableScope(scopeId)) {
-      return dataTableSelectors.getTableByIdSelector();
-    }
-  }, [scopeId]);
-
-  const defaults = useMemo(
-    () => (isTimelineScope(scopeId) ? timelineDefaults : tableDefaults),
-    [scopeId]
-  );
-
-  const columnHeaders = useDeepEqualSelector((state) => {
-    const { columns } = (getScope && getScope(state, scopeId)) ?? defaults;
-    return columns;
-  });
-
-  const fieldsByName = useMemo(() => getAllFieldsByName(browserFields), [browserFields]);
-
-  const { pinnedFields } = useMemo(() => tableTabState, [tableTabState]);
-  const onTogglePinned = useCallback(
-    (field: string, action: 'pin' | 'unpin') => {
-      if (action === 'pin') {
-        setTableTabState({
-          ...tableTabState,
-          pinnedFields: [...pinnedFields, field],
-        });
-      } else if (action === 'unpin') {
-        setTableTabState({
-          ...tableTabState,
-          pinnedFields: pinnedFields.filter((f) => f !== field),
-        });
+    const [tableTabState, setTableTabState] = useState<TableTabState>(() => {
+      const restoredTableTabState = storage.get(FLYOUT_STORAGE_KEYS.TABLE_TAB_STATE);
+      if (restoredTableTabState != null) {
+        return restoredTableTabState;
       }
-    },
-    [pinnedFields, tableTabState, setTableTabState]
-  );
+      return DEFAULT_TABLE_TAB_STATE;
+    });
 
-  const items = useMemo(
-    () =>
-      getTableItems({
-        dataFormattedForFieldBrowser,
-        fieldsByName,
-        highlightedFields,
-        tableTabState,
+    useEffect(() => {
+      storage.set(FLYOUT_STORAGE_KEYS.TABLE_TAB_STATE, tableTabState);
+    }, [tableTabState, storage]);
+
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+    const renderToolsRight = useCallback(
+      () => [
+        <TableTabSettingButton
+          tableTabState={tableTabState}
+          setTableTabState={setTableTabState}
+          isPopoverOpen={isPopoverOpen}
+          setIsPopoverOpen={setIsPopoverOpen}
+          isAlert={isAlert}
+        />,
+      ],
+      [tableTabState, setTableTabState, isPopoverOpen, setIsPopoverOpen, isAlert]
+    );
+
+    const [pagination, setPagination] = useState<{ pageIndex: number }>({
+      pageIndex: 0,
+    });
+    const onTableChange = useCallback(({ page: { index } }: { page: { index: number } }) => {
+      setPagination({ pageIndex: index });
+    }, []);
+
+    const paginationSettings = useMemo(
+      () => ({
+        ...pagination,
+        pageSizeOptions: COUNT_PER_PAGE_OPTIONS,
       }),
-    [dataFormattedForFieldBrowser, highlightedFields, tableTabState, fieldsByName]
-  );
+      [pagination]
+    );
 
-  const getLinkValue = useCallback(
-    (field: string) => {
-      const columnHeader = columnHeaders.find((col) => col.id === field);
-      if (!columnHeader || !columnHeader.linkField) {
-        return null;
+    const getScope = useMemo(() => {
+      if (isTimelineScope(scopeId)) {
+        return timelineSelectors.getTimelineByIdSelector();
+      } else if (isInTableScope(scopeId)) {
+        return dataTableSelectors.getTableByIdSelector();
       }
-      const linkFieldData = (dataFormattedForFieldBrowser ?? []).find(
-        (d) => d.field === columnHeader.linkField
-      );
-      const linkFieldValue = getOr(null, 'originalValue', linkFieldData);
-      return Array.isArray(linkFieldValue) ? linkFieldValue[0] : linkFieldValue;
-    },
-    [dataFormattedForFieldBrowser, columnHeaders]
-  );
+    }, [scopeId]);
 
-  // forces the rows of the table to render smaller fonts
-  const onSetRowProps = useCallback(
-    ({ field }: TimelineEventsDetailsItem) => ({
-      className: 'flyout-table-row-small-font',
-      'data-test-subj': `flyout-table-row-${field}`,
-      ...(highlightedFields.includes(field) && {
-        style: { backgroundColor: euiTheme.colors.backgroundBaseWarning },
+    const defaults = useMemo(
+      () => (isTimelineScope(scopeId) ? timelineDefaults : tableDefaults),
+      [scopeId]
+    );
+
+    const columnHeaders = useDeepEqualSelector((state) => {
+      const { columns } = (getScope && getScope(state, scopeId)) ?? defaults;
+      return columns;
+    });
+
+    const fieldsByName = useMemo(() => getAllFieldsByName(browserFields), [browserFields]);
+
+    const { pinnedFields } = useMemo(() => tableTabState, [tableTabState]);
+    const onTogglePinned = useCallback(
+      (field: string, action: 'pin' | 'unpin') => {
+        if (action === 'pin') {
+          setTableTabState({
+            ...tableTabState,
+            pinnedFields: [...pinnedFields, field],
+          });
+        } else if (action === 'unpin') {
+          setTableTabState({
+            ...tableTabState,
+            pinnedFields: pinnedFields.filter((f) => f !== field),
+          });
+        }
+      },
+      [pinnedFields, tableTabState, setTableTabState]
+    );
+
+    const items = useMemo(
+      () =>
+        getTableItems({
+          dataFormattedForFieldBrowser,
+          fieldsByName,
+          highlightedFields,
+          tableTabState,
+        }),
+      [dataFormattedForFieldBrowser, highlightedFields, tableTabState, fieldsByName]
+    );
+
+    const getLinkValue = useCallback(
+      (field: string) => {
+        const columnHeader = columnHeaders.find((col) => col.id === field);
+        if (!columnHeader || !columnHeader.linkField) {
+          return null;
+        }
+        const linkFieldData = (dataFormattedForFieldBrowser ?? []).find(
+          (d) => d.field === columnHeader.linkField
+        );
+        const linkFieldValue = getOr(null, 'originalValue', linkFieldData);
+        return Array.isArray(linkFieldValue) ? linkFieldValue[0] : linkFieldValue;
+      },
+      [dataFormattedForFieldBrowser, columnHeaders]
+    );
+
+    // forces the rows of the table to render smaller fonts
+    const onSetRowProps = useCallback(
+      ({ field }: TimelineEventsDetailsItem) => ({
+        className: 'flyout-table-row-small-font',
+        'data-test-subj': `flyout-table-row-${field}`,
+        ...(highlightedFields.includes(field) && {
+          style: { backgroundColor: euiTheme.colors.backgroundBaseWarning },
+        }),
+        css: PIN_ACTION_CSS,
       }),
-      css: PIN_ACTION_CSS,
-    }),
-    [highlightedFields, euiTheme.colors]
-  );
+      [highlightedFields, euiTheme.colors]
+    );
 
-  const columns = useMemo(
-    () =>
-      getTableTabColumns({
-        browserFields,
-        eventId,
-        scopeId,
-        getLinkValue,
-        ruleId,
-        isRulePreview,
-        onTogglePinned,
-      }),
-    [browserFields, eventId, scopeId, getLinkValue, ruleId, isRulePreview, onTogglePinned]
-  );
+    const columns = useMemo(
+      () =>
+        getTableTabColumns({
+          browserFields,
+          eventId,
+          scopeId,
+          getLinkValue,
+          ruleId,
+          isRulePreview,
+          onTogglePinned,
+        }),
+      [browserFields, eventId, scopeId, getLinkValue, ruleId, isRulePreview, onTogglePinned]
+    );
 
-  const search = useMemo(() => {
-    return { ...SEARCH_CONFIG, toolsRight: renderToolsRight() };
-  }, [renderToolsRight]);
-  return (
-    <>
-      <TableTabTour setIsPopoverOpen={setIsPopoverOpen} />
-      <EuiInMemoryTable
-        items={items}
-        itemId="field"
-        columns={columns}
-        onTableChange={onTableChange}
-        pagination={paginationSettings}
-        rowProps={onSetRowProps}
-        search={search}
-        sorting={false}
-        data-test-subj={TABLE_TAB_CONTENT_TEST_ID}
-        css={css`
-          .euiTableRow {
-            font-size: ${smallFontSize};
-          }
-        `}
-      />
-    </>
-  );
-});
+    const search = useMemo(() => {
+      return { ...SEARCH_CONFIG, toolsRight: renderToolsRight() };
+    }, [renderToolsRight]);
+    return (
+      <>
+        <TableTabTour setIsPopoverOpen={setIsPopoverOpen} />
+        <EuiInMemoryTable
+          items={items}
+          itemId="field"
+          columns={columns}
+          onTableChange={onTableChange}
+          pagination={paginationSettings}
+          rowProps={onSetRowProps}
+          search={search}
+          sorting={false}
+          data-test-subj={TABLE_TAB_CONTENT_TEST_ID}
+          css={css`
+            .euiTableRow {
+              font-size: ${smallFontSize};
+            }
+          `}
+        />
+      </>
+    );
+  }
+);
 
 TableTab.displayName = 'TableTab';

@@ -5,16 +5,15 @@
  * 2.0.
  */
 
-import { EuiSpacer, EuiBadge, EuiText, EuiFlexItem, EuiFlexGroup } from '@elastic/eui';
+import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
 import React, { useMemo } from 'react';
 
+import { FlyoutHeader, FlyoutTitle } from '@kbn/flyout-ui';
 import { EntityType } from '../../../../common/search_strategy';
 import { EntityIconByType } from '../../../entity_analytics/components/entity_store/helpers';
 import type { ServiceItem } from '../../../../common/search_strategy/security_solution/services/common';
 import { PreferenceFormattedDate } from '../../../common/components/formatted_date';
-import { FlyoutHeader } from '../../shared/components/flyout_header';
-import { FlyoutTitle } from '../../shared/components/flyout_title';
 import type { ObservedEntityData } from '../shared/components/observed_entity/types';
 
 interface ServicePanelHeaderProps {

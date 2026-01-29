@@ -10,7 +10,7 @@ import type { FC } from 'react';
 import React, { memo } from 'react';
 import { css } from '@emotion/react';
 import type { LeftPanelPaths } from '.';
-import { FlyoutHeader } from '../../shared/components/flyout_header';
+import { FlyoutHeader } from '@kbn/flyout-ui';
 import type { LeftPanelTabType } from './tabs';
 import { getField } from '../shared/utils';
 import { EventKind } from '../shared/constants/event_kinds';

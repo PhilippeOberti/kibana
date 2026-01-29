@@ -8,16 +8,15 @@
 import React, { memo, useMemo } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSpacer } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
+import { AlertHeaderBlock, FlyoutTitle } from '@kbn/flyout-ui';
 import { RELATED_INTEGRATION } from '../../../detections/constants';
 import { IntegrationIcon } from './integration_icon';
 import { DocumentSeverity } from '../../document_details/right/components/severity';
 import { useBasicDataFromDetailsData } from '../../document_details/shared/hooks/use_basic_data_from_details_data';
-import { FlyoutTitle } from '../../shared/components/flyout_title';
 import { PreferenceFormattedDate } from '../../../common/components/formatted_date';
 import { getAlertTitle, getField } from '../../document_details/shared/utils';
 import { RiskScore } from '../../document_details/right/components/risk_score';
 import { useEaseDetailsContext } from '../context';
-import { AlertHeaderBlock } from '../../shared/components/alert_header_block';
 
 export const HEADER_TITLE_TEST_ID = 'ease-alert-flyout-header-title';
 export const HEADER_SUMMARY_TEST_ID = 'ease-alert-flyout-header-summary';

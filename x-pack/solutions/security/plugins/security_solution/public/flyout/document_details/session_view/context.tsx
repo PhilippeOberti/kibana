@@ -7,7 +7,7 @@
 
 import React, { createContext, memo, useContext, useMemo } from 'react';
 import type { ProcessEvent } from '@kbn/session-view-plugin/common';
-import { FlyoutError } from '../../shared/components/flyout_error';
+import { FlyoutError } from '@kbn/flyout-ui';
 import type { SessionViewPanelProps } from '.';
 
 export interface CustomProcess {

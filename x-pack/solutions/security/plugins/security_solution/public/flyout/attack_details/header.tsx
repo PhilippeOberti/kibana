@@ -11,8 +11,7 @@ import type { FC } from 'react';
 import React, { memo, useCallback } from 'react';
 import type { AttackDetailsPanelPaths } from '.';
 import type { AttackDetailsPanelTabType } from './tabs';
-import { FlyoutHeader } from '../shared/components/flyout_header';
-import { FlyoutHeaderTabs } from '../shared/components/flyout_header_tabs';
+import { FlyoutHeader, FlyoutHeaderTabs } from '@kbn/flyout-ui';
 import { HeaderTitle } from './components/header_title';
 
 export interface PanelHeaderProps extends React.ComponentProps<typeof EuiFlyoutHeader> {

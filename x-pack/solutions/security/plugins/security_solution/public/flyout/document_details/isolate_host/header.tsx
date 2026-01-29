@@ -13,7 +13,7 @@ import { AgentTypeIntegration } from '../../../common/components/endpoint/agents
 import { useAlertResponseActionsSupport } from '../../../common/hooks/endpoint/use_alert_response_actions_support';
 import { useIsolateHostPanelContext } from './context';
 import { FLYOUT_HEADER_TITLE_TEST_ID } from './test_ids';
-import { FlyoutHeader } from '../../shared/components/flyout_header';
+import { FlyoutHeader } from '@kbn/flyout-ui';
 import { ISOLATE_HOST, UNISOLATE_HOST } from '../../../common/components/endpoint';
 
 /**

@@ -10,10 +10,10 @@ import React, { useMemo } from 'react';
 import { EuiBadge, EuiFlexGroup, EuiToolTip } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { useKibana } from '../../../../common/lib/kibana';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
+import { ExpandablePanel } from '@kbn/flyout-ui';
 import { usePrevalence } from '../../shared/hooks/use_prevalence';
 import { PREVALENCE_TEST_ID } from './test_ids';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { LeftPanelInsightsTab } from '../../left';
 import { PREVALENCE_TAB_ID } from '../../left/components/prevalence_details';
 import { InsightsSummaryRow } from './insights_summary_row';
@@ -55,16 +55,23 @@ const PERCENTAGE_THRESHOLD = 0.1; // we show the prevalence if its value is belo
 const DEFAULT_FROM = 'now-30d';
 const DEFAULT_TO = 'now';
 
+export interface PrevalenceOverviewProps {
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  investigationFields: string[];
+  isPreviewMode: boolean;
+}
+
 /**
  * Prevalence section under Insights section, overview tab.
  * The component fetches the necessary data at once. The loading and error states are handled by the ExpandablePanel component.
  */
-export const PrevalenceOverview: FC = () => {
+export const PrevalenceOverview: FC<PrevalenceOverviewProps> = ({
+  dataFormattedForFieldBrowser,
+  investigationFields,
+  isPreviewMode,
+}) => {
   const { storage } = useKibana().services;
   const timeSavedInLocalStorage = storage.get(FLYOUT_STORAGE_KEYS.PREVALENCE_TIME_RANGE);
-
-  const { dataFormattedForFieldBrowser, investigationFields, isPreviewMode } =
-    useDocumentDetailsContext();
 
   const goToPrevalenceTab = useNavigateToLeftPanel({
     tab: LeftPanelInsightsTab,

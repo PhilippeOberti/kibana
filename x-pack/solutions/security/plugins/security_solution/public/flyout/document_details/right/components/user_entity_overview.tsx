@@ -23,7 +23,6 @@ import { useHasMisconfigurations } from '@kbn/cloud-security-posture/src/hooks/u
 import { useIsExperimentalFeatureEnabled } from '../../../../common/hooks/use_experimental_features';
 import { useNonClosedAlerts } from '../../../../cloud_security_posture/hooks/use_non_closed_alerts';
 import { buildUserNamesFilter } from '../../../../../common/search_strategy';
-import { useDocumentDetailsContext } from '../../shared/context';
 import type { DescriptionList } from '../../../../../common/utility_types';
 import { USER_NAME_FIELD_NAME } from '../../../../timelines/components/timeline/body/renderers/constants';
 import { getField } from '../../shared/utils';
@@ -67,6 +66,7 @@ const USER_ICON = 'user';
 const USER_ENTITY_OVERVIEW_ID = 'user-entity-overview';
 
 export interface UserEntityOverviewProps {
+  scopeId: string;
   /**
    * User name for looking up user related ip addresses and risk level
    */
@@ -84,8 +84,10 @@ export const USER_PREVIEW_BANNER = {
 /**
  * User preview content for the entities preview in right flyout. It contains ip addresses and risk level
  */
-export const UserEntityOverview: React.FC<UserEntityOverviewProps> = ({ userName }) => {
-  const { scopeId } = useDocumentDetailsContext();
+export const UserEntityOverview: React.FC<UserEntityOverviewProps> = ({
+  scopeId,
+  userName,
+}) => {
   const { from, to } = useGlobalTime();
   const { selectedPatterns: oldSelectedPatterns } = useSourcererDataView();
 

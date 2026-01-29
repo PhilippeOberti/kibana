@@ -13,7 +13,7 @@ import { DetailsPanel } from '../../../resolver/view/details_panel';
 import type { NodeEventOnClick } from '../../../resolver/view/panels/node_events_of_type';
 import { DocumentDetailsPreviewPanelKey } from '../shared/constants/panel_keys';
 import { ALERT_PREVIEW_BANNER, EVENT_PREVIEW_BANNER } from '../preview/constants';
-import { FlyoutBody } from '../../shared/components/flyout_body';
+import { FlyoutBody } from '@kbn/flyout-ui';
 
 interface AnalyzerPanelProps extends Record<string, unknown> {
   /**

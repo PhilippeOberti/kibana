@@ -7,27 +7,26 @@
 
 import React, { memo } from 'react';
 import {
-  EuiTitle,
-  EuiText,
-  EuiSpacer,
+  EuiBadge,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiBadge,
   EuiLink,
+  EuiSpacer,
+  EuiText,
+  EuiTitle,
 } from '@elastic/eui';
+import { FlyoutHeader, FlyoutTitle } from '@kbn/flyout-ui';
 import { DELETED_RULE } from '../../../detection_engine/rule_details_ui/pages/rule_details/translations';
 import { CreatedBy, UpdatedBy } from '../../../detections/components/rules/rule_info';
 import {
-  RULE_TITLE_TEST_ID,
-  RULE_CREATED_BY_TEST_ID,
-  RULE_UPDATED_BY_TEST_ID,
-  RULE_TITLE_SUPPRESSED_TEST_ID,
   NAVIGATE_TO_RULE_DETAILS_PAGE_TEST_ID,
+  RULE_CREATED_BY_TEST_ID,
+  RULE_TITLE_SUPPRESSED_TEST_ID,
+  RULE_TITLE_TEST_ID,
+  RULE_UPDATED_BY_TEST_ID,
 } from './test_ids';
 import type { RuleResponse } from '../../../../common/api/detection_engine';
 import { useRuleDetailsLink } from '../../document_details/shared/hooks/use_rule_details_link';
-import { FlyoutHeader } from '../../shared/components/flyout_header';
-import { FlyoutTitle } from '../../shared/components/flyout_title';
 
 export interface PanelHeaderProps {
   /**

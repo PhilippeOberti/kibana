@@ -10,10 +10,9 @@ import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 
 import { FormattedMessage } from '@kbn/i18n-react';
 import { i18n } from '@kbn/i18n';
-import { FlyoutTitle } from '../../shared/components/flyout_title';
+import { AlertHeaderBlock, FlyoutTitle } from '@kbn/flyout-ui';
 import { PreferenceFormattedDate } from '../../../common/components/formatted_date';
 import { Status } from './status';
-import { AlertHeaderBlock } from '../../shared/components/alert_header_block';
 import {
   HEADER_ALERTS_BLOCK_TEST_ID,
   HEADER_BADGE_TEST_ID,

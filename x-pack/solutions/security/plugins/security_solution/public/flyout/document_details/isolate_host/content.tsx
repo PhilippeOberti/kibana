@@ -17,7 +17,7 @@ import {
 } from '../../../common/components/endpoint/host_isolation';
 import { useHostIsolation } from '../shared/hooks/use_host_isolation';
 import { useIsolateHostPanelContext } from './context';
-import { FlyoutBody } from '../../shared/components/flyout_body';
+import { FlyoutBody } from '@kbn/flyout-ui';
 import { FLYOUT_HOST_ISOLATION_PANEL_TEST_ID } from './test_ids';
 
 /**

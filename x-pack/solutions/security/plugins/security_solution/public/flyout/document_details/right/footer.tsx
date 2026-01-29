@@ -15,7 +15,7 @@ import {
   EVENT_ATTACHMENT_PROMPT,
 } from '../../../agent_builder/components/prompts';
 import { useBasicDataFromDetailsData } from '../shared/hooks/use_basic_data_from_details_data';
-import { useDocumentDetailsContext } from '../shared/context';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { useAssistant } from './hooks/use_assistant';
 import { FLYOUT_FOOTER_TEST_ID } from './test_ids';
 import { TakeActionButton } from '../shared/components/take_action_button';
@@ -37,17 +37,17 @@ export const EVENT = i18n.translate('xpack.securitySolution.flyout.right.footer.
 });
 
 interface PanelFooterProps {
-  /**
-   * Boolean that indicates whether flyout is in preview and action should be hidden
-   */
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
   isRulePreview: boolean;
 }
 
 /**
  * Bottom section of the flyout that contains the take action button
  */
-export const PanelFooter: FC<PanelFooterProps> = ({ isRulePreview }) => {
-  const { dataFormattedForFieldBrowser } = useDocumentDetailsContext();
+export const PanelFooter: FC<PanelFooterProps> = ({
+  dataFormattedForFieldBrowser,
+  isRulePreview,
+}) => {
   const { isAlert } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
   const { showAssistant, showAssistantOverlay } = useAssistant({
     dataFormattedForFieldBrowser,

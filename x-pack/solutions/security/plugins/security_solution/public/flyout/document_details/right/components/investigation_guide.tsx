@@ -10,7 +10,7 @@ import { EuiButton, EuiCallOut, EuiSkeletonText } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { i18n } from '@kbn/i18n';
 import { useInvestigationGuide } from '../../shared/hooks/use_investigation_guide';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { LeftPanelInvestigationTab } from '../../left';
 import {
   INVESTIGATION_GUIDE_BUTTON_TEST_ID,
@@ -19,12 +19,19 @@ import {
 } from './test_ids';
 import { useNavigateToLeftPanel } from '../../shared/hooks/use_navigate_to_left_panel';
 
+export interface InvestigationGuideProps {
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  isRulePreview: boolean;
+}
+
 /**
  * Render either the investigation guide button that opens Investigation section in the left panel,
  * or a no-data message if investigation guide hasn't been set up on the rule
  */
-export const InvestigationGuide: React.FC = () => {
-  const { dataFormattedForFieldBrowser, isRulePreview } = useDocumentDetailsContext();
+export const InvestigationGuide: React.FC<InvestigationGuideProps> = ({
+  dataFormattedForFieldBrowser,
+  isRulePreview,
+}) => {
 
   const { loading, error, basicAlertData, ruleNote } = useInvestigationGuide({
     dataFormattedForFieldBrowser,

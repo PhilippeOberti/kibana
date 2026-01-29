@@ -7,8 +7,6 @@
 
 import { getUserDisplayName, useProcessData } from './use_process_data';
 import { renderHook } from '@testing-library/react';
-import type { FC, PropsWithChildren } from 'react';
-import { DocumentDetailsContext } from '../../shared/context';
 import React from 'react';
 
 describe('getUserDisplayName', () => {
@@ -57,21 +55,11 @@ describe('getUserDisplayName', () => {
   });
 });
 
-const panelContextValue = {
-  getFieldsData: jest.fn().mockReturnValue('test'),
-} as unknown as DocumentDetailsContext;
-
-const ProviderComponent: FC<PropsWithChildren<unknown>> = ({ children }) => (
-  <DocumentDetailsContext.Provider value={panelContextValue}>
-    {children}
-  </DocumentDetailsContext.Provider>
-);
+const mockGetFieldsData = jest.fn().mockReturnValue('test');
 
 describe('useProcessData', () => {
   it('should return values for session preview component', () => {
-    const hookResult = renderHook(() => useProcessData(), {
-      wrapper: ProviderComponent,
-    });
+    const hookResult = renderHook(() => useProcessData(mockGetFieldsData));
 
     expect(hookResult.result.current).toEqual({
       command: 'test',

@@ -10,25 +10,35 @@ import { FormattedMessage } from '@kbn/i18n-react';
 import { useLicense } from '../../../../common/hooks/use_license';
 import { SessionPreview } from './session_preview';
 import { useSessionViewConfig } from '../../shared/hooks/use_session_view_config';
-import { useDocumentDetailsContext } from '../../shared/context';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
+import { ExpandablePanel } from '@kbn/flyout-ui';
 import { SESSION_PREVIEW_TEST_ID } from './test_ids';
 import { useNavigateToSessionView } from '../../shared/hooks/use_navigate_to_session_view';
 import { SessionViewNoDataMessage } from '../../shared/components/session_view_no_data_message';
 
+export interface SessionPreviewContainerProps {
+  eventId: string;
+  indexName: string;
+  scopeId: string;
+  getFieldsData: GetFieldsData;
+  isRulePreview: boolean;
+  isPreviewMode: boolean;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+}
+
 /**
  * Checks if the SessionView component is available, if so render it or else render an error message
  */
-export const SessionPreviewContainer: FC = () => {
-  const {
-    eventId,
-    indexName,
-    scopeId,
-    getFieldsData,
-    isRulePreview,
-    isPreviewMode,
-    dataFormattedForFieldBrowser,
-  } = useDocumentDetailsContext();
+export const SessionPreviewContainer: FC<SessionPreviewContainerProps> = ({
+  eventId,
+  indexName,
+  scopeId,
+  getFieldsData,
+  isRulePreview,
+  isPreviewMode,
+  dataFormattedForFieldBrowser,
+}) => {
 
   // decide whether to show the session view or not
   const sessionViewConfig = useSessionViewConfig({ getFieldsData, dataFormattedForFieldBrowser });
@@ -76,7 +86,7 @@ export const SessionPreviewContainer: FC = () => {
       data-test-subj={SESSION_PREVIEW_TEST_ID}
     >
       {isEnabled ? (
-        <SessionPreview />
+        <SessionPreview isRulePreview={isRulePreview} getFieldsData={getFieldsData} />
       ) : (
         <SessionViewNoDataMessage
           isEnterprisePlus={isEnterprisePlus}

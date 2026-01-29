@@ -5,18 +5,26 @@
  * 2.0.
  */
 
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import type { PanelPath } from '@kbn/expandable-flyout';
 import type { RightPanelPaths } from '..';
 import { useKibana } from '../../../../common/lib/kibana';
 import { FLYOUT_STORAGE_KEYS } from '../../shared/constants/local_storage';
+import type { DocumentDetailsContext } from '../../shared/context';
 import * as tabs from '../tabs';
 import type { RightPanelTabType } from '../tabs';
+import { OverviewTab } from '../tabs/overview_tab';
+import { TableTab } from '../tabs/table_tab';
+import { JsonTab } from '../tabs/json_tab';
 
 export const allThreeTabs = [tabs.overviewTab, tabs.tableTab, tabs.jsonTab];
 export const twoTabs = [tabs.tableTab, tabs.jsonTab];
 
 export interface UseTabsParams {
+  /**
+   * Document details from the document details context (passed from RightPanel).
+   */
+  documentDetails: DocumentDetailsContext;
   /**
    * Whether the flyout is expandable or not. This will drive how many tabs we display.
    */
@@ -25,6 +33,40 @@ export interface UseTabsParams {
    * The path passed in when using the expandable flyout API to open a panel.
    */
   path: PanelPath | undefined;
+}
+
+function overviewTabPropsFromContext(d: DocumentDetailsContext) {
+  return {
+    eventId: d.eventId,
+    indexName: d.indexName,
+    scopeId: d.scopeId,
+    getFieldsData: d.getFieldsData,
+    dataFormattedForFieldBrowser: d.dataFormattedForFieldBrowser,
+    dataAsNestedObject: d.dataAsNestedObject,
+    searchHit: d.searchHit,
+    isRulePreview: d.isRulePreview,
+    isPreviewMode: d.isPreviewMode,
+    investigationFields: d.investigationFields,
+    browserFields: d.browserFields,
+  };
+}
+
+function tableTabPropsFromContext(d: DocumentDetailsContext) {
+  return {
+    browserFields: d.browserFields,
+    dataFormattedForFieldBrowser: d.dataFormattedForFieldBrowser,
+    scopeId: d.scopeId,
+    isRulePreview: d.isRulePreview,
+    eventId: d.eventId,
+    investigationFields: d.investigationFields,
+  };
+}
+
+function jsonTabPropsFromContext(d: DocumentDetailsContext) {
+  return {
+    searchHit: d.searchHit,
+    isRulePreview: d.isRulePreview,
+  };
 }
 
 export interface UseTabsResult {
@@ -41,14 +83,30 @@ export interface UseTabsResult {
 /**
  * Hook to get the tabs to display in the right panel and the selected tab.
  */
-export const useTabs = ({ flyoutIsExpandable, path }: UseTabsParams): UseTabsResult => {
+export const useTabs = ({
+  documentDetails,
+  flyoutIsExpandable,
+  path,
+}: UseTabsParams): UseTabsResult => {
   const { storage } = useKibana().services;
 
   // if the flyout is expandable we render all 3 tabs (overview, table and json)
   // if the flyout is not, we render only table and json
+  const baseTabs = flyoutIsExpandable ? allThreeTabs : twoTabs;
   const tabsDisplayed = useMemo(
-    () => (flyoutIsExpandable ? allThreeTabs : twoTabs),
-    [flyoutIsExpandable]
+    () =>
+      baseTabs.map((tab) => ({
+        ...tab,
+        content:
+          tab.id === 'overview'
+            ? React.createElement(OverviewTab, overviewTabPropsFromContext(documentDetails))
+            : tab.id === 'table'
+              ? React.createElement(TableTab, tableTabPropsFromContext(documentDetails))
+              : tab.id === 'json'
+                ? React.createElement(JsonTab, jsonTabPropsFromContext(documentDetails))
+                : tab.content,
+      })),
+    [documentDetails, flyoutIsExpandable]
   );
 
   const selectedTabId = useMemo(() => {

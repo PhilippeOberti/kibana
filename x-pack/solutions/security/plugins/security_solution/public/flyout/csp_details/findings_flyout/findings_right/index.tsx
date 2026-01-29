@@ -6,16 +6,14 @@
  */
 
 import React from 'react';
-import { EuiFlexGroup, EuiFlexItem, EuiText, EuiSpacer, EuiFlyoutFooter } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiFlyoutFooter, EuiSpacer, EuiText } from '@elastic/eui';
 import type { FindingsMisconfigurationPanelExpandableFlyoutProps } from '@kbn/cloud-security-posture';
 import { CspEvaluationBadge } from '@kbn/cloud-security-posture';
 import { i18n } from '@kbn/i18n';
+import { FlyoutBody, FlyoutHeader, FlyoutTitle } from '@kbn/flyout-ui';
 import { FlyoutNavigation } from '../../../shared/components/flyout_navigation';
-import { FlyoutHeader } from '../../../shared/components/flyout_header';
 import { useKibana } from '../../../../common/lib/kibana';
 import { PreferenceFormattedDate } from '../../../../common/components/formatted_date';
-import { FlyoutTitle } from '../../../shared/components/flyout_title';
-import { FlyoutBody } from '../../../shared/components/flyout_body';
 
 export const FindingsMisconfigurationPanel = ({
   resourceId,

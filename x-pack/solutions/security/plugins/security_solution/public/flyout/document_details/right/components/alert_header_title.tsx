@@ -16,7 +16,9 @@ import { DocumentSeverity } from './severity';
 import { RiskScore } from './risk_score';
 import { useRefetchByScope } from '../hooks/use_refetch_by_scope';
 import { useBasicDataFromDetailsData } from '../../shared/hooks/use_basic_data_from_details_data';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
+import type { BrowserFields } from '@kbn/timelines-plugin/common';
 import { PreferenceFormattedDate } from '../../../../common/components/formatted_date';
 import {
   ALERT_SUMMARY_PANEL_TEST_ID,
@@ -25,28 +27,39 @@ import {
   RISK_SCORE_TITLE_TEST_ID,
 } from './test_ids';
 import { Assignees } from './assignees';
-import { FlyoutTitle } from '../../../shared/components/flyout_title';
+import { FlyoutTitle, AlertHeaderBlock } from '@kbn/flyout-ui';
 import { getAlertTitle } from '../../shared/utils';
-import { AlertHeaderBlock } from '../../../shared/components/alert_header_block';
 
 // minWidth for each block, allows to switch for a 1 row 4 blocks to 2 rows with 2 block each
 const blockStyles = {
   minWidth: 280,
 };
 
+export interface AlertHeaderTitleProps {
+  eventId: string;
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  scopeId: string;
+  isRulePreview: boolean;
+  refetchFlyoutData: () => Promise<void>;
+  getFieldsData: GetFieldsData;
+  browserFields: BrowserFields;
+}
+
 /**
  * Alert details flyout right section header
  */
-export const AlertHeaderTitle = memo(() => {
-  const {
-    dataFormattedForFieldBrowser,
+export const AlertHeaderTitle = memo<AlertHeaderTitleProps>(
+  ({
     eventId,
+    dataFormattedForFieldBrowser,
     scopeId,
     isRulePreview,
     refetchFlyoutData,
     getFieldsData,
-  } = useDocumentDetailsContext();
-  const { ruleName, timestamp, ruleId } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
+    browserFields,
+  }) => {
+    const { ruleName, timestamp, ruleId } =
+      useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
   const title = useMemo(() => getAlertTitle({ ruleName }), [ruleName]);
   const href = useRuleDetailsLink({ ruleId: !isRulePreview ? ruleId : null });
   const ruleTitle = useMemo(
@@ -139,7 +152,13 @@ export const AlertHeaderTitle = memo(() => {
         <EuiFlexItem css={blockStyles}>
           <EuiFlexGroup direction="row" gutterSize="s" responsive={false}>
             <EuiFlexItem>
-              <DocumentStatus />
+              <DocumentStatus
+                eventId={eventId}
+                browserFields={browserFields}
+                dataFormattedForFieldBrowser={dataFormattedForFieldBrowser}
+                scopeId={scopeId}
+                isRulePreview={isRulePreview}
+              />
             </EuiFlexItem>
             <EuiFlexItem>{riskScore}</EuiFlexItem>
           </EuiFlexGroup>
@@ -148,13 +167,14 @@ export const AlertHeaderTitle = memo(() => {
           <EuiFlexGroup direction="row" gutterSize="s" responsive={false}>
             <EuiFlexItem>{assignees}</EuiFlexItem>
             <EuiFlexItem>
-              <Notes />
+              <Notes eventId={eventId} isRulePreview={isRulePreview} />
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFlexItem>
       </EuiFlexGroup>
     </>
   );
-});
+  }
+);
 
 AlertHeaderTitle.displayName = 'AlertHeaderTitle';

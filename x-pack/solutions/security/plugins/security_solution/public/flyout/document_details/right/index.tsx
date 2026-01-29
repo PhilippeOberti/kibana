@@ -30,13 +30,24 @@ export type RightPanelPaths = 'overview' | 'table' | 'json';
 export const RightPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) => {
   const { storage, telemetry } = useKibana().services;
   const { openRightPanel, closeFlyout } = useExpandableFlyoutApi();
-  const { eventId, indexName, scopeId, isRulePreview, dataAsNestedObject, getFieldsData } =
-    useDocumentDetailsContext();
+  const documentDetails = useDocumentDetailsContext();
+
+  const {
+    eventId,
+    indexName,
+    scopeId,
+    isRulePreview,
+    dataAsNestedObject,
+    getFieldsData,
+    dataFormattedForFieldBrowser,
+    refetchFlyoutData,
+    browserFields,
+  } = documentDetails;
 
   // if the flyout is expandable we render all 3 tabs (overview, table and json)
   // if the flyout is not, we render only table and json
   const flyoutIsExpandable = useFlyoutIsExpandable({ getFieldsData, dataAsNestedObject });
-  const { tabsDisplayed, selectedTabId } = useTabs({ flyoutIsExpandable, path });
+  const { tabsDisplayed, selectedTabId } = useTabs({ documentDetails, flyoutIsExpandable, path });
 
   const setSelectedTabId = (tabId: RightPanelTabType['id']) => {
     openRightPanel({
@@ -76,14 +87,32 @@ export const RightPanel: FC<Partial<DocumentDetailsProps>> = memo(({ path }) => 
 
   return (
     <>
-      <PanelNavigation flyoutIsExpandable={flyoutIsExpandable} />
+      <PanelNavigation
+        dataFormattedForFieldBrowser={dataFormattedForFieldBrowser}
+        eventId={eventId}
+        indexName={indexName}
+        scopeId={scopeId}
+        isRulePreview={isRulePreview}
+        flyoutIsExpandable={flyoutIsExpandable}
+      />
       <PanelHeader
+        dataFormattedForFieldBrowser={dataFormattedForFieldBrowser}
+        getFieldsData={getFieldsData}
+        scopeId={scopeId}
+        isRulePreview={isRulePreview}
+        eventId={eventId}
+        indexName={indexName}
+        refetchFlyoutData={refetchFlyoutData}
+        browserFields={browserFields}
         tabs={tabsDisplayed}
         selectedTabId={selectedTabId}
         setSelectedTabId={setSelectedTabId}
       />
       <PanelContent tabs={tabsDisplayed} selectedTabId={selectedTabId} />
-      <PanelFooter isRulePreview={isRulePreview} />
+      <PanelFooter
+        dataFormattedForFieldBrowser={dataFormattedForFieldBrowser}
+        isRulePreview={isRulePreview}
+      />
     </>
   );
 });

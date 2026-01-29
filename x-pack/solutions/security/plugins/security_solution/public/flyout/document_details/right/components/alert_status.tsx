@@ -12,14 +12,17 @@ import React, { memo, useMemo } from 'react';
 import { WORKFLOW_STATUS_DETAILS_TEST_ID, WORKFLOW_STATUS_TITLE_TEST_ID } from './test_ids';
 import { useBulkGetUserProfiles } from '../../../../common/components/user_profiles/use_bulk_get_user_profiles';
 import { PreferenceFormattedDate } from '../../../../common/components/formatted_date';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
 import { getField } from '../../shared/utils';
+
+export interface AlertStatusProps {
+  getFieldsData: GetFieldsData;
+}
 
 /**
  * Displays info about who last updated the alert's workflow status and when.
  */
-export const AlertStatus = memo(() => {
-  const { getFieldsData } = useDocumentDetailsContext();
+export const AlertStatus = memo<AlertStatusProps>(({ getFieldsData }) => {
   const statusUpdatedBy = getFieldsData('kibana.alert.workflow_user');
   const statusUpdatedAt = getField(getFieldsData('kibana.alert.workflow_status_updated_at'));
 

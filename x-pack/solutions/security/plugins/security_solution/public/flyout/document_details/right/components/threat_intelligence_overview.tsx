@@ -9,12 +9,12 @@ import type { FC } from 'react';
 import React, { useMemo } from 'react';
 import { EuiBadge, EuiFlexGroup, EuiToolTip } from '@elastic/eui';
 import { FormattedMessage } from '@kbn/i18n-react';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { FLYOUT_STORAGE_KEYS } from '../../shared/constants/local_storage';
 import { useKibana } from '../../../../common/lib/kibana';
-import { ExpandablePanel } from '../../../shared/components/expandable_panel';
+import { ExpandablePanel } from '@kbn/flyout-ui';
 import { useFetchThreatIntelligence } from '../hooks/use_fetch_threat_intelligence';
 import { InsightsSummaryRow } from './insights_summary_row';
-import { useDocumentDetailsContext } from '../../shared/context';
 import {
   INSIGHTS_THREAT_INTELLIGENCE_ENRICHED_WITH_THREAT_INTELLIGENCE_TEST_ID,
   INSIGHTS_THREAT_INTELLIGENCE_TEST_ID,
@@ -61,14 +61,20 @@ const CUSTOM_TIME_RANGE_TOOLTIP = (
   />
 );
 
+export interface ThreatIntelligenceOverviewProps {
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  isPreviewMode: boolean;
+}
+
 /**
  * Threat intelligence section under Insights section, overview tab.
  * The component fetches the necessary data, then pass it down to the InsightsSubSection component for loading and error state,
  * and the SummaryPanel component for data rendering.
  */
-export const ThreatIntelligenceOverview: FC = () => {
-  const { dataFormattedForFieldBrowser, isPreviewMode } = useDocumentDetailsContext();
-
+export const ThreatIntelligenceOverview: FC<ThreatIntelligenceOverviewProps> = ({
+  dataFormattedForFieldBrowser,
+  isPreviewMode,
+}) => {
   const { storage } = useKibana().services;
   const timeSavedInLocalStorage = storage.get(FLYOUT_STORAGE_KEYS.THREAT_INTELLIGENCE_TIME_RANGE);
 

@@ -7,20 +7,26 @@
 
 import React, { memo, useMemo } from 'react';
 import { EuiSpacer } from '@elastic/eui';
-import { FlyoutTitle } from '../../../shared/components/flyout_title';
+import { FlyoutTitle } from '@kbn/flyout-ui';
 import { DocumentSeverity } from './severity';
 import { useBasicDataFromDetailsData } from '../../shared/hooks/use_basic_data_from_details_data';
-import { useDocumentDetailsContext } from '../../shared/context';
+import type { GetFieldsData } from '../../shared/hooks/use_get_fields_data';
+import type { TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import { PreferenceFormattedDate } from '../../../../common/components/formatted_date';
 import { FLYOUT_EVENT_HEADER_TITLE_TEST_ID } from './test_ids';
 import { getEventTitle, getField } from '../../shared/utils';
 
+export interface EventHeaderTitleProps {
+  dataFormattedForFieldBrowser: TimelineEventsDetailsItem[];
+  getFieldsData: GetFieldsData;
+}
+
 /**
  * Event details flyout right section header
  */
-export const EventHeaderTitle = memo(() => {
-  const { dataFormattedForFieldBrowser, getFieldsData } = useDocumentDetailsContext();
-  const { timestamp } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
+export const EventHeaderTitle = memo<EventHeaderTitleProps>(
+  ({ dataFormattedForFieldBrowser, getFieldsData }) => {
+    const { timestamp } = useBasicDataFromDetailsData(dataFormattedForFieldBrowser);
 
   const eventKind = getField(getFieldsData('event.kind'));
   const eventCategory = getField(getFieldsData('event.category'));
@@ -43,6 +49,7 @@ export const EventHeaderTitle = memo(() => {
       />
     </>
   );
-});
+  }
+);
 
 EventHeaderTitle.displayName = 'EventHeaderTitle';
