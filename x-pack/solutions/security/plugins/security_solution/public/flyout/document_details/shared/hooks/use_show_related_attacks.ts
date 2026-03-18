@@ -5,17 +5,17 @@
  * 2.0.
  */
 
+import { type DataTableRecord } from '@kbn/discover-utils';
 import { ALERT_ATTACK_IDS } from '../../../../../common/field_maps/field_names';
 import { ENABLE_ALERTS_AND_ATTACKS_ALIGNMENT_SETTING } from '../../../../../common/constants';
 import { useKibana } from '../../../../common/lib/kibana/kibana_react';
-import type { GetFieldsData } from './use_get_fields_data';
 import { getFieldArray } from '../utils';
 
 export interface UseShowRelatedAttacksParams {
   /**
-   * Retrieves searchHit values for the provided field
+   * The alert or event document
    */
-  getFieldsData: GetFieldsData;
+  hit: DataTableRecord;
 }
 
 export interface UseShowRelatedAttacksResult {
@@ -33,7 +33,7 @@ export interface UseShowRelatedAttacksResult {
  * Returns true if document has kibana.alert.attack_ids field with values
  */
 export const useShowRelatedAttacks = ({
-  getFieldsData,
+  hit,
 }: UseShowRelatedAttacksParams): UseShowRelatedAttacksResult => {
   const { uiSettings } = useKibana().services;
   const enableAlertsAndAttacksAlignment = uiSettings.get(
@@ -41,7 +41,7 @@ export const useShowRelatedAttacks = ({
     false
   );
 
-  const attackIds = getFieldArray(getFieldsData(ALERT_ATTACK_IDS)).filter(
+  const attackIds = getFieldArray(hit.flattened[ALERT_ATTACK_IDS]).filter(
     (attackId): attackId is string => typeof attackId === 'string'
   );
 

@@ -7,8 +7,10 @@
 
 import { renderHook } from '@testing-library/react';
 import type { RenderHookResult } from '@testing-library/react';
+import type { DataTableRecord } from '@kbn/discover-utils';
 
 import { ENABLE_ALERTS_AND_ATTACKS_ALIGNMENT_SETTING } from '../../../../../common/constants';
+import { ALERT_ATTACK_IDS } from '../../../../../common/field_maps/field_names';
 import { useKibana as mockUseKibana } from '../../../../common/lib/kibana/__mocks__';
 import type {
   UseShowRelatedAttacksParams,
@@ -50,9 +52,9 @@ describe('useShowRelatedAttacks', () => {
     });
   });
 
-  it('should return false if getFieldsData returns null and setting is enabled', () => {
-    const getFieldsData = () => null;
-    hookResult = renderHook(() => useShowRelatedAttacks({ getFieldsData }));
+  it('should return false if hit has no attack ids and setting is enabled', () => {
+    const hit = { flattened: {} } as unknown as DataTableRecord;
+    hookResult = renderHook(() => useShowRelatedAttacks({ hit }));
 
     expect(hookResult.result.current).toEqual({ show: false, attackIds: [] });
   });
@@ -66,8 +68,10 @@ describe('useShowRelatedAttacks', () => {
       return fallbackValue;
     });
 
-    const getFieldsData = () => ['attack-id-1', 'attack-id-2'];
-    hookResult = renderHook(() => useShowRelatedAttacks({ getFieldsData }));
+    const hit = {
+      flattened: { [ALERT_ATTACK_IDS]: ['attack-id-1', 'attack-id-2'] },
+    } as unknown as DataTableRecord;
+    hookResult = renderHook(() => useShowRelatedAttacks({ hit }));
 
     expect(hookResult.result.current).toEqual({
       show: false,
@@ -75,9 +79,11 @@ describe('useShowRelatedAttacks', () => {
     });
   });
 
-  it('should return true if setting is enabled and getFieldsData has attack ids', () => {
-    const getFieldsData = () => ['attack-id-1', 'attack-id-2'];
-    hookResult = renderHook(() => useShowRelatedAttacks({ getFieldsData }));
+  it('should return true if setting is enabled and hit has attack ids', () => {
+    const hit = {
+      flattened: { [ALERT_ATTACK_IDS]: ['attack-id-1', 'attack-id-2'] },
+    } as unknown as DataTableRecord;
+    hookResult = renderHook(() => useShowRelatedAttacks({ hit }));
 
     expect(hookResult.result.current).toEqual({
       show: true,
@@ -86,8 +92,8 @@ describe('useShowRelatedAttacks', () => {
   });
 
   it('should return false if setting is enabled and attack ids are empty', () => {
-    const getFieldsData = () => [];
-    hookResult = renderHook(() => useShowRelatedAttacks({ getFieldsData }));
+    const hit = { flattened: { [ALERT_ATTACK_IDS]: [] } } as unknown as DataTableRecord;
+    hookResult = renderHook(() => useShowRelatedAttacks({ hit }));
 
     expect(hookResult.result.current).toEqual({
       show: false,
