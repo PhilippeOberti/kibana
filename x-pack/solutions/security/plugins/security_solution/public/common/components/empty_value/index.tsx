@@ -8,13 +8,24 @@
 import { get, isString } from 'lodash/fp';
 import type { ReactNode } from 'react';
 import React from 'react';
-import styled from 'styled-components';
+import { css } from '@emotion/react';
+import { useEuiTheme } from '@elastic/eui';
 
 import * as i18n from './translations';
 
-const EmptyWrapper = styled.span`
-  color: ${(props) => props.theme.eui.euiColorDarkShade};
-`;
+const EmptyWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { euiTheme } = useEuiTheme();
+
+  return (
+    <span
+      css={css`
+        color: ${euiTheme.colors.darkShade};
+      `}
+    >
+      {children}
+    </span>
+  );
+};
 
 EmptyWrapper.displayName = 'EmptyWrapper';
 

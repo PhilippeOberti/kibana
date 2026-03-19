@@ -14,9 +14,11 @@ import { Provider } from 'react-redux';
 import { CellActionsProvider } from '@kbn/cell-actions';
 import { ExpandableFlyoutProvider } from '@kbn/expandable-flyout';
 import { NavigationProvider } from '@kbn/security-solution-navigation';
+import { DiscoverInTimelineContextProvider } from '../../../common/components/discover_in_timeline/provider';
 import type { StartServices } from '../../../types';
 import { ReactQueryClientProvider } from '../../../common/containers/query_client/query_client_provider';
 import { KibanaContextProvider } from '../../../common/lib/kibana';
+import { UserPrivilegesProvider } from '../../../common/components/user_privileges/user_privileges_context';
 
 export const flyoutProviders = ({
   services,
@@ -46,7 +48,13 @@ export const flyoutProviders = ({
       >
         <NavigationProvider core={services}>
           <Provider store={store}>
-            <ReactQueryClientProvider>{flyoutContent}</ReactQueryClientProvider>
+            <ReactQueryClientProvider>
+              <UserPrivilegesProvider kibanaCapabilities={services.application.capabilities}>
+                <DiscoverInTimelineContextProvider>
+                  {flyoutContent}
+                </DiscoverInTimelineContextProvider>
+              </UserPrivilegesProvider>
+            </ReactQueryClientProvider>
           </Provider>
         </NavigationProvider>
       </CellActionsProvider>

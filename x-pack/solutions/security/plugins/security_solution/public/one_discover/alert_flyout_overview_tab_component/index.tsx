@@ -8,13 +8,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import type { DataTableRecord } from '@kbn/discover-utils';
 import { useSelector } from 'react-redux';
+import type { CellActionRenderer } from '../../flyout_v2/shared/components/cell_actions';
 import { OverviewTab } from '../../flyout_v2/document/tabs/overview_tab';
 import type { SecurityAppStore, State } from '../../common/store/types';
 import type { StartServices } from '../../types';
 import { flyoutProviders } from '../../flyout_v2/shared/components/flyout_provider';
 import { useInitDataViewManager } from '../../data_view_manager/hooks/use_init_data_view_manager';
 import { useIsExperimentalFeatureEnabled } from '../../common/hooks/use_experimental_features';
-import type { ResolverCellActionRenderer } from '../../resolver/types';
 
 const DataViewManagerBootstrap = () => {
   const newDataViewPickerEnabled = useIsExperimentalFeatureEnabled('newDataViewPickerEnabled');
@@ -83,7 +83,7 @@ export const AlertFlyoutOverviewTab = ({
 
   // For now we are not rendering any cell actions in the overview tab, but we need to provide a renderer to prevent errors in the resolver component.
   // We will eventually implement the Discover cell actions.
-  const renderCellActions = useCallback<ResolverCellActionRenderer>(
+  const renderCellActions = useCallback<CellActionRenderer>(
     ({ children, field, scopeId, value }) => <>{children}</>,
     []
   );
