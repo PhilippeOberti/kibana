@@ -5,9 +5,9 @@
  * 2.0.
  */
 
-import { PREFIX } from '../../../flyout/shared/test_ids';
-
 /* About */
+
+import { PREFIX } from '../../shared/constants/test_ids';
 
 const ALERT_DESCRIPTION_TEST_ID = `${PREFIX}AlertDescription` as const;
 export const ALERT_DESCRIPTION_TITLE_TEST_ID = `${ALERT_DESCRIPTION_TEST_ID}Title` as const;
@@ -32,6 +32,37 @@ export const MITRE_ATTACK_DETAILS_TEST_ID = `${MITRE_ATTACK_TEST_ID}Details` as 
 export const INVESTIGATION_GUIDE_TEST_ID = `${PREFIX}InvestigationGuide` as const;
 export const INVESTIGATION_GUIDE_BUTTON_TEST_ID = `${INVESTIGATION_GUIDE_TEST_ID}Button` as const;
 export const INVESTIGATION_GUIDE_LOADING_TEST_ID = `${INVESTIGATION_GUIDE_TEST_ID}Loading` as const;
+
+const HIGHLIGHTED_FIELDS_TEST_ID = `${PREFIX}HighlightedFields` as const;
+export const HIGHLIGHTED_FIELDS_TITLE_TEST_ID = `${HIGHLIGHTED_FIELDS_TEST_ID}Title` as const;
+export const HIGHLIGHTED_FIELDS_DETAILS_TEST_ID = `${HIGHLIGHTED_FIELDS_TEST_ID}Details` as const;
+export const HIGHLIGHTED_FIELDS_CELL_TEST_ID = `${HIGHLIGHTED_FIELDS_TEST_ID}Cell` as const;
+export const HIGHLIGHTED_FIELDS_BASIC_CELL_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_TEST_ID}BasicCell` as const;
+export const HIGHLIGHTED_FIELDS_LINKED_CELL_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_TEST_ID}LinkedCell` as const;
+export const HIGHLIGHTED_FIELDS_AGENT_STATUS_CELL_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_TEST_ID}AgentStatusCell` as const;
+
+export const HIGHLIGHTED_FIELDS_EDIT_BUTTON_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_TEST_ID}EditButton` as const;
+export const HIGHLIGHTED_FIELDS_EDIT_BUTTON_LOADING_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_EDIT_BUTTON_TEST_ID}Loading` as const;
+export const HIGHLIGHTED_FIELDS_EDIT_BUTTON_TOOLTIP_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_EDIT_BUTTON_TEST_ID}Tooltip` as const;
+export const HIGHLIGHTED_FIELDS_MODAL_TEST_ID = `${HIGHLIGHTED_FIELDS_TEST_ID}Modal` as const;
+export const HIGHLIGHTED_FIELDS_MODAL_TITLE_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_MODAL_TEST_ID}Title` as const;
+export const HIGHLIGHTED_FIELDS_MODAL_DESCRIPTION_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_MODAL_TEST_ID}Description` as const;
+export const HIGHLIGHTED_FIELDS_MODAL_DEFAULT_FIELDS_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_MODAL_TEST_ID}DefaultFields` as const;
+export const HIGHLIGHTED_FIELDS_MODAL_CUSTOM_FIELDS_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_MODAL_TEST_ID}CustomFields` as const;
+export const HIGHLIGHTED_FIELDS_MODAL_SAVE_BUTTON_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_MODAL_TEST_ID}SaveButton` as const;
+export const HIGHLIGHTED_FIELDS_MODAL_CANCEL_BUTTON_TEST_ID =
+  `${HIGHLIGHTED_FIELDS_MODAL_TEST_ID}CancelButton` as const;
 
 /* Visualizations */
 

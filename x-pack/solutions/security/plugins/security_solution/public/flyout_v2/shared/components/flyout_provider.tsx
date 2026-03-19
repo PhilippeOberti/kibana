@@ -17,6 +17,8 @@ import { NavigationProvider } from '@kbn/security-solution-navigation';
 import type { StartServices } from '../../../types';
 import { ReactQueryClientProvider } from '../../../common/containers/query_client/query_client_provider';
 import { KibanaContextProvider } from '../../../common/lib/kibana';
+import { UpsellingProvider } from '../../../common/components/upselling_provider';
+import { UserPrivilegesProvider } from '../../../common/components/user_privileges/user_privileges_context';
 
 export const flyoutProviders = ({
   services,
@@ -46,7 +48,13 @@ export const flyoutProviders = ({
       >
         <NavigationProvider core={services}>
           <Provider store={store}>
-            <ReactQueryClientProvider>{flyoutContent}</ReactQueryClientProvider>
+            <ReactQueryClientProvider>
+              <UpsellingProvider upsellingService={services.upselling}>
+                <UserPrivilegesProvider kibanaCapabilities={services.application.capabilities}>
+                  {flyoutContent}
+                </UserPrivilegesProvider>
+              </UpsellingProvider>
+            </ReactQueryClientProvider>
           </Provider>
         </NavigationProvider>
       </CellActionsProvider>

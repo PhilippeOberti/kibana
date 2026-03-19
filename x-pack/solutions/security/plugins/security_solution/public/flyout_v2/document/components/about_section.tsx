@@ -11,7 +11,7 @@ import { i18n } from '@kbn/i18n';
 import React, { memo, useMemo } from 'react';
 import { EventKind } from '../constants/event_kinds';
 import { FLYOUT_STORAGE_KEYS } from '../constants/local_storage';
-import { PREFIX } from '../../../flyout/shared/test_ids';
+import { PREFIX } from '../../shared/constants/test_ids';
 import { ExpandableSection } from '../../shared/components/expandable_section';
 import { useExpandSection } from '../../shared/hooks/use_expand_section';
 import { AlertDescription } from './alert_description';
