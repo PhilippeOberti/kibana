@@ -9,11 +9,11 @@ import React, { memo } from 'react';
 import { EuiHorizontalRule, EuiPanel } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import type { DataTableRecord } from '@kbn/discover-utils';
+import type { CellActionRenderer } from '../../shared/components/cell_actions';
 import { AboutSection } from '../components/about_section';
 import { InsightsSection } from '../components/insights_section';
 import { InvestigationSection } from '../components/investigation_section';
 import { VisualizationsSection } from '../components/visualizations_section';
-import type { ResolverCellActionRenderer } from '../../../resolver/types';
 
 const OVERVIEW_ARIA_LABEL = i18n.translate(
   'xpack.securitySolution.flyout.document.overview.overviewContentAriaLabel',
@@ -28,7 +28,7 @@ export interface OverviewTabProps {
   /**
    * Pass cell action renderer to the analyzer graph in the visualizations section of the overview tab.
    */
-  renderCellActions: ResolverCellActionRenderer;
+  renderCellActions: CellActionRenderer;
 }
 
 /**

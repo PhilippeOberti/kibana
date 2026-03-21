@@ -10,7 +10,7 @@ import { EuiCallOut, EuiLoadingSpinner, EuiPanel } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { ElasticRequestState } from '@kbn/unified-doc-viewer';
 import { useEsDocSearch } from '@kbn/unified-doc-viewer-plugin/public';
-import type { ResolverCellActionRenderer } from '../../../resolver/types';
+import type { CellActionRenderer } from '../../shared/components/cell_actions';
 import { useDataView } from '../../../data_view_manager/hooks/use_data_view';
 import { PageScope } from '../../../data_view_manager/constants';
 import { OverviewTab } from './overview_tab';
@@ -48,7 +48,7 @@ export interface OverviewTabWrapperProps {
   /**
    * A function that renders cell actions for the overview tab. This is required to provide interactive actions for fields displayed in the overview tab, such as adding filters or viewing field details.
    */
-  renderCellActions: ResolverCellActionRenderer;
+  renderCellActions: CellActionRenderer;
 }
 
 /**

@@ -17,6 +17,7 @@ import { NavigationProvider } from '@kbn/security-solution-navigation';
 import type { StartServices } from '../../../types';
 import { ReactQueryClientProvider } from '../../../common/containers/query_client/query_client_provider';
 import { KibanaContextProvider } from '../../../common/lib/kibana';
+import { DiscoverInTimelineContextProvider } from '../../../common/components/discover_in_timeline/provider';
 
 export const flyoutProviders = ({
   services,
@@ -46,7 +47,9 @@ export const flyoutProviders = ({
       >
         <NavigationProvider core={services}>
           <Provider store={store}>
-            <ReactQueryClientProvider>{flyoutContent}</ReactQueryClientProvider>
+            <ReactQueryClientProvider>
+              <DiscoverInTimelineContextProvider>{flyoutContent}</DiscoverInTimelineContextProvider>
+            </ReactQueryClientProvider>
           </Provider>
         </NavigationProvider>
       </CellActionsProvider>

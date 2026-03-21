@@ -11,7 +11,6 @@ import { FormattedMessage } from '@kbn/i18n-react';
 import { ALERT_RULE_TYPE } from '@kbn/rule-data-utils';
 import type { Type } from '@kbn/securitysolution-io-ts-alerting-types';
 import { type DataTableRecord, getFieldValue } from '@kbn/discover-utils';
-import { useSelector } from 'react-redux';
 import { ExpandablePanel } from '../../shared/components/expandable_panel';
 import { useShowRelatedAlertsBySession } from '../hooks/use_show_related_alerts_by_session';
 import { RelatedAlertsBySession } from './related_alerts_by_session';
@@ -24,9 +23,6 @@ import { useShowSuppressedAlerts } from '../hooks/use_show_suppressed_alerts';
 import { RelatedCases } from './related_cases';
 import { useShowRelatedCases } from '../hooks/use_show_related_cases';
 import { CORRELATIONS_TEST_ID } from './test_ids';
-import { useIsExperimentalFeatureEnabled } from '../../../common/hooks/use_experimental_features';
-import { useSecurityDefaultPatterns } from '../../../data_view_manager/hooks/use_security_default_patterns';
-import { sourcererSelectors } from '../../../sourcerer/store';
 
 export interface CorrelationsOverviewProps {
   /**
@@ -65,15 +61,6 @@ export const CorrelationsOverview = memo(
     onShowCorrelationsDetails,
   }: CorrelationsOverviewProps) => {
     const documentId = useMemo(() => hit.raw._id || '', [hit.raw._id]);
-
-    const newDataViewPickerEnabled = useIsExperimentalFeatureEnabled('newDataViewPickerEnabled');
-    const oldSecurityDefaultPatterns =
-      useSelector(sourcererSelectors.defaultDataView)?.patternList ?? [];
-    const { indexPatterns: experimentalSecurityDefaultIndexPatterns } =
-      useSecurityDefaultPatterns();
-    const securityDefaultPatterns = newDataViewPickerEnabled
-      ? experimentalSecurityDefaultIndexPatterns
-      : oldSecurityDefaultPatterns;
 
     const { show: showAlertsByAncestry, ancestryDocumentId } = useShowRelatedAlertsByAncestry({
       hit,
@@ -158,7 +145,6 @@ export const CorrelationsOverview = memo(
             {showAlertsByAncestry && (
               <RelatedAlertsByAncestry
                 documentId={ancestryDocumentId}
-                indices={securityDefaultPatterns}
                 onShowCorrelationsDetails={onShowCorrelationsDetails}
               />
             )}
