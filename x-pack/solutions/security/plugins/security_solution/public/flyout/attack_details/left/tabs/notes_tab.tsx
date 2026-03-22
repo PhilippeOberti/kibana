@@ -5,23 +5,19 @@
  * 2.0.
  */
 
-import React, { memo } from 'react';
-import { EuiPanel } from '@elastic/eui';
-import { NotesDetailsContent } from '../../../shared/components/notes_details_content';
+import React, { memo, useMemo } from 'react';
+import { buildDataTableRecord, type EsHitRecord } from '@kbn/discover-utils';
+import { NotesDetailsContent } from '../../../../flyout_v2/notes/components/notes_details_content';
 import { useAttackDetailsContext } from '../../context';
-import { NOTES_TAB_CONTENT_TEST_ID } from '../../constants/test_ids';
 
 /**
  * Notes tab content for the Attack Details flyout left panel.
  */
 export const NotesTab = memo(() => {
-  const { attackId, searchHit } = useAttackDetailsContext();
+  const { searchHit } = useAttackDetailsContext();
+  const hit = useMemo(() => buildDataTableRecord(searchHit as unknown as EsHitRecord), [searchHit]);
 
-  return (
-    <EuiPanel data-test-subj={NOTES_TAB_CONTENT_TEST_ID} hasShadow={false}>
-      <NotesDetailsContent documentId={attackId} searchHit={searchHit} />
-    </EuiPanel>
-  );
+  return <NotesDetailsContent hit={hit} />;
 });
 
 NotesTab.displayName = 'NotesTab';

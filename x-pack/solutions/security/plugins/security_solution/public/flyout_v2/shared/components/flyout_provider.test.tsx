@@ -11,6 +11,7 @@ import { createMemoryHistory } from 'history';
 import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
 import { useLocation } from 'react-router-dom';
 import { createStore } from 'redux';
+import { UpsellingService } from '@kbn/security-solution-upselling/service';
 import type { StartServices } from '../../../types';
 import { flyoutProviders } from './flyout_provider';
 
@@ -18,6 +19,7 @@ const services = {
   uiActions: {
     getTriggerCompatibleActions: jest.fn().mockResolvedValue([]),
   },
+  upselling: new UpsellingService(),
 } as unknown as StartServices;
 
 const LocationProbe = () => {

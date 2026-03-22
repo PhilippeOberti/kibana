@@ -7,34 +7,34 @@
 
 import { render } from '@testing-library/react';
 import React from 'react';
-import { DocumentDetailsContext } from '../../shared/context';
-import { createMockStore, mockGlobalState, TestProviders } from '../../../../common/mock';
-import { FETCH_NOTES_ERROR, NO_NOTES, NotesDetails } from './notes_details';
-import { useUserPrivileges } from '../../../../common/components/user_privileges';
+import { buildDataTableRecord, type EsHitRecord } from '@kbn/discover-utils';
+import { createMockStore, mockGlobalState, TestProviders } from '../../common/mock';
+import { FETCH_NOTES_ERROR, NO_NOTES, NotesDetails } from '.';
+import { useUserPrivileges } from '../../common/components/user_privileges';
 import {
   ADD_NOTE_BUTTON_TEST_ID,
   NOTES_LOADING_TEST_ID,
-} from '../../../../notes/components/test_ids';
+} from '../../notes/components/test_ids';
 import {
   ATTACH_TO_TIMELINE_CALLOUT_TEST_ID,
   ATTACH_TO_TIMELINE_CHECKBOX_TEST_ID,
-} from './test_ids';
-import { useWhichFlyout } from '../../shared/hooks/use_which_flyout';
-import { Flyouts } from '../../shared/constants/flyouts';
-import { TimelineId } from '../../../../../common/types';
-import { ReqStatus } from '../../../../notes';
-import { useBasicDataFromDetailsData } from '../../shared/hooks/use_basic_data_from_details_data';
-import { TimelineStatusEnum } from '../../../../../common/api/timeline';
-import type { State } from '../../../../common/store';
+} from '../../flyout/document_details/left/components/test_ids';
+import { useWhichFlyout } from '../../flyout/document_details/shared/hooks/use_which_flyout';
+import { Flyouts } from '../../flyout/document_details/shared/constants/flyouts';
+import { TimelineId } from '../../../common/types';
+import { ReqStatus } from '../../notes';
+import { useBasicDataFromDetailsData } from '../../flyout/document_details/shared/hooks/use_basic_data_from_details_data';
+import { TimelineStatusEnum } from '../../../common/api/timeline';
+import type { State } from '../../common/store';
 
-jest.mock('../../shared/hooks/use_which_flyout');
-jest.mock('../../shared/hooks/use_basic_data_from_details_data');
+jest.mock('../../flyout/document_details/shared/hooks/use_which_flyout');
+jest.mock('../../flyout/document_details/shared/hooks/use_basic_data_from_details_data');
 
-jest.mock('../../../../common/components/user_privileges');
+jest.mock('../../common/components/user_privileges');
 const useUserPrivilegesMock = useUserPrivileges as jest.Mock;
 
 const mockAddError = jest.fn();
-jest.mock('../../../../common/hooks/use_app_toasts', () => ({
+jest.mock('../../common/hooks/use_app_toasts', () => ({
   useAppToasts: () => ({
     addError: mockAddError,
   }),
@@ -48,12 +48,6 @@ jest.mock('react-redux', () => {
     useDispatch: () => mockDispatch,
   };
 });
-
-const panelContextValue = {
-  eventId: 'event id',
-  dataFormattedForFieldBrowser: [],
-  searchHit: { _index: 'test', _id: 'test-id' },
-} as unknown as DocumentDetailsContext;
 
 const mockGlobalStateWithSavedTimeline: State = {
   ...mockGlobalState,
@@ -72,12 +66,12 @@ const mockGlobalStateWithSavedTimeline: State = {
 };
 
 const mockStore = createMockStore(mockGlobalStateWithSavedTimeline);
+const mockHit = buildDataTableRecord({ _index: 'test', _id: 'test-id' } as EsHitRecord);
+
 const renderNotesDetails = () =>
   render(
     <TestProviders store={mockStore}>
-      <DocumentDetailsContext.Provider value={panelContextValue}>
-        <NotesDetails />
-      </DocumentDetailsContext.Provider>
+      <NotesDetails hit={mockHit} />
     </TestProviders>
   );
 
@@ -111,9 +105,7 @@ describe('NotesDetails', () => {
 
     const { getByTestId } = render(
       <TestProviders store={store}>
-        <DocumentDetailsContext.Provider value={panelContextValue}>
-          <NotesDetails />
-        </DocumentDetailsContext.Provider>
+        <NotesDetails hit={mockHit} />
       </TestProviders>
     );
 
@@ -132,22 +124,17 @@ describe('NotesDetails', () => {
       },
     });
 
-    const contextValue = {
-      ...panelContextValue,
-      searchHit: {
-        _index: 'test',
-        _id: 'test-id',
-        fields: {
-          'kibana.alert.rule.uuid': ['rule-uuid'],
-        },
+    const alertHit = buildDataTableRecord({
+      _index: 'test',
+      _id: 'test-id',
+      fields: {
+        'kibana.alert.rule.uuid': ['rule-uuid'],
       },
-    } as unknown as DocumentDetailsContext;
+    } as EsHitRecord);
 
     const { getByText } = render(
       <TestProviders store={store}>
-        <DocumentDetailsContext.Provider value={contextValue}>
-          <NotesDetails />
-        </DocumentDetailsContext.Provider>
+        <NotesDetails hit={alertHit} />
       </TestProviders>
     );
 
@@ -169,9 +156,7 @@ describe('NotesDetails', () => {
 
     const { getByText } = render(
       <TestProviders store={store}>
-        <DocumentDetailsContext.Provider value={panelContextValue}>
-          <NotesDetails />
-        </DocumentDetailsContext.Provider>
+        <NotesDetails hit={mockHit} />
       </TestProviders>
     );
 
@@ -196,9 +181,7 @@ describe('NotesDetails', () => {
 
     render(
       <TestProviders store={store}>
-        <DocumentDetailsContext.Provider value={panelContextValue}>
-          <NotesDetails />
-        </DocumentDetailsContext.Provider>
+        <NotesDetails hit={mockHit} />
       </TestProviders>
     );
 

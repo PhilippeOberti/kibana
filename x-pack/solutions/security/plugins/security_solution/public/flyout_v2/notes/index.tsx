@@ -7,31 +7,40 @@
 
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { TimelineModel } from '../../../..';
-import { Flyouts } from '../../shared/constants/flyouts';
-import { timelineSelectors } from '../../../../timelines/store';
-import { TimelineId } from '../../../../../common/types';
-import { AttachToActiveTimeline } from './attach_to_active_timeline';
-import { pinEvent } from '../../../../timelines/store/actions';
-import type { State } from '../../../../common/store';
-import { TimelineStatusEnum } from '../../../../../common/api/timeline';
-import { useDocumentDetailsContext } from '../../shared/context';
-import { useWhichFlyout } from '../../shared/hooks/use_which_flyout';
+import type { DataTableRecord } from '@kbn/discover-utils';
+import { EuiPanel } from '@elastic/eui';
+import { NOTES_DETAILS_TEST_ID } from './test_ids';
+import type { TimelineModel } from '../..';
+import { Flyouts } from '../../flyout/document_details/shared/constants/flyouts';
+import { timelineSelectors } from '../../timelines/store';
+import { TimelineId } from '../../../common/types';
+import { AttachToActiveTimeline } from '../../flyout/document_details/left/components/attach_to_active_timeline';
+import { pinEvent } from '../../timelines/store/actions';
+import type { State } from '../../common/store';
+import { TimelineStatusEnum } from '../../../common/api/timeline';
+import { useWhichFlyout } from '../../flyout/document_details/shared/hooks/use_which_flyout';
 import {
-  NotesDetailsContent,
   FETCH_NOTES_ERROR,
   NO_NOTES,
-} from '../../../shared/components/notes_details_content';
+  NotesDetailsContent,
+} from './components/notes_details_content';
 
 export { FETCH_NOTES_ERROR, NO_NOTES };
+
+export interface NotesDetailsProps {
+  /**
+   * Document record used to fetch and associate notes and to derive the document type.
+   */
+  hit: DataTableRecord;
+}
 
 /**
  * List all the notes for a document id and allows to create new notes associated with that document.
  * Displayed in the document details expandable flyout left section.
  */
-export const NotesDetails = memo(() => {
+export const NotesDetails = memo(({ hit }: NotesDetailsProps) => {
   const dispatch = useDispatch();
-  const { eventId, searchHit } = useDocumentDetailsContext();
+  const eventId = hit.raw._id ?? '';
 
   const [attachToTimeline, setAttachToTimeline] = useState<boolean>(true);
 
@@ -78,11 +87,9 @@ export const NotesDetails = memo(() => {
     : undefined;
 
   return (
-    <NotesDetailsContent
-      documentId={eventId}
-      searchHit={searchHit}
-      timelineConfig={timelineConfig}
-    />
+    <EuiPanel data-test-subj={NOTES_DETAILS_TEST_ID} hasBorder={false} hasShadow={false}>
+      <NotesDetailsContent hit={hit} timelineConfig={timelineConfig} />
+    </EuiPanel>
   );
 });
 

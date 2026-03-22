@@ -39,7 +39,7 @@ jest.mock('../../hooks/use_attack_details', () => ({
   }),
 }));
 
-jest.mock('../../../shared/components/notes_details_content', () => ({
+jest.mock('../../../../flyout_v2/notes/components/notes_details_content', () => ({
   NotesDetailsContent: jest.fn(() => (
     <div data-test-subj="notes-details-content">{'Notes details content'}</div>
   )),

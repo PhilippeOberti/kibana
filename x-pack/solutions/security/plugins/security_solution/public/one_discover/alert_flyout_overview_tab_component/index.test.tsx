@@ -16,6 +16,10 @@ import { createStore } from 'redux';
 import { AlertFlyoutOverviewTab } from '.';
 import type { StartServices } from '../../types';
 
+jest.mock('../../common/components/user_privileges/user_privileges_context', () => ({
+  UserPrivilegesProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 jest.mock('../../flyout_v2/document/tabs/overview_tab', () => ({
   OverviewTab: () => <div>{'MockOverviewTab'}</div>,
 }));
@@ -37,6 +41,7 @@ describe('AlertFlyoutOverviewTab', () => {
     uiActions: {
       getTriggerCompatibleActions: jest.fn().mockResolvedValue([]),
     },
+    application: { capabilities: {} },
   } as unknown as StartServices;
 
   beforeEach(() => {
