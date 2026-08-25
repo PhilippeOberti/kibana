@@ -811,6 +811,7 @@ export class Plugin implements IPlugin<PluginSetup, PluginStart, SetupPlugins, S
         siemReadiness: new subPluginClasses.SiemReadiness(),
         configurations: new subPluginClasses.Configurations(),
         reports: new subPluginClasses.Reports(),
+        alertsV2: new subPluginClasses.AlertsV2(),
       };
     }
     return this._subPlugins;
@@ -845,6 +846,7 @@ export class Plugin implements IPlugin<PluginSetup, PluginStart, SetupPlugins, S
       siemReadiness: subPlugins.siemReadiness.start(),
       configurations: subPlugins.configurations.start(),
       reports: subPlugins.reports.start(),
+      alertsV2: subPlugins.alertsV2.start(),
     };
   }
 
