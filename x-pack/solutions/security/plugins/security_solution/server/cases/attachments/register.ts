@@ -15,6 +15,7 @@ import { getIndicatorAttachmentType } from './indicator';
 import { getEntityAttachmentType } from './entity';
 import { getAttackAttachmentType } from './attack';
 import { getTimelineAttachmentType } from './timeline';
+import { getEpisodeAttachmentType } from './episode';
 
 export const registerCaseAttachments = (
   attachmentFramework: CasesServerSetup['attachmentFramework'],
@@ -34,4 +35,5 @@ export const registerCaseAttachments = (
     })
   );
   attachmentFramework.registerAttachment(getTimelineAttachmentType());
+  attachmentFramework.registerAttachment(getEpisodeAttachmentType());
 };
