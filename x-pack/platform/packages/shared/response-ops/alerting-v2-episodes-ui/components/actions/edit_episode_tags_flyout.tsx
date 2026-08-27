@@ -33,6 +33,11 @@ export interface AlertEpisodeTagsFlyoutProps {
    * the surrounding `EuiFlyout` shell. Default `false` for inline usage.
    */
   embedded?: boolean;
+  /**
+   * Extra tag options always offered in the list, on top of the ES-fetched suggestions — e.g. a
+   * consumer's preset tag vocabulary (Security passes its `securitySolution:alertTags` setting).
+   */
+  presetTags?: string[];
 }
 
 export function AlertEpisodeTagsFlyout({
@@ -41,6 +46,7 @@ export function AlertEpisodeTagsFlyout({
   services,
   onSave,
   embedded = false,
+  presetTags = [],
 }: AlertEpisodeTagsFlyoutProps) {
   const { euiTheme } = useEuiTheme();
   const [searchValue, setSearchValue] = useState('');
@@ -51,9 +57,14 @@ export function AlertEpisodeTagsFlyout({
     });
 
   const allKnownTags = useMemo(() => {
-    const merged = new Set<string>([...suggestionTags, ...currentTags, ...selectedTags]);
+    const merged = new Set<string>([
+      ...presetTags,
+      ...suggestionTags,
+      ...currentTags,
+      ...selectedTags,
+    ]);
     return [...merged].sort((a, b) => a.localeCompare(b));
-  }, [suggestionTags, currentTags, selectedTags]);
+  }, [presetTags, suggestionTags, currentTags, selectedTags]);
 
   const trimmedSearch = searchValue.trim();
   const atTagCountLimit = selectedTags.length >= MAX_TAGS;

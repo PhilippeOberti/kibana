@@ -33,6 +33,8 @@ export interface EditTagsActionDeps {
   expressions: ExpressionsStart;
   spaces: SpacesPluginStart;
   queryClient: QueryClient;
+  /** Extra tag options always offered in the flyout (e.g. a consumer's preset tag vocabulary). */
+  presetTags?: string[];
 }
 
 export const createEditTagsAction = (deps: EditTagsActionDeps): EpisodeAction => ({
@@ -47,6 +49,7 @@ export const createEditTagsAction = (deps: EditTagsActionDeps): EpisodeAction =>
       expressions: deps.expressions,
       spaces: deps.spaces,
       queryClient: deps.queryClient,
+      presetTags: deps.presetTags,
     });
     if (tags == null) return;
 
