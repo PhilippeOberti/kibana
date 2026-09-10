@@ -116,8 +116,11 @@ const DocumentFlyoutWrapperContent = memo(
     }, [onAlertUpdated, refetch]);
 
     const isAlert = useMemo(
-      () => status === 'found' && (getFieldValue(hit, EVENT_KIND) as string) === EventKind.signal,
-      [hit, status]
+      () =>
+        hit &&
+        (status === 'found' && (getFieldValue(hit, EVENT_KIND) as string) === EventKind.signal ||
+          (getFieldValue(hit, 'type') as string) === 'alert'),
+      [hit]
     );
 
     const { hasAlertsRead, loading: isAlertsPrivilegesLoading } = useAlertsPrivileges();
